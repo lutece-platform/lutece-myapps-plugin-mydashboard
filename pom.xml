@@ -39,7 +39,7 @@
 	<properties>
 		<componentName>mylutece</componentName>
 		<jiraProjectName>MYDASHBOARD</jiraProjectName>
-		<jiraComponentId>10165</jiraComponentId>
+		<jiraComponentId>12255</jiraComponentId>
 	</properties>
 
     <scm>
