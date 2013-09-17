@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="mydashboard.myDashboardConfigurationDAO" class="fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfigurationDAO" />
+	<bean id="mydashboard.dashboardComponentMyDashboard" class="fr.paris.lutece.plugins.mydashboard.service.DashboardComponentMyDashboard" />
+</beans>

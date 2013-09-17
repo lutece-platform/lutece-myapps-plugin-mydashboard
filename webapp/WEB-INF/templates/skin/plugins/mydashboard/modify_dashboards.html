@@ -1,0 +1,59 @@
+<div>
+	<form action="jsp/site/Portal.jsp">
+		<fieldset>
+			<legend>#i18n{mydashboard.modifyDashboards.pageTitle}</legend>
+			<table class="table table-stripped">
+				<thead>
+					<th>
+						<td>
+							#i18n{mydashboard.modify_dashboards.labelDescription}
+						</td>
+						<td>
+							#i18n{mydashboard.modify_dashboards.labelDisplayDashboard}
+						</td>
+						<td>
+							#i18n{mydashboard.modify_dashboards.labelOrder}
+						</td>
+						<td>
+						</td>
+					</th>
+				</thead>
+				<tbody>
+					<#list listDashboardsConfiguration as dashboardConfiguration>
+						<tr>
+							<td>
+								${dashboardConfiguration.getComponentDescription(locale)}
+							</td>
+							<td>
+								<input type="checkbox" name="${dashboardConfiguration.myDashboardComponentId}_display" <#if !dashboardConfiguration.hideDashboard>checked="checked"</#if>>
+							</td>
+							<td>
+								${dashboardConfiguration.order}
+							</td>
+							<td>
+								<#if listDashboardsConfiguration.order &gt 1>
+									<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" class="btn btn-small btn-primary">
+										<i class="icon-chevron-up icon-white">&nbsp;</i>
+									</a>
+								</#if>
+								<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" class="btn btn-small btn-primary">
+									<i class="icon-chevron-down icon-white">&nbsp;</i>
+								</a>
+							</td>
+						</tr>
+					</#list>
+				</tbody>
+			</table>
+			<div class="form-actions">
+				<input type="hidden" name="page" value="mydashboard">
+				<input type="hidden" name="action" value="doModifyDashboards">
+				<button class="btn btn-small btn-primary">
+					<i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{portal.util.labelSave}
+				</button>
+				<button type="button" class="btn btn-small" onclick="javascript:windows.history.go(-1);">
+					<i class="icon-remove-circle">&nbsp;</i>&nbsp;#i18n{portal.util.labelCancel}
+				</button>
+			</div>
+		</fieldset>
+	</form>
+</div>
