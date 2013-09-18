@@ -4,39 +4,39 @@
 			<legend>#i18n{mydashboard.modifyDashboards.pageTitle}</legend>
 			<table class="table table-stripped">
 				<thead>
-					<th>
-						<td>
+					<tr>
+						<th>
 							#i18n{mydashboard.modify_dashboards.labelDescription}
-						</td>
-						<td>
+						</th>
+						<th>
 							#i18n{mydashboard.modify_dashboards.labelDisplayDashboard}
-						</td>
-						<td>
+						</th>
+						<th>
 							#i18n{mydashboard.modify_dashboards.labelOrder}
-						</td>
-						<td>
-						</td>
-					</th>
+						</th>
+						<th>
+						</th>
+					</tr>
 				</thead>
 				<tbody>
-					<#list listDashboardsConfiguration as dashboardConfiguration>
+					<#list listDashboardsConfig as dashboardConfiguration>
 						<tr>
 							<td>
-								${dashboardConfiguration.getComponentDescription(locale)}
+								${listComponentsDescription[dashboardConfiguration.myDashboardComponentId]}
 							</td>
 							<td>
-								<input type="checkbox" name="${dashboardConfiguration.myDashboardComponentId}_display" <#if !dashboardConfiguration.hideDashboard>checked="checked"</#if>>
+								<input type="checkbox" name="${dashboardConfiguration.myDashboardComponentId}_display" <#if !dashboardConfiguration.hideDashboard>checked="checked"</#if> />
 							</td>
 							<td>
 								${dashboardConfiguration.order}
 							</td>
 							<td>
-								<#if listDashboardsConfiguration.order &gt 1>
-									<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" class="btn btn-small btn-primary">
+								<#if dashboardConfiguration.order &gt; 1>
+									<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveUp}" class="btn btn-small btn-primary">
 										<i class="icon-chevron-up icon-white">&nbsp;</i>
 									</a>
 								</#if>
-								<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" class="btn btn-small btn-primary">
+								<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveDown}" class="btn btn-small btn-primary">
 									<i class="icon-chevron-down icon-white">&nbsp;</i>
 								</a>
 							</td>
@@ -46,12 +46,12 @@
 			</table>
 			<div class="form-actions">
 				<input type="hidden" name="page" value="mydashboard">
-				<input type="hidden" name="action" value="doModifyDashboards">
+				<input type="hidden" name="action" value="doModifyDashboards" title="#i18n{portal.util.labelValidate}">
 				<button class="btn btn-small btn-primary">
-					<i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{portal.util.labelSave}
+					<i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{portal.util.labelValidate}
 				</button>
-				<button type="button" class="btn btn-small" onclick="javascript:windows.history.go(-1);">
-					<i class="icon-remove-circle">&nbsp;</i>&nbsp;#i18n{portal.util.labelCancel}
+				<button class="btn btn-small" name="back" id="back" value="back" title="#i18n{portal.util.labelBack}">
+					<i class="icon-remove-circle">&nbsp;</i>&nbsp;#i18n{portal.util.labelBack}
 				</button>
 			</div>
 		</fieldset>

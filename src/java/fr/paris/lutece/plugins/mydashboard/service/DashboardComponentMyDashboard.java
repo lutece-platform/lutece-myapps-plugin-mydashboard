@@ -20,7 +20,7 @@ public class DashboardComponentMyDashboard extends MyDashboardComponent
 
     private static final String MESSAGE_COMPONENT_DESCRIPTION = "mydashboard.dashboardComponentMyDashboard.description";
 
-    private static final String TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD = "skin/site/plugins/mydashboard/dashboardComponent/dashboardComponentMyDashboard.html";
+    private static final String TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD = "skin/plugins/mydashboard/dashboardcomponent/dashboardComponentMyDashboard.html";
 
     /**
      * {@inheritDoc}

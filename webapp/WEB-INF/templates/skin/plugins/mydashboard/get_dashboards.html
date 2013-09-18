@@ -1,7 +1,17 @@
-<#list listDashboardsContent as dashboardContent>
-	<div class="row">
-		<div class="span12 well">
-			${dashboardContent!}
-		</div>
-	</div>
-</#list>
+<div class="row-fluid">
+	<fieldset>
+		<legend>
+			#i18n{mydashboard.getDashboard.pageTitle}
+			<div class="pull-right">
+				<a href="jsp/site/Portal.jsp?page=mydashboard&view=getModifyDashboards" class="btn btn-small btn-primary">
+					<i class="icon-white icon-edit">&nbsp;</i>&nbsp;#i18n{mydashboard.dashboardComponentMyDashboard.description}
+				</a>
+			</div>
+		</legend>
+		<#list listDashboardsContent as dashboardContent>
+			<div class="well">
+				${dashboardContent!}
+			</div>
+		</#list>
+	</fieldset>
+</div>

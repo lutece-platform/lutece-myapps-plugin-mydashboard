@@ -1,0 +1,2 @@
+INSERT INTO core_portlet_type (id_portlet_type,name,url_creation,url_update,home_class,plugin_name,url_docreate,create_script,create_specific,create_specific_form,url_domodify,modify_script,modify_specific,modify_specific_form) VALUES 
+('MYDASHBOARD_PORTLET','mydashboard.portlet.myDashboardPortlet.name','','','fr.paris.lutece.plugins.mydashboard.business.portlet.MyDashboardPortletHome','mydashboard','','/admin/portlet/script_create_portlet.html','','','','/admin/portlet/script_modify_portlet.html','','');

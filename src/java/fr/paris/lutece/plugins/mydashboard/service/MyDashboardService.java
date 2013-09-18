@@ -33,13 +33,6 @@
  */
 package fr.paris.lutece.plugins.mydashboard.service;
 
-import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO;
-import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
-import fr.paris.lutece.portal.service.util.AppLogService;
-import fr.paris.lutece.portal.web.LocalVariables;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +40,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+
+import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO;
+import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.web.LocalVariables;
 
 
 /**
@@ -83,7 +83,7 @@ public final class MyDashboardService
      */
     public List<IMyDashboardComponent> getMyDashboardComponentsList( )
     {
-        return SpringContextService.getBeansOfType( IMyDashboardComponent.class );
+        return new ArrayList<IMyDashboardComponent>( SpringContextService.getBeansOfType( IMyDashboardComponent.class ) );
     }
 
     /**
@@ -165,8 +165,22 @@ public final class MyDashboardService
             }
             if ( listComponents.size( ) > 0 )
             {
-                AppLogService.error( "MyDashboard : dashboard(s) found without user configuration" );
+                AppLogService
+                        .error( "MyDashboard : dashboard(s) found without user configuration - will proceed to the creation of the configuration" );
                 Collections.sort( listComponents );
+                int nLastUsedOrder = listUserConfig.size( ) > 0 ? listUserConfig.get( listUserConfig.size( ) - 1 )
+                        .getOrder( ) + 1 : 1;
+                for ( IMyDashboardComponent component : listComponents )
+                {
+                    MyDashboardConfiguration config = new MyDashboardConfiguration( );
+                    config.setMyDashboardComponentId( component.getComponentId( ) );
+                    config.setUserName( strUserName );
+                    config.setOrder( nLastUsedOrder++ );
+                    config.setHideDashboard( false );
+                    _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin( ) );
+                    listUserConfig.add( config );
+                }
+                saveMyDashboardConfigListInSession( listUserConfig );
                 listComponentsSorted.addAll( listComponents );
             }
         }
@@ -201,6 +215,20 @@ public final class MyDashboardService
         {
             _myDashboardComponentDAO.insertConfiguration( config, plugin );
         }
+        saveMyDashboardConfigListInSession( listMyDashboardsConfig );
+    }
+
+    /**
+     * Update a list of configuration
+     * @param listMyDashboardsConfig The list of configuration to update
+     */
+    public void updateConfigList( List<MyDashboardConfiguration> listMyDashboardsConfig )
+    {
+        for ( MyDashboardConfiguration config : listMyDashboardsConfig )
+        {
+            _myDashboardComponentDAO.updateConfiguration( config, MyDashboardPlugin.getPlugin( ) );
+        }
+
         saveMyDashboardConfigListInSession( listMyDashboardsConfig );
     }
 
