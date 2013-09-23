@@ -95,4 +95,14 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
     {
         return o != null ? this.getOrder( ) - o.getOrder( ) : 1;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals( Object o )
+    {
+        return o instanceof MyDashboardConfiguration ? this.getMyDashboardComponentId( ) == ( (MyDashboardConfiguration) o )
+                .getMyDashboardComponentId( ) : false;
+    }
 }
