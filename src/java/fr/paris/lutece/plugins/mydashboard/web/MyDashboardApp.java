@@ -1,11 +1,14 @@
 package fr.paris.lutece.plugins.mydashboard.web;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 
 import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
 import fr.paris.lutece.plugins.mydashboard.service.IMyDashboardComponent;
@@ -15,9 +18,11 @@ import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.UserNotSignedException;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.util.mvc.utils.MVCUtils;
 import fr.paris.lutece.portal.util.mvc.xpage.MVCApplication;
 import fr.paris.lutece.portal.util.mvc.xpage.annotations.Controller;
 import fr.paris.lutece.portal.web.xpages.XPage;
+import fr.paris.lutece.util.url.UrlItem;
 
 
 /**
@@ -39,6 +44,10 @@ public class MyDashboardApp extends MVCApplication
 
     private static final String PARAMETER_BACK = "back";
     private static final String PARAMETER_SUFFIX_DISPLAY = "_display";
+    private static final String PARAMETER_MOVE_UP = "moveUp";
+    private static final String PARAMETER_DASHBOARD_COMPONENT_ID = "myDashboardComponentId";
+
+    private static final String JSP_URL_PORTAL = "jsp/site/Portal.jsp";
 
     private static final String TEMPLATE_GET_DASHBOARDS = "skin/plugins/mydashboard/get_dashboards.html";
     private static final String TEMPLATE_GET_MODIFY_DASHBOARDS = "skin/plugins/mydashboard/modify_dashboards.html";
@@ -52,7 +61,8 @@ public class MyDashboardApp extends MVCApplication
     @View( value = VIEW_GET_DASHBOARDS, defaultView = true )
     public XPage getDashboards( HttpServletRequest request ) throws UserNotSignedException
     {
-        LuteceUser luteceUser = SecurityService.getInstance( ).getRegisteredUser( request );
+        LuteceUser luteceUser = SecurityService.isAuthenticationEnable( ) ? SecurityService.getInstance( )
+                .getRegisteredUser( request ) : null;
         if ( luteceUser == null )
         {
             throw new UserNotSignedException( );
@@ -82,7 +92,8 @@ public class MyDashboardApp extends MVCApplication
     @View( VIEW_GET_MODIFY_DASHBOARDS )
     public XPage getModifyDashboards( HttpServletRequest request ) throws UserNotSignedException
     {
-        LuteceUser luteceUser = SecurityService.getInstance( ).getRegisteredUser( request );
+        LuteceUser luteceUser = SecurityService.isAuthenticationEnable( ) ? SecurityService.getInstance( )
+                .getRegisteredUser( request ) : null;
         if ( luteceUser == null )
         {
             throw new UserNotSignedException( );
@@ -116,7 +127,8 @@ public class MyDashboardApp extends MVCApplication
     @Action( ACTION_DO_MODIFY_DASHBOARDS )
     public XPage doModifyDashboards( HttpServletRequest request ) throws UserNotSignedException
     {
-        LuteceUser luteceUser = SecurityService.getInstance( ).getRegisteredUser( request );
+        LuteceUser luteceUser = SecurityService.isAuthenticationEnable( ) ? SecurityService.getInstance( )
+                .getRegisteredUser( request ) : null;
         if ( luteceUser == null )
         {
             throw new UserNotSignedException( );
@@ -138,7 +150,7 @@ public class MyDashboardApp extends MVCApplication
         }
         dashboardService.updateConfigList( listDashboardConfig );
 
-        return redirectView( request, VIEW_GET_MODIFY_DASHBOARDS );
+        return redirectView( request, VIEW_GET_DASHBOARDS );
     }
 
     /**
@@ -150,12 +162,74 @@ public class MyDashboardApp extends MVCApplication
     @Action( ACTION_DO_MOVE_DASHBOARD )
     public XPage doMoveDashboard( HttpServletRequest request ) throws UserNotSignedException
     {
-        LuteceUser luteceUser = SecurityService.getInstance( ).getRegisteredUser( request );
+        LuteceUser luteceUser = SecurityService.isAuthenticationEnable( ) ? SecurityService.getInstance( )
+                .getRegisteredUser( request ) : null;
         if ( luteceUser == null )
         {
             throw new UserNotSignedException( );
         }
+        String strDashboardComponentId = request.getParameter( PARAMETER_DASHBOARD_COMPONENT_ID );
+        if ( StringUtils.isNotEmpty( strDashboardComponentId ) )
+        {
+            MyDashboardService dashboardService = MyDashboardService.getInstance( );
+            boolean bMoveUp = Boolean.parseBoolean( request.getParameter( PARAMETER_MOVE_UP ) );
+            List<MyDashboardConfiguration> listConfig = dashboardService.getUserConfig( luteceUser.getName( ) );
+            int nOldOrder = 0;
+            int nNewOrder = 0;
+            MyDashboardConfiguration configToSave = null;
+            for ( MyDashboardConfiguration config : listConfig )
+            {
+                if ( StringUtils.equals( config.getMyDashboardComponentId( ), strDashboardComponentId ) )
+                {
+                    nOldOrder = config.getOrder( );
+                    if ( bMoveUp )
+                    {
+                        nNewOrder = nOldOrder - 1;
+                    }
+                    else
+                    {
+                        nNewOrder = nOldOrder + 1;
+                    }
+                    config.setOrder( nNewOrder );
+                    configToSave = config;
+                    break;
+                }
+            }
+            boolean bSaved = false;
+            for ( MyDashboardConfiguration config : listConfig )
+            {
+                if ( config.getOrder( ) == nNewOrder
+                        && !StringUtils.equals( config.getMyDashboardComponentId( ), strDashboardComponentId ) )
+                {
+                    config.setOrder( nOldOrder );
+                    dashboardService.updateConfig( config, false );
+                    dashboardService.updateConfig( configToSave, false );
+                    bSaved = true;
+                    break;
+                }
+            }
+            if ( !bSaved && configToSave != null )
+            {
+                configToSave.setOrder( nOldOrder );
+            }
+            else
+            {
+                Collections.sort( listConfig );
+            }
+        }
 
         return redirectView( request, VIEW_GET_MODIFY_DASHBOARDS );
+    }
+
+    /**
+     * Get the URL of the default view of this application
+     * @param strBaseUrl The base URL to use
+     * @return The URL of the default view of this application
+     */
+    public static String getUrlDefaultView( String strBaseUrl )
+    {
+        UrlItem url = new UrlItem( strBaseUrl + JSP_URL_PORTAL );
+        url.addParameter( MVCUtils.PARAMETER_PAGE, "mydashboard" );
+        return url.getUrl( );
     }
 }

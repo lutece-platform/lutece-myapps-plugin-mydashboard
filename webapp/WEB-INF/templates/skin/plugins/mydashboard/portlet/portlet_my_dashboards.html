@@ -1,8 +1,10 @@
 <div class="row-fluid">
 	<fieldset>
-		<legend>
-			#i18n{mydashboard.getDashboard.pageTitle}
-		</legend>
+		<#if portlet.displayPortletTitle == 0>
+			<legend>
+				${portlet.name!}
+			</legend>
+		</#if>
 		<#list listDashboardsContent as dashboardContent>
 			<div class="well">
 				${dashboardContent!}

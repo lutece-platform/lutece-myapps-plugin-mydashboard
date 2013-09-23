@@ -5,7 +5,3 @@
 	mydashboardPortlet.init( request, mydashboardPortlet.RIGHT_MANAGE_ADMIN_SITE );
     response.sendRedirect(  mydashboardPortlet.doCreate( request )  );
 %>
-
-
-
-

@@ -24,6 +24,7 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 public class MyDashboardPortlet extends PortletHtmlContent
 {
     private static final String MARK_LIST_DASHBOARDS_CONTENT = "listDashboardsContent";
+    private static final String MARK_PORTLET = "portlet";
 
     private static final String TEMPLATE_PORTLET_MY_DASHBOARDS = "skin/plugins/mydashboard/portlet/portlet_my_dashboards.html";
 
@@ -33,10 +34,9 @@ public class MyDashboardPortlet extends PortletHtmlContent
     @Override
     public String getHtmlContent( HttpServletRequest request )
     {
-        LuteceUser user;
         if ( SecurityService.isAuthenticationEnable( ) )
         {
-            user = SecurityService.getInstance( ).getRegisteredUser( request );
+            LuteceUser user = SecurityService.getInstance( ).getRegisteredUser( request );
             if ( user == null )
             {
                 return StringUtils.EMPTY;
@@ -54,6 +54,7 @@ public class MyDashboardPortlet extends PortletHtmlContent
             }
 
             model.put( MARK_LIST_DASHBOARDS_CONTENT, listDashboardContent );
+            model.put( MARK_PORTLET, this );
 
             HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_PORTLET_MY_DASHBOARDS,
                     request.getLocale( ), model );

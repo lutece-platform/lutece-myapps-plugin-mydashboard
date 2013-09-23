@@ -32,13 +32,15 @@
 							</td>
 							<td>
 								<#if dashboardConfiguration.order &gt; 1>
-									<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveUp}" class="btn btn-small btn-primary">
+									<a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveUp}" class="btn btn-small btn-primary">
 										<i class="icon-chevron-up icon-white">&nbsp;</i>
 									</a>
 								</#if>
-								<a href="jsp/site/Portal.jdp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveDown}" class="btn btn-small btn-primary">
-									<i class="icon-chevron-down icon-white">&nbsp;</i>
-								</a>
+								<#if dashboardConfiguration_has_next>
+									<a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveDown}" class="btn btn-small btn-primary">
+										<i class="icon-chevron-down icon-white">&nbsp;</i>
+									</a>
+								</#if>
 							</td>
 						</tr>
 					</#list>

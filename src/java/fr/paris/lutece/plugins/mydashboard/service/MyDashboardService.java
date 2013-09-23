@@ -113,6 +113,7 @@ public final class MyDashboardService
                 config.setUserName( strUserName );
                 config.setOrder( nOrder++ );
                 config.setHideDashboard( false );
+                _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin( ) );
                 listDashboardConfigs.add( config );
             }
         }
@@ -148,16 +149,16 @@ public final class MyDashboardService
 
         for ( MyDashboardConfiguration config : listUserConfig )
         {
-            if ( !config.getHideDashboard( ) )
+            for ( IMyDashboardComponent component : listComponents )
             {
-                for ( IMyDashboardComponent component : listComponents )
+                if ( StringUtils.equals( config.getMyDashboardComponentId( ), component.getComponentId( ) ) )
                 {
-                    if ( StringUtils.equals( config.getMyDashboardComponentId( ), component.getComponentId( ) ) )
+                    if ( !config.getHideDashboard( ) )
                     {
                         listComponentsSorted.add( component );
-                        listComponents.remove( component );
-                        break;
                     }
+                    listComponents.remove( component );
+                    break;
                 }
             }
         }
@@ -213,6 +214,21 @@ public final class MyDashboardService
     }
 
     /**
+     * Update a dashboard configuration
+     * @param myDashboardsConfig The configuration to update
+     * @param bCleanCache True to update the dashboard configuration cache,
+     *            false otherwise
+     */
+    public void updateConfig( MyDashboardConfiguration myDashboardsConfig, boolean bCleanCache )
+    {
+        _myDashboardComponentDAO.updateConfiguration( myDashboardsConfig, MyDashboardPlugin.getPlugin( ) );
+        if ( bCleanCache )
+        {
+            saveMyDashboardConfigListInSession( null );
+        }
+    }
+
+    /**
      * Update a list of configuration
      * @param listMyDashboardsConfig The list of configuration to update
      */
@@ -224,6 +240,7 @@ public final class MyDashboardService
         }
 
         saveMyDashboardConfigListInSession( listMyDashboardsConfig );
+        saveMyDashboardListInSession( null );
     }
 
     /**

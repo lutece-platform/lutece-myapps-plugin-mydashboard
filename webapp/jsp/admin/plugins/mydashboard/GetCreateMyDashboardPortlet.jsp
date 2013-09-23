@@ -5,4 +5,3 @@
 
 <% mydashboardPortlet.init( request, mydashboardPortlet.RIGHT_MANAGE_ADMIN_SITE ); %>
 <%= mydashboardPortlet.getCreate( request ) %>
-
