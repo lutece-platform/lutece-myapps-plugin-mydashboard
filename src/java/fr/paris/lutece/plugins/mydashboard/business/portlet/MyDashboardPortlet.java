@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import fr.paris.lutece.plugins.mydashboard.service.IMyDashboardComponent;
 import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
-import fr.paris.lutece.portal.business.portlet.PortletWithoutXsl;
+import fr.paris.lutece.portal.business.portlet.PortletHtmlContent;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
@@ -21,7 +21,7 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 /**
  * Portlet to display dashboards of front office users
  */
-public class MyDashboardPortlet extends PortletWithoutXsl
+public class MyDashboardPortlet extends PortletHtmlContent
 {
     private static final String MARK_LIST_DASHBOARDS_CONTENT = "listDashboardsContent";
 

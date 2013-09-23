@@ -7,16 +7,16 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import fr.paris.lutece.plugins.mvc.MVCApplication;
-import fr.paris.lutece.plugins.mvc.annotations.Action;
-import fr.paris.lutece.plugins.mvc.annotations.Controller;
-import fr.paris.lutece.plugins.mvc.annotations.View;
 import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
 import fr.paris.lutece.plugins.mydashboard.service.IMyDashboardComponent;
 import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.UserNotSignedException;
+import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
+import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.util.mvc.xpage.MVCApplication;
+import fr.paris.lutece.portal.util.mvc.xpage.annotations.Controller;
 import fr.paris.lutece.portal.web.xpages.XPage;
 
 

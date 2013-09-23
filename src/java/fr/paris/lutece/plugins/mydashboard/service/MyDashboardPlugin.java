@@ -20,7 +20,7 @@ public class MyDashboardPlugin extends Plugin
     @Override
     public void init( )
     {
-
+        // Nothing to do
     }
 
     /**

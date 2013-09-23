@@ -102,7 +102,7 @@ public final class MyDashboardService
         listDashboardConfigs = _myDashboardComponentDAO.findByUserName( strUserName, MyDashboardPlugin.getPlugin( ) );
         if ( listDashboardConfigs.size( ) == 0 )
         {
-            // If there is no dashboard configured, we generate the configuration
+            // If there is no dash board configured, we generate the configuration
             List<IMyDashboardComponent> listDashboardComponents = getMyDashboardComponentsList( );
             Collections.sort( listDashboardComponents );
             int nOrder = 1;
@@ -125,12 +125,12 @@ public final class MyDashboardService
     }
 
     /**
-     * Get the list of dashboards components associated with a given user name.
+     * Get the list of dash boards components associated with a given user name.
      * The list is sorted with the order of each component in the configuration,
      * and contains only enabled and displayed components
-     * @param strUserName The name of the user to get the dashboard components
+     * @param strUserName The name of the user to get the dash board components
      *            of
-     * @return The list of dashboards components
+     * @return The list of dash boards components
      */
     public List<IMyDashboardComponent> getDashboardComponentListFromUserName( String strUserName )
     {
