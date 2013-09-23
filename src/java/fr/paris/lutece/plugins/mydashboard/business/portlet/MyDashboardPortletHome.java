@@ -11,7 +11,7 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
  */
 public class MyDashboardPortletHome extends PortletHome
 {
-    private volatile static MyDashboardPortletHome _instance;
+    private static volatile MyDashboardPortletHome _instance;
     private IPortletInterfaceDAO _dao = SpringContextService.getBean( "mydashboard.myDashboardPortletDAO" );
 
     /**
@@ -24,10 +24,7 @@ public class MyDashboardPortletHome extends PortletHome
         {
             synchronized ( MyDashboardPortletHome.class )
             {
-                if ( _instance == null )
-                {
-                    _instance = new MyDashboardPortletHome( );
-                }
+                _instance = new MyDashboardPortletHome( );
             }
         }
         return _instance;

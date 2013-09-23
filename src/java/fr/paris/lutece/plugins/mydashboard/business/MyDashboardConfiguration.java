@@ -1,5 +1,8 @@
 package fr.paris.lutece.plugins.mydashboard.business;
 
+import org.apache.commons.lang.StringUtils;
+
+
 /**
  * User configuration of dashboards
  */
@@ -102,7 +105,16 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
     @Override
     public boolean equals( Object o )
     {
-        return o instanceof MyDashboardConfiguration ? this.getMyDashboardComponentId( ) == ( (MyDashboardConfiguration) o )
-                .getMyDashboardComponentId( ) : false;
+        return o instanceof MyDashboardConfiguration ? StringUtils.equals( this.getMyDashboardComponentId( ),
+                ( (MyDashboardConfiguration) o ).getMyDashboardComponentId( ) ) : false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode( )
+    {
+        return getMyDashboardComponentId( ) != null ? getMyDashboardComponentId( ).hashCode( ) : 0;
     }
 }
