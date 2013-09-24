@@ -45,7 +45,7 @@ public class MyDashboardPortlet extends PortletHtmlContent
             Map<String, Object> model = new HashMap<String, Object>( );
 
             List<IMyDashboardComponent> listDashboardComponents = MyDashboardService.getInstance( )
-                    .getDashboardComponentListFromUserName( user.getName( ) );
+                    .getDashboardComponentListFromUser( user );
 
             List<String> listDashboardContent = new ArrayList<String>( listDashboardComponents.size( ) );
             for ( IMyDashboardComponent dashboardComponent : listDashboardComponents )

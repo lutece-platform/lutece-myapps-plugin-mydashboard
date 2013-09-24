@@ -10,7 +10,7 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
 {
 
     private int _nOrder;
-    private String _strUserName;
+    private String _strIdConfig;
     private String _strMyDashboardComponentId;
     private boolean _bHideDashboard;
 
@@ -33,23 +33,21 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
     }
 
     /**
-     * Get the user name of the user associated with this dashboard
-     * configuration
+     * Get the id of the config of this dashboard configuration
      * @return the user name
      */
-    public String getUserName( )
+    public String getIdConfig( )
     {
-        return _strUserName;
+        return _strIdConfig;
     }
 
     /**
-     * Set the user name of the user associated with this dashboard
-     * configuration
-     * @param strUserName the user name
+     * Set the id of the config of this dashboard configuration
+     * @param strIdConfig the id of the config
      */
-    public void setUserName( String strUserName )
+    public void setIdConfig( String strIdConfig )
     {
-        _strUserName = strUserName;
+        _strIdConfig = strIdConfig;
     }
 
     /**

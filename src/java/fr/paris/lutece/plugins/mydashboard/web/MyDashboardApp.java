@@ -71,7 +71,7 @@ public class MyDashboardApp extends MVCApplication
 
         Map<String, Object> model = new HashMap<String, Object>( );
         List<IMyDashboardComponent> listDashboardComponents = dashboardService
-                .getDashboardComponentListFromUserName( luteceUser.getName( ) );
+                .getDashboardComponentListFromUser( luteceUser );
 
         List<String> listDashboardContent = new ArrayList<String>( listDashboardComponents.size( ) );
         for ( IMyDashboardComponent dashboardComponent : listDashboardComponents )
@@ -101,7 +101,7 @@ public class MyDashboardApp extends MVCApplication
         MyDashboardService dashboardService = MyDashboardService.getInstance( );
 
         Map<String, Object> model = new HashMap<String, Object>( );
-        List<MyDashboardConfiguration> listDashboardConfig = dashboardService.getUserConfig( luteceUser.getName( ) );
+        List<MyDashboardConfiguration> listDashboardConfig = dashboardService.getUserConfig( luteceUser );
         List<IMyDashboardComponent> listDashboardComponents = dashboardService.getMyDashboardComponentsList( );
 
         Map<String, String> mapComponentsDescription = new HashMap<String, String>( listDashboardComponents.size( ) );
@@ -141,7 +141,7 @@ public class MyDashboardApp extends MVCApplication
 
         MyDashboardService dashboardService = MyDashboardService.getInstance( );
 
-        List<MyDashboardConfiguration> listDashboardConfig = dashboardService.getUserConfig( luteceUser.getName( ) );
+        List<MyDashboardConfiguration> listDashboardConfig = dashboardService.getUserConfig( luteceUser );
 
         for ( MyDashboardConfiguration config : listDashboardConfig )
         {
@@ -173,7 +173,7 @@ public class MyDashboardApp extends MVCApplication
         {
             MyDashboardService dashboardService = MyDashboardService.getInstance( );
             boolean bMoveUp = Boolean.parseBoolean( request.getParameter( PARAMETER_MOVE_UP ) );
-            List<MyDashboardConfiguration> listConfig = dashboardService.getUserConfig( luteceUser.getName( ) );
+            List<MyDashboardConfiguration> listConfig = dashboardService.getUserConfig( luteceUser );
             int nOldOrder = 0;
             int nNewOrder = 0;
             MyDashboardConfiguration configToSave = null;

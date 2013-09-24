@@ -43,7 +43,8 @@ import org.apache.commons.lang.StringUtils;
 
 import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO;
 import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
-import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
+import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.web.LocalVariables;
@@ -56,6 +57,8 @@ public final class MyDashboardService
 {
     private static final String SESSION_LIST_DASHBOARD = "mydashboard.sessionListMyDashboard";
     private static final String SESSION_LIST_DASHBOARD_CONFIG = "mydashboard.sessionListMyDashboardConfig";
+
+    private static final String PARAMETER_CONFIG_ID = "mydashboard.dashboardConfigId";
 
     private static MyDashboardService _singleton = new MyDashboardService( );
     private IMyDashboardConfigurationDAO _myDashboardComponentDAO = SpringContextService
@@ -87,19 +90,45 @@ public final class MyDashboardService
     }
 
     /**
+     * Get the id of the dashboard configuration associated with a user
+     * @param user The user to get the id of the dashboard configuration
+     *            of
+     * @return The id of the dashboard configuration
+     */
+    public String getUserConfigId( LuteceUser user )
+    {
+        if ( LocalVariables.getRequest( ) != null )
+        {
+            return (String) LocalVariables.getRequest( ).getSession( ).getAttribute( PARAMETER_CONFIG_ID );
+        }
+        String strConfigId = UserPreferencesService.instance( ).get( user.getName( ), PARAMETER_CONFIG_ID, null );
+        if ( strConfigId != null )
+        {
+            strConfigId = _myDashboardComponentDAO.getNewConfigId( );
+            UserPreferencesService.instance( ).put( user.getName( ), PARAMETER_CONFIG_ID, strConfigId );
+        }
+        if ( LocalVariables.getRequest( ) != null )
+        {
+            LocalVariables.getRequest( ).getSession( ).setAttribute( PARAMETER_CONFIG_ID, strConfigId );
+        }
+        return strConfigId;
+    }
+
+    /**
      * Get the list of MyDashboardConfiguration associated with a given user
-     * @param strUserName The name of the user to get the configurations of
+     * @param user The user to get the configurations of
      * @return The list of MyDashboardConfiguration. Note that the returned list
      *         is saved in the session if this is a request context
      */
-    public List<MyDashboardConfiguration> getUserConfig( String strUserName )
+    public List<MyDashboardConfiguration> getUserConfig( LuteceUser user )
     {
         List<MyDashboardConfiguration> listDashboardConfigs = getMyDashboardConfigListFromSession( );
         if ( listDashboardConfigs != null )
         {
             return listDashboardConfigs;
         }
-        listDashboardConfigs = _myDashboardComponentDAO.findByUserName( strUserName, MyDashboardPlugin.getPlugin( ) );
+        String strConfigId = getUserConfigId( user );
+        listDashboardConfigs = _myDashboardComponentDAO.findByConfigId( strConfigId, MyDashboardPlugin.getPlugin( ) );
         if ( listDashboardConfigs.size( ) == 0 )
         {
             // If there is no dash board configured, we generate the configuration
@@ -110,7 +139,7 @@ public final class MyDashboardService
             {
                 MyDashboardConfiguration config = new MyDashboardConfiguration( );
                 config.setMyDashboardComponentId( dashboardComponent.getComponentId( ) );
-                config.setUserName( strUserName );
+                config.setIdConfig( strConfigId );
                 config.setOrder( nOrder++ );
                 config.setHideDashboard( false );
                 _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin( ) );
@@ -126,14 +155,14 @@ public final class MyDashboardService
     }
 
     /**
-     * Get the list of dash boards components associated with a given user name.
+     * Get the list of dash boards components associated with a given
+     * configuration id.
      * The list is sorted with the order of each component in the configuration,
      * and contains only enabled and displayed components
-     * @param strUserName The name of the user to get the dash board components
-     *            of
+     * @param user The user to get the dash board components of
      * @return The list of dash boards components
      */
-    public List<IMyDashboardComponent> getDashboardComponentListFromUserName( String strUserName )
+    public List<IMyDashboardComponent> getDashboardComponentListFromUser( LuteceUser user )
     {
         List<IMyDashboardComponent> listComponents = getMyDashboardListFromSession( );
         if ( listComponents != null )
@@ -142,7 +171,7 @@ public final class MyDashboardService
         }
 
         List<IMyDashboardComponent> listComponentsSorted;
-        List<MyDashboardConfiguration> listUserConfig = getUserConfig( strUserName );
+        List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
 
         listComponents = getMyDashboardComponentsList( );
         listComponentsSorted = new ArrayList<IMyDashboardComponent>( listComponents.size( ) );
@@ -169,11 +198,12 @@ public final class MyDashboardService
             Collections.sort( listComponents );
             int nLastUsedOrder = listUserConfig.size( ) > 0 ? listUserConfig.get( listUserConfig.size( ) - 1 )
                     .getOrder( ) + 1 : 1;
+            String strConfigId = getUserConfigId( user );
             for ( IMyDashboardComponent component : listComponents )
             {
                 MyDashboardConfiguration config = new MyDashboardConfiguration( );
                 config.setMyDashboardComponentId( component.getComponentId( ) );
-                config.setUserName( strUserName );
+                config.setIdConfig( strConfigId );
                 config.setOrder( nLastUsedOrder++ );
                 config.setHideDashboard( false );
                 _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin( ) );
@@ -188,29 +218,14 @@ public final class MyDashboardService
     }
 
     /**
-     * Delete a user configuration from its user name, and reset the list of
+     * Delete a user configuration from its user, and reset the list of
      * configurations saved in session if any
-     * @param strUserName The name of the user to remove the configuration of
+     * @param user The user to remove the configuration of
      */
-    public void deleteConfigByUserName( String strUserName )
+    public void deleteConfigByUser( LuteceUser user )
     {
-        _myDashboardComponentDAO.removeByUserName( strUserName, MyDashboardPlugin.getPlugin( ) );
+        _myDashboardComponentDAO.removeByConfigId( getUserConfigId( user ), MyDashboardPlugin.getPlugin( ) );
         saveMyDashboardConfigListInSession( null );
-    }
-
-    /**
-     * Saves a list of configuration into the database. The configuration list
-     * is also saved in the session
-     * @param listMyDashboardsConfig The list of configuration to save
-     */
-    public void createsConfigList( List<MyDashboardConfiguration> listMyDashboardsConfig )
-    {
-        Plugin plugin = MyDashboardPlugin.getPlugin( );
-        for ( MyDashboardConfiguration config : listMyDashboardsConfig )
-        {
-            _myDashboardComponentDAO.insertConfiguration( config, plugin );
-        }
-        saveMyDashboardConfigListInSession( listMyDashboardsConfig );
     }
 
     /**
