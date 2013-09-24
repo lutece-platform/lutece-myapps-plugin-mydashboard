@@ -97,12 +97,17 @@ public final class MyDashboardService
      */
     public String getUserConfigId( LuteceUser user )
     {
+        String strConfigId;
         if ( LocalVariables.getRequest( ) != null )
         {
-            return (String) LocalVariables.getRequest( ).getSession( ).getAttribute( PARAMETER_CONFIG_ID );
+            strConfigId = (String) LocalVariables.getRequest( ).getSession( ).getAttribute( PARAMETER_CONFIG_ID );
+            if ( strConfigId != null )
+            {
+                return strConfigId;
+            }
         }
-        String strConfigId = UserPreferencesService.instance( ).get( user.getName( ), PARAMETER_CONFIG_ID, null );
-        if ( strConfigId != null )
+        strConfigId = UserPreferencesService.instance( ).get( user.getName( ), PARAMETER_CONFIG_ID, null );
+        if ( strConfigId == null )
         {
             strConfigId = _myDashboardComponentDAO.getNewConfigId( );
             UserPreferencesService.instance( ).put( user.getName( ), PARAMETER_CONFIG_ID, strConfigId );
