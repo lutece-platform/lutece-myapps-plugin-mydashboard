@@ -14,7 +14,7 @@ import fr.paris.lutece.portal.service.util.AppPathService;
 /**
  * Application to change user nicknames
  */
-public class DashboardNicknameApp
+public class MyDashboardNicknameApp
 {
     private static final String PARAMETER_NICKNAME = "nickname";
 

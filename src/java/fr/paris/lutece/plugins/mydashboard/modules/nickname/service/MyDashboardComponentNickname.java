@@ -20,15 +20,15 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 /**
  * Dashboard component to manage nicknames
  */
-public class DashboardComponentNickname extends MyDashboardComponent
+public class MyDashboardComponentNickname extends MyDashboardComponent
 {
-    private static final String DASHBOARD_COMPONENT_ID = "mydashboard.dashboardComponentNickname";
+    private static final String DASHBOARD_COMPONENT_ID = "mydashboard.myDashboardComponentNickname";
 
     private static final String MESSAGE_DASHBOARD_COMPONENT_NICKNAME_DESCRIPTION = "module.mydashboard.nickname.dashboardComponent.nickname.description";
 
     private static final String MARK_USER_NICKNACME = "nickname";
 
-    private static final String TEMPLATE_DASHBOARD_COMPONENT_PSEUDO = "skin/plugins/mydashboard/modules/nickname/dashboardcomponent/dashboardcomponent_nickname.html";
+    private static final String TEMPLATE_DASHBOARD_COMPONENT_PSEUDO = "skin/plugins/mydashboard/modules/nickname/mydashboardcomponent/mydashboardcomponent_nickname.html";
 
     /**
      * {@inheritDoc}

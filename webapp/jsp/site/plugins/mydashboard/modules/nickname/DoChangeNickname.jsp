@@ -1,6 +1,6 @@
 <%@ page errorPage="../../ErrorPage.jsp" %>
-<%@ page import = "fr.paris.lutece.plugins.mydashboard.modules.nickname.web.DashboardNicknameApp" %> 
+<%@ page import = "fr.paris.lutece.plugins.mydashboard.modules.nickname.web.MyDashboardNicknameApp" %> 
 
 <%
-    response.sendRedirect(  DashboardNicknameApp.doChangeUserNickname( request )  );
-%>
+     response.sendRedirect(  MyDashboardNicknameApp.doChangeUserNickname( request )  );
+ %>

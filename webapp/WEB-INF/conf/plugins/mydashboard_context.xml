@@ -15,5 +15,5 @@
 	<!-- Portlet -->
 	<bean id="mydashboard.myDashboardPortletDAO" class="fr.paris.lutece.plugins.mydashboard.business.portlet.MyDashboardPortletDAO" />
 	
-	<bean id="mydashboard.dashboardComponentMyDashboard" class="fr.paris.lutece.plugins.mydashboard.service.DashboardComponentMyDashboard" scope="singleton" />
+	<bean id="mydashboard.myDashboardComponentMyDashboard" class="fr.paris.lutece.plugins.mydashboard.service.MyDashboardComponentMyDashboard" scope="singleton" />
 </beans>

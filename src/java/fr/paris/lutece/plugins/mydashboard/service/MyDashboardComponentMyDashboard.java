@@ -1,26 +1,26 @@
 package fr.paris.lutece.plugins.mydashboard.service;
 
-import fr.paris.lutece.portal.service.i18n.I18nService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.util.html.HtmlTemplate;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import fr.paris.lutece.portal.service.i18n.I18nService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.util.html.HtmlTemplate;
+
 
 /**
  * Dashboard component to modify dashboard components
  */
-public class DashboardComponentMyDashboard extends MyDashboardComponent
+public class MyDashboardComponentMyDashboard extends MyDashboardComponent
 {
-    private static final String DASHBOARD_COMPONENT_ID = "mydashboard.dashboardComponentMyDashboard";
+    private static final String DASHBOARD_COMPONENT_ID = "mydashboard.myDashboardComponentMyDashboard";
 
     private static final String MESSAGE_COMPONENT_DESCRIPTION = "mydashboard.dashboardComponentMyDashboard.description";
 
-    private static final String TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD = "skin/plugins/mydashboard/dashboardcomponent/dashboardComponentMyDashboard.html";
+    private static final String TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD = "skin/plugins/mydashboard/mydashboardcomponent/mydashboardcomponent_mydashboard.html";
 
     /**
      * {@inheritDoc}
