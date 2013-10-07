@@ -1,5 +1,13 @@
 package fr.paris.lutece.plugins.mydashboard.business.portlet;
 
+import fr.paris.lutece.plugins.mydashboard.service.IMyDashboardComponent;
+import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
+import fr.paris.lutece.portal.business.portlet.PortletHtmlContent;
+import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.util.html.HtmlTemplate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,14 +16,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-
-import fr.paris.lutece.plugins.mydashboard.service.IMyDashboardComponent;
-import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
-import fr.paris.lutece.portal.business.portlet.PortletHtmlContent;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.util.html.HtmlTemplate;
 
 
 /**
@@ -62,5 +62,21 @@ public class MyDashboardPortlet extends PortletHtmlContent
         }
 
         return StringUtils.EMPTY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean canBeCachedForAnonymousUsers( )
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean canBeCachedForConnectedUsers( )
+    {
+        return false;
     }
 }
