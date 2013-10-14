@@ -21,6 +21,10 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Portlet to display dashboards of front office users
  */
+/**
+ * @author vbroussard
+ * 
+ */
 public class MyDashboardPortlet extends PortletHtmlContent
 {
     private static final String MARK_LIST_DASHBOARDS_CONTENT = "listDashboardsContent";
@@ -78,5 +82,14 @@ public class MyDashboardPortlet extends PortletHtmlContent
     public boolean canBeCachedForConnectedUsers( )
     {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void remove( )
+    {
+        MyDashboardPortletHome.getInstance( ).remove( this );
     }
 }
