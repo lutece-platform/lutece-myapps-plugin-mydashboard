@@ -315,7 +315,6 @@ public final class MyDashboardService
      *         context, or if there is no dashboard list saved in session,
      *         return null.
      */
-    @SuppressWarnings( "unchecked" )
     private List<IMyDashboardComponent> getMyDashboardListFromSession(  )
     {
         if ( LocalVariables.getRequest(  ) != null )
@@ -348,7 +347,6 @@ public final class MyDashboardService
      *         not a request context, or if there is no dashboard configuration
      *         list saved in session, return null.
      */
-    @SuppressWarnings( "unchecked" )
     private List<MyDashboardConfiguration> getMyDashboardConfigListFromSession(  )
     {
         if ( LocalVariables.getRequest(  ) != null )

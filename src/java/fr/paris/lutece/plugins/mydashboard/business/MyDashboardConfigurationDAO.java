@@ -51,6 +51,7 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
     private static final String SQL_QUERY_UPDATE_CONFIGURATION = " UPDATE mydashboard_configuration SET dashboard_order = ?, hide_dashboard = ? WHERE my_dashboard_component_id = ? AND id_config = ? ";
     private static final String SQL_QUERY_REMOVE_BY_CONFIG_ID = " DELETE FROM mydashboard_configuration WHERE id_config = ? ";
     private static final String SQL_QUERY_REMOVE_BY_CONFIG_ID_AND_COMPONENT = " DELETE FROM mydashboard_configuration WHERE id_config = ? AND my_dashboard_component_id = ? ";
+    private static final int CONSTANT_SIZE_RANDOM_PART_ID = 1000000;
 
     /**
      * {@inheritDoc}
@@ -58,7 +59,7 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
     @Override
     public String getNewConfigId(  )
     {
-        return UniqueIDGenerator.getNewId(  );
+        return UniqueIDGenerator.getNewId(  ) + (int) ( Math.random(  ) * CONSTANT_SIZE_RANDOM_PART_ID );
     }
 
     /**

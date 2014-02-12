@@ -64,6 +64,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller( xpageName = "mydashboard", pageTitleI18nKey = "mydashboard.getDashboard.pageTitle" )
 public class MyDashboardApp extends MVCApplication
 {
+    private static final long serialVersionUID = 5462159859477351128L;
     private static final String VIEW_GET_DASHBOARDS = "getDashboards";
     private static final String VIEW_GET_MODIFY_DASHBOARDS = "getModifyDashboards";
     private static final String ACTION_DO_MODIFY_DASHBOARDS = "doModifyDashboards";
