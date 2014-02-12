@@ -41,13 +41,13 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.web.LocalVariables;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -58,14 +58,14 @@ public final class MyDashboardService
     private static final String SESSION_LIST_DASHBOARD = "mydashboard.sessionListMyDashboard";
     private static final String SESSION_LIST_DASHBOARD_CONFIG = "mydashboard.sessionListMyDashboardConfig";
     private static final String PARAMETER_CONFIG_ID = "mydashboard.dashboardConfigId";
-    private static MyDashboardService _singleton = new MyDashboardService(  );
-    private IMyDashboardConfigurationDAO _myDashboardComponentDAO = SpringContextService.getBean( 
-            "mydashboard.myDashboardConfigurationDAO" );
+    private static MyDashboardService _singleton = new MyDashboardService( );
+    private IMyDashboardConfigurationDAO _myDashboardComponentDAO = SpringContextService
+            .getBean( "mydashboard.myDashboardConfigurationDAO" );
 
     /**
      * Private Constructor
      */
-    private MyDashboardService(  )
+    private MyDashboardService( )
     {
     }
 
@@ -73,7 +73,7 @@ public final class MyDashboardService
      * Return the unique instance
      * @return The instance
      */
-    public static MyDashboardService getInstance(  )
+    public static MyDashboardService getInstance( )
     {
         return _singleton;
     }
@@ -85,8 +85,10 @@ public final class MyDashboardService
      */
     public List<IMyDashboardComponent> getMyDashboardComponentsList( LuteceUser user )
     {
-        List<IMyDashboardComponent> listDashboardComponents = SpringContextService.getBeansOfType( IMyDashboardComponent.class );
-        List<IMyDashboardComponent> listDashboardComponentsFiltered = new ArrayList<IMyDashboardComponent>( listDashboardComponents.size(  ) );
+        List<IMyDashboardComponent> listDashboardComponents = SpringContextService
+                .getBeansOfType( IMyDashboardComponent.class );
+        List<IMyDashboardComponent> listDashboardComponentsFiltered = new ArrayList<IMyDashboardComponent>(
+                listDashboardComponents.size( ) );
 
         for ( IMyDashboardComponent component : listDashboardComponents )
         {
@@ -109,9 +111,9 @@ public final class MyDashboardService
     {
         String strConfigId;
 
-        if ( LocalVariables.getRequest(  ) != null )
+        if ( LocalVariables.getRequest( ) != null )
         {
-            strConfigId = (String) LocalVariables.getRequest(  ).getSession(  ).getAttribute( PARAMETER_CONFIG_ID );
+            strConfigId = (String) LocalVariables.getRequest( ).getSession( ).getAttribute( PARAMETER_CONFIG_ID );
 
             if ( strConfigId != null )
             {
@@ -119,17 +121,17 @@ public final class MyDashboardService
             }
         }
 
-        strConfigId = UserPreferencesService.instance(  ).get( user.getName(  ), PARAMETER_CONFIG_ID, null );
+        strConfigId = UserPreferencesService.instance( ).get( user.getName( ), PARAMETER_CONFIG_ID, null );
 
         if ( strConfigId == null )
         {
-            strConfigId = _myDashboardComponentDAO.getNewConfigId(  );
-            UserPreferencesService.instance(  ).put( user.getName(  ), PARAMETER_CONFIG_ID, strConfigId );
+            strConfigId = _myDashboardComponentDAO.getNewConfigId( );
+            UserPreferencesService.instance( ).put( user.getName( ), PARAMETER_CONFIG_ID, strConfigId );
         }
 
-        if ( LocalVariables.getRequest(  ) != null )
+        if ( LocalVariables.getRequest( ) != null )
         {
-            LocalVariables.getRequest(  ).getSession(  ).setAttribute( PARAMETER_CONFIG_ID, strConfigId );
+            LocalVariables.getRequest( ).getSession( ).setAttribute( PARAMETER_CONFIG_ID, strConfigId );
         }
 
         return strConfigId;
@@ -143,7 +145,7 @@ public final class MyDashboardService
      */
     public List<MyDashboardConfiguration> getUserConfig( LuteceUser user )
     {
-        List<MyDashboardConfiguration> listDashboardConfigs = getMyDashboardConfigListFromSession(  );
+        List<MyDashboardConfiguration> listDashboardConfigs = getMyDashboardConfigListFromSession( );
 
         if ( listDashboardConfigs != null )
         {
@@ -151,29 +153,97 @@ public final class MyDashboardService
         }
 
         String strConfigId = getUserConfigId( user );
-        listDashboardConfigs = _myDashboardComponentDAO.findByConfigId( strConfigId, MyDashboardPlugin.getPlugin(  ) );
-
-        if ( listDashboardConfigs.size(  ) == 0 )
+        listDashboardConfigs = _myDashboardComponentDAO.findByConfigId( strConfigId, MyDashboardPlugin.getPlugin( ) );
+        List<IMyDashboardComponent> listDashboardComponents = getMyDashboardComponentsList( user );
+        if ( listDashboardConfigs.size( ) == 0 )
         {
             // If there is no dash board configured, we generate the configuration
-            List<IMyDashboardComponent> listDashboardComponents = getMyDashboardComponentsList( user );
             Collections.sort( listDashboardComponents );
 
             int nOrder = 1;
 
             for ( IMyDashboardComponent dashboardComponent : listDashboardComponents )
             {
-                MyDashboardConfiguration config = new MyDashboardConfiguration(  );
-                config.setMyDashboardComponentId( dashboardComponent.getComponentId(  ) );
+                MyDashboardConfiguration config = new MyDashboardConfiguration( );
+                config.setMyDashboardComponentId( dashboardComponent.getComponentId( ) );
                 config.setIdConfig( strConfigId );
                 config.setOrder( nOrder++ );
                 config.setHideDashboard( false );
-                _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin(  ) );
+                _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin( ) );
                 listDashboardConfigs.add( config );
             }
         }
         else
         {
+            // We first check that every configuration is associated with an available dashboard component
+            List<MyDashboardConfiguration> listConfigToRemove = new ArrayList<MyDashboardConfiguration>( );
+            for ( MyDashboardConfiguration config : listDashboardConfigs )
+            {
+                boolean bFound = false;
+                for ( IMyDashboardComponent component : listDashboardComponents )
+                {
+                    if ( component.getComponentId( ).equals( config.getMyDashboardComponentId( ) ) )
+                    {
+                        bFound = true;
+                        break;
+                    }
+                }
+                // If the associated dashboard was not found, we remove the configuration
+                if ( !bFound )
+                {
+                    listConfigToRemove.add( config );
+                }
+            }
+            if ( listConfigToRemove.size( ) > 0 )
+            {
+                for ( MyDashboardConfiguration config : listConfigToRemove )
+                {
+                    listDashboardConfigs.remove( config );
+                    _myDashboardComponentDAO.removeByConfigIdAndDashboardId( config.getIdConfig( ),
+                            config.getMyDashboardComponentId( ), MyDashboardPlugin.getPlugin( ) );
+                }
+                Collections.sort( listDashboardConfigs );
+                int nOrder = 1;
+                for ( MyDashboardConfiguration config : listDashboardConfigs )
+                {
+                    if ( config.getOrder( ) != nOrder )
+                    {
+                        config.setOrder( nOrder );
+                        _myDashboardComponentDAO.updateConfiguration( config, MyDashboardPlugin.getPlugin( ) );
+                    }
+                    nOrder++;
+                }
+            }
+
+            // We now check that every component has a configuration
+            List<MyDashboardConfiguration> listConfigCreated = new ArrayList<MyDashboardConfiguration>( );
+            for ( IMyDashboardComponent component : listDashboardComponents )
+            {
+                boolean bFound = false;
+                for ( MyDashboardConfiguration config : listDashboardConfigs )
+                {
+                    if ( component.getComponentId( ).equals( config.getMyDashboardComponentId( ) ) )
+                    {
+                        bFound = true;
+                        break;
+                    }
+                }
+                // If the component was not found, we create it
+                if ( !bFound )
+                {
+                    MyDashboardConfiguration config = new MyDashboardConfiguration( );
+                    config.setMyDashboardComponentId( component.getComponentId( ) );
+                    config.setIdConfig( strConfigId );
+                    config.setOrder( listDashboardConfigs.size( ) + listConfigCreated.size( ) + 1 );
+                    config.setHideDashboard( false );
+                    _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin( ) );
+                    listConfigCreated.add( config );
+                }
+            }
+            if ( listConfigCreated.size( ) > 0 )
+            {
+                listDashboardConfigs.addAll( listConfigCreated );
+            }
             Collections.sort( listDashboardConfigs );
         }
 
@@ -192,7 +262,7 @@ public final class MyDashboardService
      */
     public List<IMyDashboardComponent> getDashboardComponentListFromUser( LuteceUser user )
     {
-        List<IMyDashboardComponent> listComponents = getMyDashboardListFromSession(  );
+        List<IMyDashboardComponent> listComponents = getMyDashboardListFromSession( );
 
         if ( listComponents != null )
         {
@@ -203,15 +273,15 @@ public final class MyDashboardService
         List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
 
         listComponents = getMyDashboardComponentsList( user );
-        listComponentsSorted = new ArrayList<IMyDashboardComponent>( listComponents.size(  ) );
+        listComponentsSorted = new ArrayList<IMyDashboardComponent>( listComponents.size( ) );
 
         for ( MyDashboardConfiguration config : listUserConfig )
         {
             for ( IMyDashboardComponent component : listComponents )
             {
-                if ( StringUtils.equals( config.getMyDashboardComponentId(  ), component.getComponentId(  ) ) )
+                if ( StringUtils.equals( config.getMyDashboardComponentId( ), component.getComponentId( ) ) )
                 {
-                    if ( !config.getHideDashboard(  ) )
+                    if ( !config.getHideDashboard( ) )
                     {
                         listComponentsSorted.add( component );
                     }
@@ -223,24 +293,24 @@ public final class MyDashboardService
             }
         }
 
-        if ( listComponents.size(  ) > 0 )
+        if ( listComponents.size( ) > 0 )
         {
-            AppLogService.error( 
-                "MyDashboard : dashboard(s) found without user configuration - will proceed to the creation of the configuration" );
+            AppLogService
+                    .error( "MyDashboard : dashboard(s) found without user configuration - will proceed to the creation of the configuration" );
             Collections.sort( listComponents );
 
-            int nLastUsedOrder = ( listUserConfig.size(  ) > 0 )
-                ? ( listUserConfig.get( listUserConfig.size(  ) - 1 ).getOrder(  ) + 1 ) : 1;
+            int nLastUsedOrder = ( listUserConfig.size( ) > 0 ) ? ( listUserConfig.get( listUserConfig.size( ) - 1 )
+                    .getOrder( ) + 1 ) : 1;
             String strConfigId = getUserConfigId( user );
 
             for ( IMyDashboardComponent component : listComponents )
             {
-                MyDashboardConfiguration config = new MyDashboardConfiguration(  );
-                config.setMyDashboardComponentId( component.getComponentId(  ) );
+                MyDashboardConfiguration config = new MyDashboardConfiguration( );
+                config.setMyDashboardComponentId( component.getComponentId( ) );
                 config.setIdConfig( strConfigId );
                 config.setOrder( nLastUsedOrder++ );
                 config.setHideDashboard( false );
-                _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin(  ) );
+                _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin( ) );
                 listUserConfig.add( config );
             }
 
@@ -260,7 +330,7 @@ public final class MyDashboardService
      */
     public void deleteConfigByUser( LuteceUser user )
     {
-        _myDashboardComponentDAO.removeByConfigId( getUserConfigId( user ), MyDashboardPlugin.getPlugin(  ) );
+        _myDashboardComponentDAO.removeByConfigId( getUserConfigId( user ), MyDashboardPlugin.getPlugin( ) );
         saveMyDashboardConfigListInSession( null );
     }
 
@@ -272,7 +342,7 @@ public final class MyDashboardService
      */
     public void updateConfig( MyDashboardConfiguration myDashboardsConfig, boolean bCleanCache )
     {
-        _myDashboardComponentDAO.updateConfiguration( myDashboardsConfig, MyDashboardPlugin.getPlugin(  ) );
+        _myDashboardComponentDAO.updateConfiguration( myDashboardsConfig, MyDashboardPlugin.getPlugin( ) );
 
         if ( bCleanCache )
         {
@@ -288,7 +358,7 @@ public final class MyDashboardService
     {
         for ( MyDashboardConfiguration config : listMyDashboardsConfig )
         {
-            _myDashboardComponentDAO.updateConfiguration( config, MyDashboardPlugin.getPlugin(  ) );
+            _myDashboardComponentDAO.updateConfiguration( config, MyDashboardPlugin.getPlugin( ) );
         }
 
         saveMyDashboardConfigListInSession( listMyDashboardsConfig );
@@ -302,10 +372,10 @@ public final class MyDashboardService
      */
     private void saveMyDashboardListInSession( List<IMyDashboardComponent> listMyDashboards )
     {
-        if ( LocalVariables.getRequest(  ) != null )
+        if ( LocalVariables.getRequest( ) != null )
         {
-            HttpServletRequest request = LocalVariables.getRequest(  );
-            request.getSession(  ).setAttribute( SESSION_LIST_DASHBOARD, listMyDashboards );
+            HttpServletRequest request = LocalVariables.getRequest( );
+            request.getSession( ).setAttribute( SESSION_LIST_DASHBOARD, listMyDashboards );
         }
     }
 
@@ -315,13 +385,13 @@ public final class MyDashboardService
      *         context, or if there is no dashboard list saved in session,
      *         return null.
      */
-    private List<IMyDashboardComponent> getMyDashboardListFromSession(  )
+    private List<IMyDashboardComponent> getMyDashboardListFromSession( )
     {
-        if ( LocalVariables.getRequest(  ) != null )
+        if ( LocalVariables.getRequest( ) != null )
         {
-            HttpServletRequest request = LocalVariables.getRequest(  );
+            HttpServletRequest request = LocalVariables.getRequest( );
 
-            return (List<IMyDashboardComponent>) request.getSession(  ).getAttribute( SESSION_LIST_DASHBOARD );
+            return (List<IMyDashboardComponent>) request.getSession( ).getAttribute( SESSION_LIST_DASHBOARD );
         }
 
         return null;
@@ -334,10 +404,10 @@ public final class MyDashboardService
      */
     private void saveMyDashboardConfigListInSession( List<MyDashboardConfiguration> listMyDashboardsConfig )
     {
-        if ( LocalVariables.getRequest(  ) != null )
+        if ( LocalVariables.getRequest( ) != null )
         {
-            HttpServletRequest request = LocalVariables.getRequest(  );
-            request.getSession(  ).setAttribute( SESSION_LIST_DASHBOARD_CONFIG, listMyDashboardsConfig );
+            HttpServletRequest request = LocalVariables.getRequest( );
+            request.getSession( ).setAttribute( SESSION_LIST_DASHBOARD_CONFIG, listMyDashboardsConfig );
         }
     }
 
@@ -347,13 +417,13 @@ public final class MyDashboardService
      *         not a request context, or if there is no dashboard configuration
      *         list saved in session, return null.
      */
-    private List<MyDashboardConfiguration> getMyDashboardConfigListFromSession(  )
+    private List<MyDashboardConfiguration> getMyDashboardConfigListFromSession( )
     {
-        if ( LocalVariables.getRequest(  ) != null )
+        if ( LocalVariables.getRequest( ) != null )
         {
-            HttpServletRequest request = LocalVariables.getRequest(  );
+            HttpServletRequest request = LocalVariables.getRequest( );
 
-            return (List<MyDashboardConfiguration>) request.getSession(  ).getAttribute( SESSION_LIST_DASHBOARD_CONFIG );
+            return (List<MyDashboardConfiguration>) request.getSession( ).getAttribute( SESSION_LIST_DASHBOARD_CONFIG );
         }
 
         return null;

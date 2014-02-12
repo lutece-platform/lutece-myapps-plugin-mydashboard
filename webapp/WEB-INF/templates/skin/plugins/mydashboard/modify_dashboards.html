@@ -22,7 +22,7 @@
 					<#list listDashboardsConfig as dashboardConfiguration>
 						<tr>
 							<td>
-								${listComponentsDescription[dashboardConfiguration.myDashboardComponentId]}
+								${listComponentsDescription[dashboardConfiguration.myDashboardComponentId]!}
 							</td>
 							<td>
 								<input type="checkbox" name="${dashboardConfiguration.myDashboardComponentId}_display" <#if !dashboardConfiguration.hideDashboard>checked="checked"</#if> />
