@@ -42,7 +42,6 @@ import fr.paris.lutece.portal.business.portlet.Portlet;
  */
 public class MyDashboardPortletDAO implements IPortletInterfaceDAO
 {
-
     /**
      * {@inheritDoc}
      */
@@ -67,8 +66,9 @@ public class MyDashboardPortletDAO implements IPortletInterfaceDAO
     @Override
     public Portlet load( int nPortletId )
     {
-        MyDashboardPortlet myDashboardPortlet = new MyDashboardPortlet( );
+        MyDashboardPortlet myDashboardPortlet = new MyDashboardPortlet(  );
         myDashboardPortlet.setId( nPortletId );
+
         return myDashboardPortlet;
     }
 
@@ -80,5 +80,4 @@ public class MyDashboardPortletDAO implements IPortletInterfaceDAO
     {
         // Do nothing
     }
-
 }

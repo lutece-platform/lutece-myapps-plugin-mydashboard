@@ -56,9 +56,9 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
      * {@inheritDoc}
      */
     @Override
-    public String getNewConfigId( )
+    public String getNewConfigId(  )
     {
-        return UniqueIDGenerator.getNewId( );
+        return UniqueIDGenerator.getNewId(  );
     }
 
     /**
@@ -67,20 +67,23 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
     @Override
     public List<MyDashboardConfiguration> findByConfigId( String strConfigId, Plugin plugin )
     {
-        List<MyDashboardConfiguration> listConfig = new ArrayList<MyDashboardConfiguration>( );
+        List<MyDashboardConfiguration> listConfig = new ArrayList<MyDashboardConfiguration>(  );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_FIND_BY_CONFIG_ID, plugin );
         daoUtil.setString( 1, strConfigId );
-        daoUtil.executeQuery( );
-        while ( daoUtil.next( ) )
+        daoUtil.executeQuery(  );
+
+        while ( daoUtil.next(  ) )
         {
-            MyDashboardConfiguration config = new MyDashboardConfiguration( );
+            MyDashboardConfiguration config = new MyDashboardConfiguration(  );
             config.setMyDashboardComponentId( daoUtil.getString( 1 ) );
             config.setIdConfig( daoUtil.getString( 2 ) );
             config.setOrder( daoUtil.getInt( 3 ) );
             config.setHideDashboard( daoUtil.getBoolean( 4 ) );
             listConfig.add( config );
         }
-        daoUtil.free( );
+
+        daoUtil.free(  );
+
         return listConfig;
     }
 
@@ -91,12 +94,12 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
     public void updateConfiguration( MyDashboardConfiguration config, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE_CONFIGURATION, plugin );
-        daoUtil.setInt( 1, config.getOrder( ) );
-        daoUtil.setBoolean( 2, config.getHideDashboard( ) );
-        daoUtil.setString( 3, config.getMyDashboardComponentId( ) );
-        daoUtil.setString( 4, config.getIdConfig( ) );
-        daoUtil.executeUpdate( );
-        daoUtil.free( );
+        daoUtil.setInt( 1, config.getOrder(  ) );
+        daoUtil.setBoolean( 2, config.getHideDashboard(  ) );
+        daoUtil.setString( 3, config.getMyDashboardComponentId(  ) );
+        daoUtil.setString( 4, config.getIdConfig(  ) );
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
     }
 
     /**
@@ -106,12 +109,12 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
     public void insertConfiguration( MyDashboardConfiguration config, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT_CONFIGURATION, plugin );
-        daoUtil.setString( 1, config.getMyDashboardComponentId( ) );
-        daoUtil.setString( 2, config.getIdConfig( ) );
-        daoUtil.setInt( 3, config.getOrder( ) );
-        daoUtil.setBoolean( 4, config.getHideDashboard( ) );
-        daoUtil.executeUpdate( );
-        daoUtil.free( );
+        daoUtil.setString( 1, config.getMyDashboardComponentId(  ) );
+        daoUtil.setString( 2, config.getIdConfig(  ) );
+        daoUtil.setInt( 3, config.getOrder(  ) );
+        daoUtil.setBoolean( 4, config.getHideDashboard(  ) );
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
     }
 
     /**
@@ -122,8 +125,8 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_REMOVE_BY_CONFIG_ID, plugin );
         daoUtil.setString( 1, strConfigId );
-        daoUtil.executeUpdate( );
-        daoUtil.free( );
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
     }
 
     /**
@@ -135,7 +138,7 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_REMOVE_BY_CONFIG_ID_AND_COMPONENT, plugin );
         daoUtil.setString( 1, strConfigId );
         daoUtil.setString( 2, strDashboardId );
-        daoUtil.executeUpdate( );
-        daoUtil.free( );
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
     }
 }

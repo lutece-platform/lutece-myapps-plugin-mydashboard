@@ -50,9 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MyDashboardComponentMyDashboard extends MyDashboardComponent
 {
     private static final String DASHBOARD_COMPONENT_ID = "mydashboard.myDashboardComponentMyDashboard";
-
     private static final String MESSAGE_COMPONENT_DESCRIPTION = "mydashboard.dashboardComponentMyDashboard.description";
-
     private static final String TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD = "skin/plugins/mydashboard/mydashboardcomponent/mydashboardcomponent_mydashboard.html";
 
     /**
@@ -61,17 +59,18 @@ public class MyDashboardComponentMyDashboard extends MyDashboardComponent
     @Override
     public String getDashboardData( HttpServletRequest request )
     {
-        Map<String, Object> model = new HashMap<String, Object>( );
+        Map<String, Object> model = new HashMap<String, Object>(  );
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD,
-                request.getLocale( ), model );
-        return template.getHtml( );
+                request.getLocale(  ), model );
+
+        return template.getHtml(  );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getComponentId( )
+    public String getComponentId(  )
     {
         return DASHBOARD_COMPONENT_ID;
     }

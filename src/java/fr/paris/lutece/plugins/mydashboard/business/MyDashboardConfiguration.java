@@ -41,7 +41,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public class MyDashboardConfiguration implements Comparable<MyDashboardConfiguration>
 {
-
     private int _nOrder;
     private String _strIdConfig;
     private String _strMyDashboardComponentId;
@@ -51,7 +50,7 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
      * Returns the Order
      * @return The Order
      */
-    public int getOrder( )
+    public int getOrder(  )
     {
         return _nOrder;
     }
@@ -69,7 +68,7 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
      * Get the id of the config of this dashboard configuration
      * @return the user name
      */
-    public String getIdConfig( )
+    public String getIdConfig(  )
     {
         return _strIdConfig;
     }
@@ -87,7 +86,7 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
      * Get the id of the dashboard component
      * @return The id of the dashboard component
      */
-    public String getMyDashboardComponentId( )
+    public String getMyDashboardComponentId(  )
     {
         return _strMyDashboardComponentId;
     }
@@ -106,7 +105,7 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
      * @return True if the dashboard should be hidden for this user, false
      *         otherwise
      */
-    public boolean getHideDashboard( )
+    public boolean getHideDashboard(  )
     {
         return _bHideDashboard;
     }
@@ -127,7 +126,7 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
     @Override
     public int compareTo( MyDashboardConfiguration o )
     {
-        return o != null ? this.getOrder( ) - o.getOrder( ) : 1;
+        return ( o != null ) ? ( this.getOrder(  ) - o.getOrder(  ) ) : 1;
     }
 
     /**
@@ -136,16 +135,17 @@ public class MyDashboardConfiguration implements Comparable<MyDashboardConfigura
     @Override
     public boolean equals( Object o )
     {
-        return o instanceof MyDashboardConfiguration ? StringUtils.equals( this.getMyDashboardComponentId( ),
-                ( (MyDashboardConfiguration) o ).getMyDashboardComponentId( ) ) : false;
+        return ( o instanceof MyDashboardConfiguration )
+        ? StringUtils.equals( this.getMyDashboardComponentId(  ),
+            ( (MyDashboardConfiguration) o ).getMyDashboardComponentId(  ) ) : false;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int hashCode( )
+    public int hashCode(  )
     {
-        return getMyDashboardComponentId( ) != null ? getMyDashboardComponentId( ).hashCode( ) : 0;
+        return ( getMyDashboardComponentId(  ) != null ) ? getMyDashboardComponentId(  ).hashCode(  ) : 0;
     }
 }

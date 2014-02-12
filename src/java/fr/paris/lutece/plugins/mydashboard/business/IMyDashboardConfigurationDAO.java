@@ -48,7 +48,7 @@ public interface IMyDashboardConfigurationDAO
      * are ensured to be unique.
      * @return The new id of the dashboard configuration
      */
-    String getNewConfigId( );
+    String getNewConfigId(  );
 
     /**
      * Get the list of MyDashboardConfiguration associated to a given

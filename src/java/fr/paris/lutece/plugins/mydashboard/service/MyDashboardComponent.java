@@ -33,8 +33,12 @@
  */
 package fr.paris.lutece.plugins.mydashboard.service;
 
+import fr.paris.lutece.portal.service.security.LuteceUser;
+
 import org.apache.commons.lang.ObjectUtils;
+
 import org.springframework.beans.factory.InitializingBean;
+
 import org.springframework.util.Assert;
 
 
@@ -49,13 +53,22 @@ public abstract class MyDashboardComponent implements IMyDashboardComponent, Ini
      * {@inheritDoc}
      */
     @Override
-    public int compareTo( IMyDashboardComponent o )
+    public boolean isAvailable( LuteceUser user )
     {
-        return o != null ? getComponentId( ).compareTo( o.getComponentId( ) ) : 1;
+        return true;
     }
 
     /**
-     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo( IMyDashboardComponent o )
+    {
+        return ( o != null ) ? getComponentId(  ).compareTo( o.getComponentId(  ) ) : 1;
+    }
+
+    /**
+     *
      * {@inheritDoc}
      */
     @Override
@@ -65,33 +78,34 @@ public abstract class MyDashboardComponent implements IMyDashboardComponent, Ini
         {
             IMyDashboardComponent other = (IMyDashboardComponent) obj;
 
-            return ObjectUtils.equals( this.getComponentId( ), other.getComponentId( ) );
+            return ObjectUtils.equals( this.getComponentId(  ), other.getComponentId(  ) );
         }
 
         return false;
     }
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
-    public int hashCode( )
+    public int hashCode(  )
     {
-        return ObjectUtils.hashCode( this.getComponentId( ) );
+        return ObjectUtils.hashCode( this.getComponentId(  ) );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void afterPropertiesSet( ) throws Exception
+    public void afterPropertiesSet(  ) throws Exception
     {
-        Assert.hasLength( getComponentId( ), "Dashboard components must have a non null id" );
-        if ( getComponentId( ).length( ) > MY_DASHBOARD_COMPONENT_ID_MAXIMUM_SIZE )
+        Assert.hasLength( getComponentId(  ), "Dashboard components must have a non null id" );
+
+        if ( getComponentId(  ).length(  ) > MY_DASHBOARD_COMPONENT_ID_MAXIMUM_SIZE )
         {
-            throw new IllegalArgumentException( "Dashboard components id must not be longer than 50 characters ("
-                    + getComponentId( ) + " has " + getComponentId( ).length( ) + ")" );
+            throw new IllegalArgumentException( "Dashboard components id must not be longer than 50 characters (" +
+                getComponentId(  ) + " has " + getComponentId(  ).length(  ) + ")" );
         }
     }
 }

@@ -40,9 +40,9 @@ import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.web.portlet.PortletJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -66,7 +66,7 @@ public class MyDashboardPortletJspBean extends PortletJspBean
 
         HtmlTemplate template = getCreateTemplate( strIdPage, strIdPortletType );
 
-        return template.getHtml( );
+        return template.getHtml(  );
     }
 
     /**
@@ -75,10 +75,10 @@ public class MyDashboardPortletJspBean extends PortletJspBean
     @Override
     public String doCreate( HttpServletRequest request )
     {
-        MyDashboardPortlet portlet = new MyDashboardPortlet( );
+        MyDashboardPortlet portlet = new MyDashboardPortlet(  );
         String strIdPage = request.getParameter( PARAMETER_PAGE_ID );
-        int nIdPage = StringUtils.isNotEmpty( strIdPage ) && StringUtils.isNumeric( strIdPage ) ? Integer
-                .parseInt( strIdPage ) : 1;
+        int nIdPage = ( StringUtils.isNotEmpty( strIdPage ) && StringUtils.isNumeric( strIdPage ) )
+            ? Integer.parseInt( strIdPage ) : 1;
 
         // get portlet common attributes
         String strErrorUrl = setPortletCommonData( request, portlet );
@@ -91,7 +91,7 @@ public class MyDashboardPortletJspBean extends PortletJspBean
         portlet.setPageId( nIdPage );
 
         //Portlet creation
-        MyDashboardPortletHome.getInstance( ).create( portlet );
+        MyDashboardPortletHome.getInstance(  ).create( portlet );
 
         //Displays the page with the new Portlet
         return getPageUrl( nIdPage );
@@ -109,7 +109,7 @@ public class MyDashboardPortletJspBean extends PortletJspBean
 
         HtmlTemplate template = getModifyTemplate( portlet );
 
-        return template.getHtml( );
+        return template.getHtml(  );
     }
 
     /**
@@ -121,8 +121,8 @@ public class MyDashboardPortletJspBean extends PortletJspBean
         // recovers portlet attributes
         String strPortletId = request.getParameter( PARAMETER_PORTLET_ID );
 
-        int nPortletId = StringUtils.isNotEmpty( strPortletId ) && StringUtils.isNumeric( strPortletId ) ? Integer
-                .parseInt( strPortletId ) : 1;
+        int nPortletId = ( StringUtils.isNotEmpty( strPortletId ) && StringUtils.isNumeric( strPortletId ) )
+            ? Integer.parseInt( strPortletId ) : 1;
 
         MyDashboardPortlet portlet = (MyDashboardPortlet) PortletHome.findByPrimaryKey( nPortletId );
 
@@ -134,10 +134,9 @@ public class MyDashboardPortletJspBean extends PortletJspBean
             return strErrorUrl;
         }
 
-        MyDashboardPortletHome.getInstance( ).update( portlet );
+        MyDashboardPortletHome.getInstance(  ).update( portlet );
 
         // displays the page withe the potlet updated
-        return getPageUrl( portlet.getPageId( ) );
+        return getPageUrl( portlet.getPageId(  ) );
     }
-
 }

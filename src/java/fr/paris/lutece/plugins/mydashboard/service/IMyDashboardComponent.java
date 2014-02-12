@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.mydashboard.service;
 
+import fr.paris.lutece.portal.service.security.LuteceUser;
+
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +59,7 @@ public interface IMyDashboardComponent extends Comparable<IMyDashboardComponent>
      * characters long.
      * @return The id of the dashboard component
      */
-    String getComponentId( );
+    String getComponentId(  );
 
     /**
      * Get the description of the component
@@ -65,4 +67,12 @@ public interface IMyDashboardComponent extends Comparable<IMyDashboardComponent>
      * @return The description of the component
      */
     String getComponentDescription( Locale locale );
+
+    /**
+     * Check if the dashboard is available or not for a given Lutece User
+     * @param user The user
+     * @return True if the dashboard is available for the given user, false
+     *         otherwise
+     */
+    boolean isAvailable( LuteceUser user );
 }

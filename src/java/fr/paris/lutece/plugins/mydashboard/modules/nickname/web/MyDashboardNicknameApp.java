@@ -32,15 +32,15 @@ cumentation and/or other materials
  */
 package fr.paris.lutece.plugins.mydashboard.modules.nickname.web;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-
 import fr.paris.lutece.plugins.mydashboard.web.MyDashboardApp;
 import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.util.AppPathService;
+
+import org.apache.commons.lang.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -49,7 +49,6 @@ import fr.paris.lutece.portal.service.util.AppPathService;
 public class MyDashboardNicknameApp
 {
     private static final String PARAMETER_NICKNAME = "nickname";
-
     private static final String HTML_PARAMETER_REFERER = "referer";
 
     /**
@@ -59,12 +58,13 @@ public class MyDashboardNicknameApp
      */
     public static String doChangeUserNickname( HttpServletRequest request )
     {
-        LuteceUser user = SecurityService.isAuthenticationEnable( ) ? SecurityService.getInstance( ).getRegisteredUser(
-                request ) : null;
+        LuteceUser user = SecurityService.isAuthenticationEnable(  )
+            ? SecurityService.getInstance(  ).getRegisteredUser( request ) : null;
+
         if ( user != null )
         {
             String strNickname = request.getParameter( PARAMETER_NICKNAME );
-            UserPreferencesService.instance( ).setNickname( user.getName( ), strNickname );
+            UserPreferencesService.instance(  ).setNickname( user.getName(  ), strNickname );
         }
 
         String strReferer = request.getHeader( HTML_PARAMETER_REFERER );

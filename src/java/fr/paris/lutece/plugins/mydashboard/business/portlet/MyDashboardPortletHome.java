@@ -51,15 +51,16 @@ public class MyDashboardPortletHome extends PortletHome
      * Get the instance of the home
      * @return The instance of the hom
      */
-    public static MyDashboardPortletHome getInstance( )
+    public static MyDashboardPortletHome getInstance(  )
     {
         if ( _instance == null )
         {
             synchronized ( MyDashboardPortletHome.class )
             {
-                _instance = new MyDashboardPortletHome( );
+                _instance = new MyDashboardPortletHome(  );
             }
         }
+
         return _instance;
     }
 
@@ -67,7 +68,7 @@ public class MyDashboardPortletHome extends PortletHome
      * {@inheritDoc}
      */
     @Override
-    public IPortletInterfaceDAO getDAO( )
+    public IPortletInterfaceDAO getDAO(  )
     {
         return _dao;
     }
@@ -76,12 +77,11 @@ public class MyDashboardPortletHome extends PortletHome
      * {@inheritDoc}
      */
     @Override
-    public String getPortletTypeId( )
+    public String getPortletTypeId(  )
     {
-        String strCurrentClassName = this.getClass( ).getName( );
+        String strCurrentClassName = this.getClass(  ).getName(  );
         String strPortletTypeId = PortletTypeHome.getPortletTypeId( strCurrentClassName );
 
         return strPortletTypeId;
     }
-
 }

@@ -51,7 +51,7 @@ public class MyDashboardPlugin extends Plugin
      * {@inheritDoc}
      */
     @Override
-    public void init( )
+    public void init(  )
     {
         // Nothing to do
     }
@@ -60,9 +60,8 @@ public class MyDashboardPlugin extends Plugin
      * Get the MyDashboard plugin
      * @return The MyDashboard plugin
      */
-    public static Plugin getPlugin( )
+    public static Plugin getPlugin(  )
     {
         return PluginService.getPlugin( PLUGIN_NAME );
     }
-
 }
