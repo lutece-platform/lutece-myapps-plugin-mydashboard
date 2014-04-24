@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2013, Mairie de Paris
+ * Copyright (c) 2002-2014, Mairie de Paris
  * All rights reservimport fr.paris.lutece.plugins.mydashboard.web.MyDashboardApp;
 import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
