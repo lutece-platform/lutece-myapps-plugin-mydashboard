@@ -35,13 +35,13 @@
             <portlet-type-id>MYDASHBOARD_PORTLET</portlet-type-id>
             <portlet-type-name>mydashboard.portlet.myDashboardPortlet.name</portlet-type-name>
             <portlet-creation-url>plugins/mydashboard/GetCreateMyDashboardPortlet.jsp</portlet-creation-url>
-            <portlet-update-url >plugins/mydashboard/GetModifyMyDashboardPortlet.jsp</portlet-update-url>
+            <portlet-update-url>plugins/mydashboard/GetModifyMyDashboardPortlet.jsp</portlet-update-url>
             <portlet-create-action-url>plugins/mydashboard/DoCreateMyDashboardPortlet.jsp</portlet-create-action-url>
             <portlet-modify-action-url>plugins/mydashboard/DoModifyMyDashboardPortlet.jsp</portlet-modify-action-url>
             <portlet-create-script-template>/admin/portlet/script_create_portlet.html</portlet-create-script-template>
             <portlet-modify-script-template>/admin/portlet/script_modify_portlet.html</portlet-modify-script-template>
-            <portlet-create-specific-template />
-            <portlet-modify-specific-template />
+            <portlet-create-specific-template/>
+            <portlet-modify-specific-template/>
             <portlet-create-specific-form-template/>
             <portlet-modify-specific-form-template/>
         </portlet>
