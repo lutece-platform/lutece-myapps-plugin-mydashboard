@@ -61,7 +61,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * My Dashboard application
  */
-@Controller( xpageName = "mydashboard", pageTitleI18nKey = "mydashboard.getDashboard.pageTitle" )
+@Controller( xpageName = "mydashboard", pageTitleI18nKey = "mydashboard.getDashboard.pageTitle", pagePathI18nKey = "mydashboard.getDashboard.pagePath" )
 public class MyDashboardApp extends MVCApplication
 {
     private static final long serialVersionUID = 5462159859477351128L;
