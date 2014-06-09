@@ -9,7 +9,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>plugin-mydashboard</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>Lutece mydashboard plugin</name>
 
     <repositories>
@@ -45,8 +45,8 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-mydashboard</connection>
-        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-mydashboard</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/cms/plugin-mydashboard</url>
+        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/tags/plugin-mydashboard-1.0.1</connection>
+        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/tags/plugin-mydashboard-1.0.1</developerConnection>
+        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/tags/plugin-mydashboard-1.0.1</url>
     </scm>
 </project>
