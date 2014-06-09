@@ -1,7 +1,9 @@
 <form class="form-inline" method="post" action="jsp/site/plugins/mydashboard/modules/nickname/DoChangeNickname.jsp">
+    <fieldset>  
+        <legend>#i18n{module.mydashboard.nickname.dashboardComponent.nickname.labelNickname}</legend>
 	<div class="control-group">
-		<label for="nickname">#i18n{module.mydashboard.nickname.dashboardComponent.nickname.labelNickname} :</label>
 		<input type="text" id="nickname" name="nickname" value="${nickname!}">
 		<button type="submit" class="btn btn-small btn-primary"><i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{portal.util.labelValidate}</button>	
 	</div>
+    </fieldset>
 </form>
