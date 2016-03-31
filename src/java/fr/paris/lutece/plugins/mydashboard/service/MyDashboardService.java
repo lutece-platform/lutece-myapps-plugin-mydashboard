@@ -33,14 +33,6 @@
  */
 package fr.paris.lutece.plugins.mydashboard.service;
 
-import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO;
-import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
-import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
-import fr.paris.lutece.portal.service.util.AppLogService;
-import fr.paris.lutece.portal.web.LocalVariables;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +40,18 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+
+import fr.paris.lutece.plugins.mydashboard.business.DashboardAssociation;
+import fr.paris.lutece.plugins.mydashboard.business.DashboardAssociationHome;
+import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO;
+import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
+import fr.paris.lutece.plugins.mydashboard.business.Panel;
+import fr.paris.lutece.plugins.mydashboard.business.PanelHome;
+import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
+import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.web.LocalVariables;
 
 
 /**
@@ -85,21 +89,61 @@ public final class MyDashboardService
      */
     public List<IMyDashboardComponent> getMyDashboardComponentsList( LuteceUser user )
     {
-        List<IMyDashboardComponent> listDashboardComponents = SpringContextService
-                .getBeansOfType( IMyDashboardComponent.class );
-        List<IMyDashboardComponent> listDashboardComponentsFiltered = new ArrayList<IMyDashboardComponent>(
-                listDashboardComponents.size( ) );
 
-        for ( IMyDashboardComponent component : listDashboardComponents )
-        {
-            if ( component.isAvailable( user ) )
-            {
-                listDashboardComponentsFiltered.add( component );
-            }
-        }
+    	return getMyDashboardComponentsList(user, null);
+    }
+    
+    /**
+     * Get the list of MyDashboardComponent that are available for a given user
+     * @param user The user
+     * @param panel the panel
+     * @return The list of MyDashboard components
+     */
+    public List<IMyDashboardComponent> getMyDashboardComponentsList( LuteceUser user,Panel panel )
+    {
+        
+    	
+    	List<IMyDashboardComponent> listDashboardComponents = SpringContextService
+                .getBeansOfType( IMyDashboardComponent.class );
+        
+    	List<IMyDashboardComponent> listDashboardComponentsFiltered = new ArrayList<IMyDashboardComponent>(
+                listDashboardComponents.size( ) );
+    	
+    	
+    	if(panel!=null)
+    	{
+    		
+    		
+    		List<DashboardAssociation> listDashboardAssociations=DashboardAssociationHome.getDashboardAssociationsListByIdPanel(panel.getId());
+    		for(DashboardAssociation dashboardAssociation:listDashboardAssociations)
+    		{
+    			for ( IMyDashboardComponent component : listDashboardComponents )
+	 	        {
+	 	        
+	    			if ( dashboardAssociation.getIdDashboard().equals(component.getComponentId()) && component.isAvailable( user ) )
+	 	            {
+	 	                listDashboardComponentsFiltered.add( component );
+	 	                break;
+	 	            }
+	 	        }
+    		}
+    	}
+    	else
+    	{
+    	
+
+	        for ( IMyDashboardComponent component : listDashboardComponents )
+	        {
+	            if ( component.isAvailable( user ) )
+	            {
+	                listDashboardComponentsFiltered.add( component );
+	            }
+	        }
+    	}
 
         return listDashboardComponentsFiltered;
     }
+
 
     /**
      * Get the id of the dashboard configuration associated with a user
@@ -251,6 +295,27 @@ public final class MyDashboardService
 
         return listDashboardConfigs;
     }
+    
+    
+    public boolean isPanelEnabled()
+    {
+    	return DashboardAssociationHome.getCountDashboardAssociation()>0;
+    }
+    
+    
+    /**
+     * Get the list of dash boards components associated with a given
+     * configuration id.
+     * The list is sorted with the order of each component in the configuration,
+     * and contains only enabled and displayed components
+     * @param user The user to get the dash board components of
+     * @return The list of dash boards components
+     */
+    public List<IMyDashboardComponent> getDashboardComponentListFromUser( LuteceUser user)
+    {
+
+    	return getDashboardComponentListFromUser(user, null);
+    }
 
     /**
      * Get the list of dash boards components associated with a given
@@ -260,9 +325,9 @@ public final class MyDashboardService
      * @param user The user to get the dash board components of
      * @return The list of dash boards components
      */
-    public List<IMyDashboardComponent> getDashboardComponentListFromUser( LuteceUser user )
+    public List<IMyDashboardComponent> getDashboardComponentListFromUser( LuteceUser user,Panel panel )
     {
-        List<IMyDashboardComponent> listComponents = getMyDashboardListFromSession( );
+        List<IMyDashboardComponent> listComponents = getMyDashboardListFromSession( panel);
 
         if ( listComponents != null )
         {
@@ -272,7 +337,7 @@ public final class MyDashboardService
         List<IMyDashboardComponent> listComponentsSorted;
         List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
 
-        listComponents = getMyDashboardComponentsList( user );
+        listComponents = getMyDashboardComponentsList( user,panel );
         listComponentsSorted = new ArrayList<IMyDashboardComponent>( listComponents.size( ) );
 
         for ( MyDashboardConfiguration config : listUserConfig )
@@ -318,7 +383,7 @@ public final class MyDashboardService
             listComponentsSorted.addAll( listComponents );
         }
 
-        saveMyDashboardListInSession( listComponentsSorted );
+        saveMyDashboardListInSession( listComponentsSorted,panel );
 
         return listComponentsSorted;
     }
@@ -362,7 +427,14 @@ public final class MyDashboardService
         }
 
         saveMyDashboardConfigListInSession( listMyDashboardsConfig );
-        saveMyDashboardListInSession( null );
+        saveMyDashboardListInSession( null ,null);
+        if(isPanelEnabled())
+        {
+        	for(Panel panel:PanelHome.getPanelsList())
+        	{
+        		saveMyDashboardListInSession( null ,panel);
+        	}
+        }
     }
 
     /**
@@ -370,12 +442,16 @@ public final class MyDashboardService
      * then do nothing
      * @param listMyDashboards The list of dashboards to save
      */
-    private void saveMyDashboardListInSession( List<IMyDashboardComponent> listMyDashboards )
+    private void saveMyDashboardListInSession( List<IMyDashboardComponent> listMyDashboards,Panel panel )
     {
         if ( LocalVariables.getRequest( ) != null )
         {
-            HttpServletRequest request = LocalVariables.getRequest( );
-            request.getSession( ).setAttribute( SESSION_LIST_DASHBOARD, listMyDashboards );
+        	
+        	
+        		
+        	HttpServletRequest request = LocalVariables.getRequest( );
+            request.getSession( ).setAttribute(panel != null? SESSION_LIST_DASHBOARD+panel.getCode():SESSION_LIST_DASHBOARD, listMyDashboards );
+            
         }
     }
 
@@ -385,13 +461,13 @@ public final class MyDashboardService
      *         context, or if there is no dashboard list saved in session,
      *         return null.
      */
-    private List<IMyDashboardComponent> getMyDashboardListFromSession( )
+    private List<IMyDashboardComponent> getMyDashboardListFromSession( Panel panel)
     {
         if ( LocalVariables.getRequest( ) != null )
         {
             HttpServletRequest request = LocalVariables.getRequest( );
 
-            return (List<IMyDashboardComponent>) request.getSession( ).getAttribute( SESSION_LIST_DASHBOARD );
+            return (List<IMyDashboardComponent>) request.getSession( ).getAttribute( panel != null? SESSION_LIST_DASHBOARD+panel.getCode():SESSION_LIST_DASHBOARD );
         }
 
         return null;

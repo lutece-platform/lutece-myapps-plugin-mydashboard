@@ -1,0 +1,15 @@
+<#include "managemydashboardpanel_tabs.html" />
+<@tabs tab="panel" />
+
+<@rowBoxHeader i18nTitleKey="mydashboard.create_panel.title">
+    <form class="form-horizontal" method="post" name="create_panel" action="jsp/admin/plugins/mydashboard/ManagePanels.jsp">
+        <@messages errors=errors />
+        <input type="hidden" id="id" name="id"/>
+        
+        <@fieldInputText i18nLabelKey="mydashboard.create_panel.labelCode" inputName="code" mandatory=true value="${panel.code!''}" i18nHelpBlockKey="mydashboard.create_panel.labelCode.help" />
+        <@fieldInputText i18nLabelKey="mydashboard.create_panel.labelTitle" inputName="title" mandatory=true value="${panel.title!''}" i18nHelpBlockKey="mydashboard.create_panel.labelTitle.help" />
+        <@fieldInputText i18nLabelKey="mydashboard.create_panel.labelDescription" inputName="description"  value="${panel.description!''}" i18nHelpBlockKey="mydashboard.create_panel.labelDescription.help" />
+        <@actionButtons button1Name="action_createPanel" button2Name="view_managePanels"/>
+    </form>
+</@rowBoxHeader>
+

@@ -16,4 +16,6 @@
 	<bean id="mydashboard.myDashboardPortletDAO" class="fr.paris.lutece.plugins.mydashboard.business.portlet.MyDashboardPortletDAO" />
 	
 	<bean id="mydashboard.myDashboardComponentMyDashboard" class="fr.paris.lutece.plugins.mydashboard.service.MyDashboardComponentMyDashboard" scope="singleton" />
+	<bean id="mydashboard.panelDAO" class="fr.paris.lutece.plugins.mydashboard.business.PanelDAO" />  
+    <bean id="mydashboard.dashboardAssociationDAO" class="fr.paris.lutece.plugins.mydashboard.business.DashboardAssociationDAO" />  
 </beans>
