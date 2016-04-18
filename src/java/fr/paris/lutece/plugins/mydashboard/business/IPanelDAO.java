@@ -102,4 +102,11 @@ public interface IPanelDAO
      * @return The referenceList which contains the data of all the panel objects
      */
     ReferenceList selectPanelsReferenceList( Plugin plugin );
+    
+    /**
+     * Load default Panel
+     * @param plugin the Plugin
+     * @return The instance of the panel
+     */
+    Panel loadDefaultPanel( Plugin plugin );
 }

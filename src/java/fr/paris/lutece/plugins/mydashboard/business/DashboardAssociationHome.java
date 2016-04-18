@@ -40,6 +40,8 @@ import fr.paris.lutece.util.ReferenceList;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 /**
  * This class provides instances management methods (create, find, ...) for DashboardAssociation objects
  */
@@ -63,6 +65,17 @@ public final class DashboardAssociationHome
      */
     public static DashboardAssociation create( DashboardAssociation dashboardAssociation )
     {
+    	
+    	int nOrder=1;
+    	List<DashboardAssociation> listDashboardAssociations=getDashboardAssociationsListByIdPanel(dashboardAssociation.getIdPanel());
+        
+    	if(!CollectionUtils.isEmpty( listDashboardAssociations ) )
+    	{
+    		nOrder=listDashboardAssociations.get(0).getPosition()+1;
+    	}
+    	
+    	dashboardAssociation.setPosition(nOrder);
+    	
         _dao.insert( dashboardAssociation, _plugin );
 
         return dashboardAssociation;
@@ -118,7 +131,7 @@ public final class DashboardAssociationHome
     }
     
     /**
-     * Load the data of all the dashboardAssociation objects and returns them as a list
+     * Load the data of all the dashboardAssociation objects asociated to a panel and returns them as a list
      * @param nIdPanel the panel id
      * @return the list which contains the data of all the dashboardAssociation objects
      */

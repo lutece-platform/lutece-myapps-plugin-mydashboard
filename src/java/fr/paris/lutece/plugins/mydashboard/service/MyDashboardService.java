@@ -36,6 +36,7 @@ package fr.paris.lutece.plugins.mydashboard.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,6 +53,7 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.web.LocalVariables;
+import fr.paris.lutece.util.ReferenceList;
 
 
 /**
@@ -91,6 +93,36 @@ public final class MyDashboardService
     {
 
     	return getMyDashboardComponentsList(user, null);
+    }
+    
+    /**
+     * get ReferenceList containing all Dashboard components 
+     * @return a ReferenceList containing All Dashboard components 
+     */
+    public ReferenceList getMyDashboardComponentsRefList( Locale locale )
+    {
+    	
+    	
+    	ReferenceList referenceList=new ReferenceList();
+    	
+    	List<IMyDashboardComponent> listDashboardComponents = SpringContextService
+                .getBeansOfType( IMyDashboardComponent.class );
+    	
+    	if(listDashboardComponents!=null)
+    	{
+    		
+    		for(IMyDashboardComponent dashboardComponent:listDashboardComponents)
+    		{
+    		
+    			referenceList.addItem(dashboardComponent.getComponentId(), dashboardComponent.getComponentDescription(locale));
+    		}
+    	}
+    	
+    	
+    	return referenceList;
+    	
+    	
+    		
     }
     
     /**
@@ -319,10 +351,11 @@ public final class MyDashboardService
 
     /**
      * Get the list of dash boards components associated with a given
-     * configuration id.
+     * configuration id filtered by panel
      * The list is sorted with the order of each component in the configuration,
      * and contains only enabled and displayed components
      * @param user The user to get the dash board components of
+     * @param panel The panel
      * @return The list of dash boards components
      */
     public List<IMyDashboardComponent> getDashboardComponentListFromUser( LuteceUser user,Panel panel )

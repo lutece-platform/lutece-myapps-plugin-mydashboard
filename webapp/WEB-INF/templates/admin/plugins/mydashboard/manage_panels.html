@@ -1,12 +1,11 @@
-<#include "managemydashboardpanel_tabs.html" />
-<@tabs tab="panel" />
+
 
 <@rowBox>
     <@boxHeader i18nTitleKey="mydashboard.manage_panels.title">
         <@headerButtons>
 
         
-        <form class="form-inline pull-right" method="post" name="manage_panels" action="jsp/admin/plugins/mydashboard/ManagePanels.jsp">
+        <form class="form-inline pull-right" method="post" name="manage_panels" action="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp">
             <!-- Add pull-right to class1 -->
             <@actionButtons button1Name="view_createPanel" icon1="icon-plus icon-white" i18nValue1Key="mydashboard.manage_panels.buttonAdd" />
         </form>
@@ -22,29 +21,48 @@
             <input type="hidden" id="id" name="id"/>
             <th>#i18n{mydashboard.manage_panels.columnCode}</th>
             <th>#i18n{mydashboard.manage_panels.columnTitle}</th>
-            <th>#i18n{mydashboard.manage_panels.columnDescription}</th>
+            <th>#i18n{mydashboard.manage_panels.columnComponentList}</th>   
             <th>#i18n{portal.util.labelActions}</th>
         </tr>
         <@tableHeadBodySeparator />
             <#list panel_list as panel >
         <tr>
             <input type="hidden" id="id" name="id"/>
-            <td>
+           
+            <td>  
                 ${panel.code}
             </td>
             <td>
-                ${panel.title}
+                
+                ${panel.title}&#160;&#160;
+                 <#if panel.default>
+                     <span class="label label-success">
+                        <i class="glyphicon glyphicon-ok-sign"></i> #i18n{mydashboard.manage_panels.defaultLabel}
+                      </span>                    
+                 </#if>
             </td>
             <td>
-                ${panel.description}
+        <#if (map_panel_list_dashboard_component["${panel.id}"])??>
+            <#assign listDashboard = map_panel_list_dashboard_component["${panel.id}"] />
+            <#if listDashboard??>
+                <ul class="list-unstyled">
+                <#list listDashboard as component>
+                   <li>  ${(map_dashboard_component[component.idDashboard!])!}</li>
+                </#list>
+               </ul> 
+                
+            </#if>
+         </#if>   
+             
+                  
             </td>
         <td>
-            <a href="jsp/admin/plugins/mydashboard/ManagePanels.jsp?view=modifyPanel&id=${panel.id}"
+            <a href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&id=${panel.id}"
                class="btn btn-primary btn-sm" title="#i18n{portal.util.labelModify}">
                 <i class="fa fa-pencil"></i>
             </a>
 
-            <a href="jsp/admin/plugins/mydashboard/ManagePanels.jsp?action=confirmRemovePanel&id=${panel.id}"
+            <a href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=confirmRemovePanel&id=${panel.id}"
                class="btn btn-danger btn-sm" title="#i18n{portal.util.labelDelete}" >
                 <i class="fa fa-trash"></i>
             </a>

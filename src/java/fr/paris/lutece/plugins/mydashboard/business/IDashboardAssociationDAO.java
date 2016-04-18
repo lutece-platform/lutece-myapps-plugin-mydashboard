@@ -83,7 +83,7 @@ public interface IDashboardAssociationDAO
     List<DashboardAssociation> selectDashboardAssociationsList( Plugin plugin );
     
     /**
-     * Load the data of all the dashboardAssociation objects and returns them as a list
+     * Load the data of all the dashboardAssociation objects associated to a panel and returns them as a list
      * @param nIdPanel the panel Id
      * @param plugin the Plugin
      * @return The list which contains the data of all the dashboardAssociation objects

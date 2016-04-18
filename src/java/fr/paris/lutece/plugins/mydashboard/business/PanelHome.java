@@ -40,6 +40,8 @@ import fr.paris.lutece.util.ReferenceList;
 
 import java.util.List;
 
+import org.springframework.util.CollectionUtils;
+
 /**
  * This class provides instances management methods (create, find, ...) for Panel objects
  */
@@ -63,6 +65,17 @@ public final class PanelHome
      */
     public static Panel create( Panel panel )
     {
+    	
+    	 if(panel.isDefault())
+         {
+         	Panel defaultPanel 	=PanelHome.getDefaultPanel();
+         	if(defaultPanel !=null)
+         	{
+         		defaultPanel.setDefault(false);
+         	 	_dao.store(defaultPanel,_plugin);
+         	}
+        
+         }
         _dao.insert( panel, _plugin );
 
         return panel;
@@ -75,6 +88,17 @@ public final class PanelHome
      */
     public static Panel update( Panel panel )
     {
+    
+    	if(panel.isDefault() && !PanelHome.findByPrimaryKey(panel.getId()).isDefault())
+         {
+         	Panel defaultPanel 	=PanelHome.getDefaultPanel();
+         	if(defaultPanel !=null)
+         	{
+         		defaultPanel.setDefault(false);
+         		_dao.store(defaultPanel,_plugin);
+         	}
+         
+         }
         _dao.store( panel, _plugin );
 
         return panel;
@@ -86,6 +110,13 @@ public final class PanelHome
      */
     public static void remove( int nKey )
     {
+    	
+    	List<DashboardAssociation> listAssociation=DashboardAssociationHome.getDashboardAssociationsListByIdPanel(nKey);
+    	//Delete associations
+    	for(DashboardAssociation dashboardAssociation:listAssociation)
+    	{
+    		DashboardAssociationHome.remove(dashboardAssociation.getId());
+    	}
         _dao.delete( nKey, _plugin );
     }
 
@@ -142,14 +173,15 @@ public final class PanelHome
      */
     public static Panel getDefaultPanel( )
     {
-       Panel panel=null;
-       List<Panel> listPanel=getPanelsList();
-       if(listPanel!=null && listPanel.size()>0)
-       {
-    	   panel=listPanel.get(0);
-    	   
-       }
-       return panel;
+    	Panel defaultPanel= _dao.loadDefaultPanel(_plugin);
+    
+    	if(defaultPanel == null)
+    	{
+    		List<Panel> listPanel=getPanelsList();
+    		defaultPanel=!CollectionUtils.isEmpty(listPanel)?listPanel.get(0):null;
+    	}
+    	
+    	return defaultPanel;
     }
     
     

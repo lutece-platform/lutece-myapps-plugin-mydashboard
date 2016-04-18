@@ -49,6 +49,7 @@ public class Panel implements Serializable
     
     @NotEmpty( message = "#i18n{mydashboard.validation.panel.Code.notEmpty}" )
     @Size( max = 50 , message = "#i18n{mydashboard.validation.panel.Code.size}" ) 
+    @Pattern(regexp="^[\\S]*$",message ="#i18n{mydashboard.validation.panel.Code.notSpaceCharacter}")
     private String _strCode;
     
     @NotEmpty( message = "#i18n{mydashboard.validation.panel.Title.notEmpty}" )
@@ -56,6 +57,7 @@ public class Panel implements Serializable
     private String _strTitle;
     
     private String _strDescription;
+    private boolean _bDefault;
 
     /**
      * Returns the Id
@@ -128,4 +130,12 @@ public class Panel implements Serializable
     {
         _strDescription = strDescription;
     }
+
+	public boolean isDefault() {
+		return _bDefault;
+	}
+
+	public void setDefault(boolean _bDefault) {
+		this._bDefault = _bDefault;
+	}
 }

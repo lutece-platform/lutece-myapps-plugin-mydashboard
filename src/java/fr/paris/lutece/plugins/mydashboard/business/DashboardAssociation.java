@@ -33,8 +33,6 @@
  */ 
 package fr.paris.lutece.plugins.mydashboard.business;
 
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -49,7 +47,7 @@ public class DashboardAssociation implements Serializable
     
     private String _strIdDashboard;
     
-    private int _nIdPannel;
+    private int _nIdPanel;
     
     private int _nPosition;
 
@@ -93,18 +91,18 @@ public class DashboardAssociation implements Serializable
      * Returns the IdPannel
      * @return The IdPannel
      */
-    public int getIdPannel( )
+    public int getIdPanel( )
     {
-        return _nIdPannel;
+        return _nIdPanel;
     }
 
     /**
      * Sets the IdPannel
      * @param nIdPannel The IdPannel
      */ 
-    public void setIdPannel( int nIdPannel )
+    public void setIdPanel( int nIdPannel )
     {
-        _nIdPannel = nIdPannel;
+        _nIdPanel = nIdPannel;
     }
     
     /**

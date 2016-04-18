@@ -28,11 +28,11 @@
     <!-- Administration interface parameters -->
     <admin-features>
         <admin-feature>
-            <feature-id>MYDASHBOARD_MANAGEMENT</feature-id>
-            <feature-title>mydashboard.adminFeature.ManageMydashboard.name</feature-title>
-            <feature-description>mydashboard.adminFeature.ManageMydashboard.description</feature-description>
+            <feature-id>MYDASHBOARD_PANEL_MANAGEMENT</feature-id>
+            <feature-title>mydashboard.adminFeature.ManageMydashboardPanel.name</feature-title>
+            <feature-description>mydashboard.adminFeature.ManageMydashboardPanel.description</feature-description>
             <feature-level>0</feature-level>
-            <feature-url>jsp/admin/plugins/mydashboard/ManageDashboard.jsp</feature-url>
+            <feature-url>jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
       </admin-feature>
     </admin-features>    

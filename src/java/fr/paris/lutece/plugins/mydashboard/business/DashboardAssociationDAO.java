@@ -51,13 +51,13 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     
     private static final String SQL_QUERY_SELECT_COUNT_ALL = "SELECT count(id_dashboard) FROM mydashboard_dashboard_association";
     	
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_dashboard_association, id_dashboard, id_pannel, position FROM mydashboard_dashboard_association";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_dashboard_association, id_dashboard, id_panel, position FROM mydashboard_dashboard_association";
     
     private static final String SQL_QUERY_SELECT = SQL_QUERY_SELECTALL +" WHERE id_dashboard_association = ?";
-    private static final String SQL_QUERY_SELECT_BY_PANEL = SQL_QUERY_SELECTALL +" WHERE id_pannel = ? ORDER BY position DESC ";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO mydashboard_dashboard_association ( id_dashboard_association, id_dashboard, id_pannel, position ) VALUES ( ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT_BY_PANEL = SQL_QUERY_SELECTALL +" WHERE id_panel = ? ORDER BY position DESC ";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO mydashboard_dashboard_association ( id_dashboard_association, id_dashboard, id_panel, position ) VALUES ( ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM mydashboard_dashboard_association WHERE id_dashboard_association = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE mydashboard_dashboard_association SET id_dashboard_association = ?, id_dashboard = ?, id_pannel = ?, position = ? WHERE id_dashboard_association = ?";
+    private static final String SQL_QUERY_UPDATE = "UPDATE mydashboard_dashboard_association SET id_dashboard_association = ?, id_dashboard = ?, id_panel = ?, position = ? WHERE id_dashboard_association = ?";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_dashboard_association FROM mydashboard_dashboard_association";
 
     /**
@@ -92,7 +92,7 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
         
         daoUtil.setInt( nIndex++ , dashboardAssociation.getId( ) );
         daoUtil.setString( nIndex++ , dashboardAssociation.getIdDashboard( ) );
-        daoUtil.setInt( nIndex++ , dashboardAssociation.getIdPannel( ) );
+        daoUtil.setInt( nIndex++ , dashboardAssociation.getIdPanel( ) );
         daoUtil.setInt( nIndex++ , dashboardAssociation.getPosition( ) );
 
         daoUtil.executeUpdate( );
@@ -117,7 +117,7 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
             
             dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
             dashboardAssociation.setIdDashboard( daoUtil.getString(nIndex++) );
-            dashboardAssociation.setIdPannel( daoUtil.getInt( nIndex++ ) );
+            dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
             dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
         }
 
@@ -148,7 +148,7 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
         
         daoUtil.setInt( nIndex++ , dashboardAssociation.getId( ) );
         daoUtil.setString( nIndex++ , dashboardAssociation.getIdDashboard( ) );
-        daoUtil.setInt( nIndex++ , dashboardAssociation.getIdPannel( ) );
+        daoUtil.setInt( nIndex++ , dashboardAssociation.getIdPanel( ) );
         daoUtil.setInt( nIndex++ , dashboardAssociation.getPosition( ) );
         daoUtil.setInt( nIndex , dashboardAssociation.getId( ) );
 
@@ -173,7 +173,7 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
             
             dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
             dashboardAssociation.setIdDashboard( daoUtil.getString(nIndex++) );
-            dashboardAssociation.setIdPannel( daoUtil.getInt( nIndex++ ) );
+            dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
             dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
 
             dashboardAssociationList.add( dashboardAssociation );
@@ -200,7 +200,7 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
             
             dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
             dashboardAssociation.setIdDashboard( daoUtil.getString(nIndex++) );
-            dashboardAssociation.setIdPannel( daoUtil.getInt( nIndex++ ) );
+            dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
             dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
 
             dashboardAssociationList.add( dashboardAssociation );

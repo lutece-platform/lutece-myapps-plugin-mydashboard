@@ -49,13 +49,16 @@ public final class PanelDAO implements IPanelDAO
     // Constants
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_panel ) FROM mydashboard_panel";
    
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_panel, code, title, description FROM mydashboard_panel";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_panel, code, title, description,is_default FROM mydashboard_panel";
+    private static final String SQL_QUERY_ORDER_BY_TITLE= " ORDER BY title";
     
     private static final String SQL_QUERY_SELECT =  SQL_QUERY_SELECTALL +" WHERE id_panel = ?";
     private static final String SQL_QUERY_SELECT_BY_CODE =  SQL_QUERY_SELECTALL +" WHERE code = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO mydashboard_panel ( id_panel, code, title, description ) VALUES ( ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT_DEFAULT_PANEL =  SQL_QUERY_SELECTALL +" WHERE is_default = 1";
+    
+    private static final String SQL_QUERY_INSERT = "INSERT INTO mydashboard_panel ( id_panel, code, title, description,is_default ) VALUES ( ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM mydashboard_panel WHERE id_panel = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE mydashboard_panel SET id_panel = ?, code = ?, title = ?, description = ? WHERE id_panel = ?";
+    private static final String SQL_QUERY_UPDATE = "UPDATE mydashboard_panel SET id_panel = ?, code = ?, title = ?, description = ?, is_default = ? WHERE id_panel = ?";
      private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_panel FROM mydashboard_panel";
 
     /**
@@ -92,6 +95,7 @@ public final class PanelDAO implements IPanelDAO
         daoUtil.setString( nIndex++ , panel.getCode( ) );
         daoUtil.setString( nIndex++ , panel.getTitle( ) );
         daoUtil.setString( nIndex++ , panel.getDescription( ) );
+        daoUtil.setBoolean( nIndex++ , panel.isDefault() );
 
         daoUtil.executeUpdate( );
         daoUtil.free( );
@@ -117,6 +121,9 @@ public final class PanelDAO implements IPanelDAO
             panel.setCode( daoUtil.getString( nIndex++ ) );
             panel.setTitle( daoUtil.getString( nIndex++ ) );
             panel.setDescription( daoUtil.getString( nIndex++ ) );
+          	panel.setDefault(daoUtil.getBoolean( nIndex++ ));   
+      
+           
         }
 
         daoUtil.free( );
@@ -142,6 +149,7 @@ public final class PanelDAO implements IPanelDAO
             panel.setCode( daoUtil.getString( nIndex++ ) );
             panel.setTitle( daoUtil.getString( nIndex++ ) );
             panel.setDescription( daoUtil.getString( nIndex++ ) );
+          	panel.setDefault(daoUtil.getBoolean( nIndex++ ));
         }
 
         daoUtil.free( );
@@ -173,6 +181,7 @@ public final class PanelDAO implements IPanelDAO
         daoUtil.setString( nIndex++ , panel.getCode( ) );
         daoUtil.setString( nIndex++ , panel.getTitle( ) );
         daoUtil.setString( nIndex++ , panel.getDescription( ) );
+        daoUtil.setBoolean( nIndex++ , panel.isDefault() );
         daoUtil.setInt( nIndex , panel.getId( ) );
 
         daoUtil.executeUpdate( );
@@ -186,7 +195,7 @@ public final class PanelDAO implements IPanelDAO
     public List<Panel> selectPanelsList( Plugin plugin )
     {
         List<Panel> panelList = new ArrayList<>(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL + SQL_QUERY_ORDER_BY_TITLE, plugin );
         daoUtil.executeQuery(  );
 
         while ( daoUtil.next(  ) )
@@ -198,7 +207,7 @@ public final class PanelDAO implements IPanelDAO
             panel.setCode( daoUtil.getString( nIndex++ ) );
             panel.setTitle( daoUtil.getString( nIndex++ ) );
             panel.setDescription( daoUtil.getString( nIndex++ ) );
-
+            panel.setDefault(daoUtil.getBoolean( nIndex ));
             panelList.add( panel );
         }
 
@@ -242,5 +251,31 @@ public final class PanelDAO implements IPanelDAO
 
         daoUtil.free( );
         return panelList;
+    }
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public Panel loadDefaultPanel( Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_DEFAULT_PANEL, plugin );
+      
+        daoUtil.executeQuery( );
+        Panel panel = null;
+
+        if ( daoUtil.next( ) )
+        {
+            panel = new Panel();
+            int nIndex = 1;
+            
+            panel.setId( daoUtil.getInt( nIndex++ ) );
+            panel.setCode( daoUtil.getString( nIndex++ ) );
+            panel.setTitle( daoUtil.getString( nIndex++ ) );
+            panel.setDescription( daoUtil.getString( nIndex++ ) );
+          	panel.setDefault(daoUtil.getBoolean( nIndex++ ));
+        }
+
+        daoUtil.free( );
+        return panel;
     }
 }

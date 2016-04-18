@@ -4,9 +4,9 @@ INSERT INTO core_portlet_type (id_portlet_type,name,url_creation,url_update,home
 --
 -- Data for table core_admin_right
 --
-DELETE FROM core_admin_right WHERE id_right = 'MYDASHBOARD_MANAGEMENT';
+DELETE FROM core_admin_right WHERE id_right = 'MYDASHBOARD_PANEL_MANAGEMENT';
 INSERT INTO core_admin_right (id_right,name,level_right,admin_url,description,is_updatable,plugin_name,id_feature_group,icon_url,documentation_url, id_order ) VALUES 
-('MYDASHBOARD_MANAGEMENT','mydashboard.adminFeature.ManageMydashboard.name',1,'jsp/admin/plugins/mydashboard/ManageMyDashboard.jsp','mydashboard.adminFeature.ManageMydashboard.description',0,'mydashboard',NULL,NULL,NULL,4);
+('MYDASHBOARD_PANEL_MANAGEMENT','mydashboard.adminFeature.ManageMydashboardPanel.name',1,'jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp','mydashboard.adminFeature.ManageMydashboardPanel.description',0,'mydashboard',NULL,NULL,NULL,4);
 
 
 
