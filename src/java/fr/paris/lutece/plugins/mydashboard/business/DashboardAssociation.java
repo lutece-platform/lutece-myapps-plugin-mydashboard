@@ -30,32 +30,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
+ */
 package fr.paris.lutece.plugins.mydashboard.business;
 
 import java.io.Serializable;
 
+
 /**
  * This is the business class for the object DashboardAssociation
- */ 
+ */
 public class DashboardAssociation implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     // Variables declarations 
     private int _nId;
-    
     private String _strIdDashboard;
-    
     private int _nIdPanel;
-    
     private int _nPosition;
 
     /**
      * Returns the Id
      * @return The Id
      */
-    public int getId( )
+    public int getId(  )
     {
         return _nId;
     }
@@ -63,17 +61,17 @@ public class DashboardAssociation implements Serializable
     /**
      * Sets the Id
      * @param nId The Id
-     */ 
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the IdDashboard
      * @return The IdDashboard
      */
-    public String getIdDashboard( )
+    public String getIdDashboard(  )
     {
         return _strIdDashboard;
     }
@@ -81,17 +79,17 @@ public class DashboardAssociation implements Serializable
     /**
      * Sets the IdDashboard
      * @param nIdDashboard The IdDashboard
-     */ 
+     */
     public void setIdDashboard( String strIdDashboard )
     {
-    	_strIdDashboard = strIdDashboard;
+        _strIdDashboard = strIdDashboard;
     }
-    
+
     /**
      * Returns the IdPannel
      * @return The IdPannel
      */
-    public int getIdPanel( )
+    public int getIdPanel(  )
     {
         return _nIdPanel;
     }
@@ -99,17 +97,17 @@ public class DashboardAssociation implements Serializable
     /**
      * Sets the IdPannel
      * @param nIdPannel The IdPannel
-     */ 
+     */
     public void setIdPanel( int nIdPannel )
     {
         _nIdPanel = nIdPannel;
     }
-    
+
     /**
      * Returns the Position
      * @return The Position
      */
-    public int getPosition( )
+    public int getPosition(  )
     {
         return _nPosition;
     }
@@ -117,7 +115,7 @@ public class DashboardAssociation implements Serializable
     /**
      * Sets the Position
      * @param nPosition The Position
-     */ 
+     */
     public void setPosition( int nPosition )
     {
         _nPosition = nPosition;

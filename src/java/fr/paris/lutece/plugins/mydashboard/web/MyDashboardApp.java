@@ -33,16 +33,6 @@
  */
 package fr.paris.lutece.plugins.mydashboard.web;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-
 import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
 import fr.paris.lutece.plugins.mydashboard.business.Panel;
 import fr.paris.lutece.plugins.mydashboard.business.PanelHome;
@@ -58,6 +48,16 @@ import fr.paris.lutece.portal.util.mvc.xpage.MVCApplication;
 import fr.paris.lutece.portal.util.mvc.xpage.annotations.Controller;
 import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.util.url.UrlItem;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -77,10 +77,9 @@ public class MyDashboardApp extends MVCApplication
     private static final String MARK_LIST_COMPONENTS_DESCRIPTION = "listComponentsDescription";
     private static final String MARK_LIST_PANEL = "listPanel";
     private static final String MARK_PANEL_SELECTED = "panelSelected";
-    
     private static final String MARK_LOCALE = "locale";
     private static final String PARAMETER_BACK = "back";
-    private static final String PARAMETER_PANEL= "panel";
+    private static final String PARAMETER_PANEL = "panel";
     private static final String PARAMETER_SUFFIX_DISPLAY = "_display";
     private static final String PARAMETER_MOVE_UP = "moveUp";
     private static final String PARAMETER_DASHBOARD_COMPONENT_ID = "myDashboardComponentId";
@@ -110,30 +109,31 @@ public class MyDashboardApp extends MVCApplication
 
         Map<String, Object> model = new HashMap<String, Object>(  );
         List<IMyDashboardComponent> listDashboardComponents;
-        if(dashboardService.isPanelEnabled())
-        {	Panel panel=null;
-        	String strPanelCode=request.getParameter(PARAMETER_PANEL);
-        	if(!StringUtils.isEmpty(strPanelCode))
-        	{
-        		panel=PanelHome.findByCode(strPanelCode);
-        		
-        	}
-        	if(panel==null)
-        	{
-        		panel=PanelHome.getDefaultPanel();
-        	}
-   
-        	listDashboardComponents = dashboardService.getDashboardComponentListFromUser( luteceUser,panel );
-        	 model.put( MARK_LIST_PANEL, PanelHome.getPanelsList() );
-        	 model.put(MARK_PANEL_SELECTED, panel);
-       }
+
+        if ( dashboardService.isPanelEnabled(  ) )
+        {
+            Panel panel = null;
+            String strPanelCode = request.getParameter( PARAMETER_PANEL );
+
+            if ( !StringUtils.isEmpty( strPanelCode ) )
+            {
+                panel = PanelHome.findByCode( strPanelCode );
+            }
+
+            if ( panel == null )
+            {
+                panel = PanelHome.getDefaultPanel(  );
+            }
+
+            listDashboardComponents = dashboardService.getDashboardComponentListFromUser( luteceUser, panel );
+            model.put( MARK_LIST_PANEL, PanelHome.getPanelsList(  ) );
+            model.put( MARK_PANEL_SELECTED, panel );
+        }
         else
         {
-        	
-        	 listDashboardComponents = dashboardService.getDashboardComponentListFromUser( luteceUser );
-        		
+            listDashboardComponents = dashboardService.getDashboardComponentListFromUser( luteceUser );
         }
-        
+
         List<String> listDashboardContent = new ArrayList<String>( listDashboardComponents.size(  ) );
 
         for ( IMyDashboardComponent dashboardComponent : listDashboardComponents )

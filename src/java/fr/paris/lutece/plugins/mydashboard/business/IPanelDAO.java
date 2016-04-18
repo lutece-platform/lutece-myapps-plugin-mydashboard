@@ -31,12 +31,13 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.mydashboard.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.ReferenceList;
+
 import java.util.List;
+
 
 /**
  * IPanelDAO Interface
@@ -74,6 +75,7 @@ public interface IPanelDAO
      * @return The instance of the panel
      */
     Panel load( int nKey, Plugin plugin );
+
     /**
      * Load the data from the table
      * @param nKey The identifier of the panel
@@ -88,21 +90,21 @@ public interface IPanelDAO
      * @return The list which contains the data of all the panel objects
      */
     List<Panel> selectPanelsList( Plugin plugin );
-    
+
     /**
      * Load the id of all the panel objects and returns them as a list
      * @param plugin the Plugin
      * @return The list which contains the id of all the panel objects
      */
     List<Integer> selectIdPanelsList( Plugin plugin );
-    
+
     /**
      * Load the data of all the panel objects and returns them as a referenceList
      * @param plugin the Plugin
      * @return The referenceList which contains the data of all the panel objects
      */
     ReferenceList selectPanelsReferenceList( Plugin plugin );
-    
+
     /**
      * Load default Panel
      * @param plugin the Plugin

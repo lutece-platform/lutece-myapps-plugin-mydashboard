@@ -31,12 +31,13 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.mydashboard.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.ReferenceList;
+
 import java.util.List;
+
 
 /**
  * IDashboardAssociationDAO Interface
@@ -81,29 +82,29 @@ public interface IDashboardAssociationDAO
      * @return The list which contains the data of all the dashboardAssociation objects
      */
     List<DashboardAssociation> selectDashboardAssociationsList( Plugin plugin );
-    
+
     /**
      * Load the data of all the dashboardAssociation objects associated to a panel and returns them as a list
      * @param nIdPanel the panel Id
      * @param plugin the Plugin
      * @return The list which contains the data of all the dashboardAssociation objects
      */
-    List<DashboardAssociation>selectDashboardAssociationsListByIdPanel(int nIdPanel,  Plugin plugin );
-    
+    List<DashboardAssociation> selectDashboardAssociationsListByIdPanel( int nIdPanel, Plugin plugin );
+
     /**
      * return the number of association
      * @param plugin the plugin
      * @return the number of association
      */
-   int selectCountDashboardAssociations(Plugin plugin);
-    
+    int selectCountDashboardAssociations( Plugin plugin );
+
     /**
      * Load the id of all the dashboardAssociation objects and returns them as a list
      * @param plugin the Plugin
      * @return The list which contains the id of all the dashboardAssociation objects
      */
     List<Integer> selectIdDashboardAssociationsList( Plugin plugin );
-    
+
     /**
      * Load the data of all the dashboardAssociation objects and returns them as a referenceList
      * @param plugin the Plugin

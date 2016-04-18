@@ -31,16 +31,17 @@
  *
  * License 1.0
  */
- package fr.paris.lutece.plugins.mydashboard.business;
+package fr.paris.lutece.plugins.mydashboard.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 
-import org.springframework.util.CollectionUtils;
 
 /**
  * This class provides instances management methods (create, find, ...) for Panel objects
@@ -65,17 +66,17 @@ public final class PanelHome
      */
     public static Panel create( Panel panel )
     {
-    	
-    	 if(panel.isDefault())
-         {
-         	Panel defaultPanel 	=PanelHome.getDefaultPanel();
-         	if(defaultPanel !=null)
-         	{
-         		defaultPanel.setDefault(false);
-         	 	_dao.store(defaultPanel,_plugin);
-         	}
-        
-         }
+        if ( panel.isDefault(  ) )
+        {
+            Panel defaultPanel = PanelHome.getDefaultPanel(  );
+
+            if ( defaultPanel != null )
+            {
+                defaultPanel.setDefault( false );
+                _dao.store( defaultPanel, _plugin );
+            }
+        }
+
         _dao.insert( panel, _plugin );
 
         return panel;
@@ -88,17 +89,17 @@ public final class PanelHome
      */
     public static Panel update( Panel panel )
     {
-    
-    	if(panel.isDefault() && !PanelHome.findByPrimaryKey(panel.getId()).isDefault())
-         {
-         	Panel defaultPanel 	=PanelHome.getDefaultPanel();
-         	if(defaultPanel !=null)
-         	{
-         		defaultPanel.setDefault(false);
-         		_dao.store(defaultPanel,_plugin);
-         	}
-         
-         }
+        if ( panel.isDefault(  ) && !PanelHome.findByPrimaryKey( panel.getId(  ) ).isDefault(  ) )
+        {
+            Panel defaultPanel = PanelHome.getDefaultPanel(  );
+
+            if ( defaultPanel != null )
+            {
+                defaultPanel.setDefault( false );
+                _dao.store( defaultPanel, _plugin );
+            }
+        }
+
         _dao.store( panel, _plugin );
 
         return panel;
@@ -110,13 +111,14 @@ public final class PanelHome
      */
     public static void remove( int nKey )
     {
-    	
-    	List<DashboardAssociation> listAssociation=DashboardAssociationHome.getDashboardAssociationsListByIdPanel(nKey);
-    	//Delete associations
-    	for(DashboardAssociation dashboardAssociation:listAssociation)
-    	{
-    		DashboardAssociationHome.remove(dashboardAssociation.getId());
-    	}
+        List<DashboardAssociation> listAssociation = DashboardAssociationHome.getDashboardAssociationsListByIdPanel( nKey );
+
+        //Delete associations
+        for ( DashboardAssociation dashboardAssociation : listAssociation )
+        {
+            DashboardAssociationHome.remove( dashboardAssociation.getId(  ) );
+        }
+
         _dao.delete( nKey, _plugin );
     }
 
@@ -127,63 +129,61 @@ public final class PanelHome
      */
     public static Panel findByPrimaryKey( int nKey )
     {
-        return _dao.load( nKey, _plugin);
+        return _dao.load( nKey, _plugin );
     }
+
     /**
      * Returns an instance of a panel whose identifier is specified in parameter
      * @param nKey The panel primary key
      * @return an instance of Panel
      */
-    public static Panel findByCode(String strCode )
+    public static Panel findByCode( String strCode )
     {
-        return _dao.loadByCode( strCode, _plugin);
+        return _dao.loadByCode( strCode, _plugin );
     }
 
     /**
      * Load the data of all the panel objects and returns them as a list
      * @return the list which contains the data of all the panel objects
      */
-    public static List<Panel> getPanelsList( )
+    public static List<Panel> getPanelsList(  )
     {
         return _dao.selectPanelsList( _plugin );
     }
-    
+
     /**
      * Load the id of all the panel objects and returns them as a list
      * @return the list which contains the id of all the panel objects
      */
-    public static List<Integer> getIdPanelsList( )
+    public static List<Integer> getIdPanelsList(  )
     {
         return _dao.selectIdPanelsList( _plugin );
     }
-    
+
     /**
      * Load the data of all the panel objects and returns them as a referenceList
      * @return the referenceList which contains the data of all the panel objects
      */
-    public static ReferenceList getPanelsReferenceList( )
+    public static ReferenceList getPanelsReferenceList(  )
     {
-        return _dao.selectPanelsReferenceList(_plugin );
+        return _dao.selectPanelsReferenceList( _plugin );
     }
-    
+
     /**
      * Returns  the default panel
      * @param nKey The panel primary key
      * @return an instance of Panel
      */
-    public static Panel getDefaultPanel( )
+    public static Panel getDefaultPanel(  )
     {
-    	Panel defaultPanel= _dao.loadDefaultPanel(_plugin);
-    
-    	if(defaultPanel == null)
-    	{
-    		List<Panel> listPanel=getPanelsList();
-    		defaultPanel=!CollectionUtils.isEmpty(listPanel)?listPanel.get(0):null;
-    	}
-    	
-    	return defaultPanel;
-    }
-    
-    
-}
+        Panel defaultPanel = _dao.loadDefaultPanel( _plugin );
 
+        if ( defaultPanel == null )
+        {
+            List<Panel> listPanel = getPanelsList(  );
+            defaultPanel = ( !CollectionUtils.isEmpty( listPanel ) ) ? listPanel.get( 0 ) : null;
+        }
+
+        return defaultPanel;
+    }
+}

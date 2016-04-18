@@ -31,16 +31,17 @@
  *
  * License 1.0
  */
- package fr.paris.lutece.plugins.mydashboard.business;
+package fr.paris.lutece.plugins.mydashboard.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 
 /**
  * This class provides instances management methods (create, find, ...) for DashboardAssociation objects
@@ -65,17 +66,16 @@ public final class DashboardAssociationHome
      */
     public static DashboardAssociation create( DashboardAssociation dashboardAssociation )
     {
-    	
-    	int nOrder=1;
-    	List<DashboardAssociation> listDashboardAssociations=getDashboardAssociationsListByIdPanel(dashboardAssociation.getIdPanel());
-        
-    	if(!CollectionUtils.isEmpty( listDashboardAssociations ) )
-    	{
-    		nOrder=listDashboardAssociations.get(0).getPosition()+1;
-    	}
-    	
-    	dashboardAssociation.setPosition(nOrder);
-    	
+        int nOrder = 1;
+        List<DashboardAssociation> listDashboardAssociations = getDashboardAssociationsListByIdPanel( dashboardAssociation.getIdPanel(  ) );
+
+        if ( !CollectionUtils.isEmpty( listDashboardAssociations ) )
+        {
+            nOrder = listDashboardAssociations.get( 0 ).getPosition(  ) + 1;
+        }
+
+        dashboardAssociation.setPosition( nOrder );
+
         _dao.insert( dashboardAssociation, _plugin );
 
         return dashboardAssociation;
@@ -109,53 +109,52 @@ public final class DashboardAssociationHome
      */
     public static DashboardAssociation findByPrimaryKey( int nKey )
     {
-        return _dao.load( nKey, _plugin);
+        return _dao.load( nKey, _plugin );
     }
 
     /**
      * Load the data of all the dashboardAssociation objects and returns them as a list
      * @return the list which contains the data of all the dashboardAssociation objects
      */
-    public static List<DashboardAssociation> getDashboardAssociationsList( )
+    public static List<DashboardAssociation> getDashboardAssociationsList(  )
     {
         return _dao.selectDashboardAssociationsList( _plugin );
     }
-    
+
     /**
      * return the number of association
      * @return the association number
      */
-    public static int  getCountDashboardAssociation( )
+    public static int getCountDashboardAssociation(  )
     {
         return _dao.selectCountDashboardAssociations( _plugin );
     }
-    
+
     /**
      * Load the data of all the dashboardAssociation objects asociated to a panel and returns them as a list
      * @param nIdPanel the panel id
      * @return the list which contains the data of all the dashboardAssociation objects
      */
-    public static List<DashboardAssociation> getDashboardAssociationsListByIdPanel(int nIdPanel )
+    public static List<DashboardAssociation> getDashboardAssociationsListByIdPanel( int nIdPanel )
     {
-        return _dao.selectDashboardAssociationsListByIdPanel(nIdPanel, _plugin );
+        return _dao.selectDashboardAssociationsListByIdPanel( nIdPanel, _plugin );
     }
-    
+
     /**
      * Load the id of all the dashboardAssociation objects and returns them as a list
      * @return the list which contains the id of all the dashboardAssociation objects
      */
-    public static List<Integer> getIdDashboardAssociationsList( )
+    public static List<Integer> getIdDashboardAssociationsList(  )
     {
         return _dao.selectIdDashboardAssociationsList( _plugin );
     }
-    
+
     /**
      * Load the data of all the dashboardAssociation objects and returns them as a referenceList
      * @return the referenceList which contains the data of all the dashboardAssociation objects
      */
-    public static ReferenceList getDashboardAssociationsReferenceList( )
+    public static ReferenceList getDashboardAssociationsReferenceList(  )
     {
-        return _dao.selectDashboardAssociationsReferenceList(_plugin );
+        return _dao.selectDashboardAssociationsReferenceList( _plugin );
     }
 }
-

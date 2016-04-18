@@ -30,32 +30,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
+ */
 package fr.paris.lutece.plugins.mydashboard.business;
 
-import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.*;
+
 import java.io.Serializable;
+
+import javax.validation.constraints.*;
+
 
 /**
  * This is the business class for the object Panel
- */ 
+ */
 public class Panel implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     // Variables declarations 
     private int _nId;
-    
     @NotEmpty( message = "#i18n{mydashboard.validation.panel.Code.notEmpty}" )
-    @Size( max = 50 , message = "#i18n{mydashboard.validation.panel.Code.size}" ) 
-    @Pattern(regexp="^[\\S]*$",message ="#i18n{mydashboard.validation.panel.Code.notSpaceCharacter}")
+    @Size( max = 50, message = "#i18n{mydashboard.validation.panel.Code.size}" )
+    @Pattern( regexp = "^[\\S]*$", message = "#i18n{mydashboard.validation.panel.Code.notSpaceCharacter}" )
     private String _strCode;
-    
     @NotEmpty( message = "#i18n{mydashboard.validation.panel.Title.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{mydashboard.validation.panel.Title.size}" ) 
+    @Size( max = 255, message = "#i18n{mydashboard.validation.panel.Title.size}" )
     private String _strTitle;
-    
     private String _strDescription;
     private boolean _bDefault;
 
@@ -63,7 +63,7 @@ public class Panel implements Serializable
      * Returns the Id
      * @return The Id
      */
-    public int getId( )
+    public int getId(  )
     {
         return _nId;
     }
@@ -71,17 +71,17 @@ public class Panel implements Serializable
     /**
      * Sets the Id
      * @param nId The Id
-     */ 
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the Code
      * @return The Code
      */
-    public String getCode( )
+    public String getCode(  )
     {
         return _strCode;
     }
@@ -89,17 +89,17 @@ public class Panel implements Serializable
     /**
      * Sets the Code
      * @param strCode The Code
-     */ 
+     */
     public void setCode( String strCode )
     {
         _strCode = strCode;
     }
-    
+
     /**
      * Returns the Title
      * @return The Title
      */
-    public String getTitle( )
+    public String getTitle(  )
     {
         return _strTitle;
     }
@@ -107,17 +107,17 @@ public class Panel implements Serializable
     /**
      * Sets the Title
      * @param strTitle The Title
-     */ 
+     */
     public void setTitle( String strTitle )
     {
         _strTitle = strTitle;
     }
-    
+
     /**
      * Returns the Description
      * @return The Description
      */
-    public String getDescription( )
+    public String getDescription(  )
     {
         return _strDescription;
     }
@@ -125,17 +125,19 @@ public class Panel implements Serializable
     /**
      * Sets the Description
      * @param strDescription The Description
-     */ 
+     */
     public void setDescription( String strDescription )
     {
         _strDescription = strDescription;
     }
 
-	public boolean isDefault() {
-		return _bDefault;
-	}
+    public boolean isDefault(  )
+    {
+        return _bDefault;
+    }
 
-	public void setDefault(boolean _bDefault) {
-		this._bDefault = _bDefault;
-	}
+    public void setDefault( boolean _bDefault )
+    {
+        this._bDefault = _bDefault;
+    }
 }
