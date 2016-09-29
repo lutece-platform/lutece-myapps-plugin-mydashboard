@@ -39,6 +39,7 @@ import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO
 import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
 import fr.paris.lutece.plugins.mydashboard.business.Panel;
 import fr.paris.lutece.plugins.mydashboard.business.PanelHome;
+import fr.paris.lutece.portal.service.dashboard.DashboardService;
 import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -155,6 +156,8 @@ public final class MyDashboardService
                     listDashboardComponentsFiltered.add( component );
                 }
             }
+            //sort by id Component
+            Collections.sort( listDashboardComponentsFiltered );
         }
 
         return listDashboardComponentsFiltered;
@@ -365,57 +368,61 @@ public final class MyDashboardService
         }
 
         List<IMyDashboardComponent> listComponentsSorted;
-        List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
-
+       
         listComponents = getMyDashboardComponentsList( user, panel );
-        listComponentsSorted = new ArrayList<IMyDashboardComponent>( listComponents.size(  ) );
-
-        for ( MyDashboardConfiguration config : listUserConfig )
+        
+        if(!MyDashboardService.getInstance().isPanelEnabled())
         {
-            for ( IMyDashboardComponent component : listComponents )
+            List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
+
+            listComponentsSorted = new ArrayList<IMyDashboardComponent>( listComponents.size(  ) );
+    
+            for ( MyDashboardConfiguration config : listUserConfig )
             {
-                if ( StringUtils.equals( config.getMyDashboardComponentId(  ), component.getComponentId(  ) ) )
+                for ( IMyDashboardComponent component : listComponents )
                 {
-                    if ( !config.getHideDashboard(  ) )
+                    if ( StringUtils.equals( config.getMyDashboardComponentId(  ), component.getComponentId(  ) ) )
                     {
-                        listComponentsSorted.add( component );
+                        if ( !config.getHideDashboard(  ) )
+                        {
+                            listComponentsSorted.add( component );
+                        }
+    
+                        listComponents.remove( component );
+    
+                        break;
                     }
-
-                    listComponents.remove( component );
-
-                    break;
                 }
             }
-        }
-
-        if ( listComponents.size(  ) > 0 )
-        {
-            AppLogService.error( 
-                "MyDashboard : dashboard(s) found without user configuration - will proceed to the creation of the configuration" );
-            Collections.sort( listComponents );
-
-            int nLastUsedOrder = ( listUserConfig.size(  ) > 0 )
-                ? ( listUserConfig.get( listUserConfig.size(  ) - 1 ).getOrder(  ) + 1 ) : 1;
-            String strConfigId = getUserConfigId( user );
-
-            for ( IMyDashboardComponent component : listComponents )
+    
+            if ( listComponents.size(  ) > 0 )
             {
-                MyDashboardConfiguration config = new MyDashboardConfiguration(  );
-                config.setMyDashboardComponentId( component.getComponentId(  ) );
-                config.setIdConfig( strConfigId );
-                config.setOrder( nLastUsedOrder++ );
-                config.setHideDashboard( false );
-                _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin(  ) );
-                listUserConfig.add( config );
+                AppLogService.error( 
+                    "MyDashboard : dashboard(s) found without user configuration - will proceed to the creation of the configuration" );
+                int nLastUsedOrder = ( listUserConfig.size(  ) > 0 )
+                    ? ( listUserConfig.get( listUserConfig.size(  ) - 1 ).getOrder(  ) + 1 ) : 1;
+                String strConfigId = getUserConfigId( user );
+    
+                for ( IMyDashboardComponent component : listComponents )
+                {
+                    MyDashboardConfiguration config = new MyDashboardConfiguration(  );
+                    config.setMyDashboardComponentId( component.getComponentId(  ) );
+                    config.setIdConfig( strConfigId );
+                    config.setOrder( nLastUsedOrder++ );
+                    config.setHideDashboard( false );
+                    _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin(  ) );
+                    listUserConfig.add( config );
+                }
+    
+                saveMyDashboardConfigListInSession( listUserConfig );
+                listComponentsSorted.addAll( listComponents );
             }
-
-            saveMyDashboardConfigListInSession( listUserConfig );
-            listComponentsSorted.addAll( listComponents );
+            listComponents=listComponentsSorted;
         }
 
-        saveMyDashboardListInSession( listComponentsSorted, panel );
+        saveMyDashboardListInSession( listComponents, panel );
 
-        return listComponentsSorted;
+        return listComponents;
     }
 
     /**
