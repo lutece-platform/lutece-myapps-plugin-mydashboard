@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><plug-in>
     <name>mydashboard</name>
     <class>fr.paris.lutece.plugins.mydashboard.service.MyDashboardPlugin</class>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <description>mydashboard.plugin.description</description>
     <documentation/>
     <installation/>
@@ -33,7 +33,7 @@
             <feature-description>mydashboard.adminFeature.ManageMydashboardPanel.description</feature-description>
             <feature-level>0</feature-level>
             <feature-url>jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp</feature-url>
-            <feature-icon-url></feature-icon-url>
+            <feature-icon-url/>
       </admin-feature>
     </admin-features>    
 
