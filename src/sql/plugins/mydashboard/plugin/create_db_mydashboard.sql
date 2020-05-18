@@ -39,3 +39,17 @@ PRIMARY KEY (id_dashboard_association)
 ALTER TABLE mydashboard_dashboard_association ADD CONSTRAINT fk_id_panel FOREIGN KEY (id_panel)
       REFERENCES mydashboard_panel (id_panel)  ON DELETE RESTRICT ON UPDATE RESTRICT ;
 
+      
+--
+-- Structure for table mydashboard_portlet_panel
+--
+
+
+
+DROP TABLE IF EXISTS mydashboard_portlet_panel;
+CREATE TABLE mydashboard_portlet_panel (
+id_portlet int NOT NULL,
+id_panel int(11) NOT NULL default '0',
+PRIMARY KEY ( id_portlet )
+);
+

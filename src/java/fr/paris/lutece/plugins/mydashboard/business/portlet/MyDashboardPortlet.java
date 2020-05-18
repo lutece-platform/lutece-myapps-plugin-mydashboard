@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.mydashboard.business.portlet;
 
+import fr.paris.lutece.plugins.mydashboard.business.Panel;
+import fr.paris.lutece.plugins.mydashboard.business.PanelHome;
 import fr.paris.lutece.plugins.mydashboard.service.IMyDashboardComponent;
 import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
 import fr.paris.lutece.portal.business.portlet.PortletHtmlContent;
@@ -65,6 +67,11 @@ public class MyDashboardPortlet extends PortletHtmlContent
     private static final String MARK_PORTLET = "portlet";
     private static final String TEMPLATE_PORTLET_MY_DASHBOARDS = "skin/plugins/mydashboard/portlet/portlet_my_dashboards.html";
 
+ // Variables declarations 
+    private int _nIdPanel;
+   
+
+    
     /**
      * {@inheritDoc}
      */
@@ -79,12 +86,33 @@ public class MyDashboardPortlet extends PortletHtmlContent
             {
                 return StringUtils.EMPTY;
             }
-
+            
+            MyDashboardService dashboardService = MyDashboardService.getInstance(  );
             Map<String, Object> model = new HashMap<String, Object>(  );
+            List<IMyDashboardComponent> listDashboardComponents;
+            
+            if ( dashboardService.isPanelEnabled(  ) )
+            {
+                Panel panel = null;
+                int idPanel = this.getIdPanel( );
 
-            List<IMyDashboardComponent> listDashboardComponents = MyDashboardService.getInstance(  )
-                                                                                    .getDashboardComponentListFromUser( user );
+                if ( idPanel != 0 )
+                {
+                    panel = PanelHome.findByPrimaryKey( idPanel );
+                }
 
+                if ( panel == null )
+                {
+                    panel = PanelHome.getDefaultPanel(  );
+                }
+
+                listDashboardComponents = dashboardService.getDashboardComponentListFromUser( user, panel );
+                
+            }else {
+            	
+            	listDashboardComponents = dashboardService.getDashboardComponentListFromUser( user );
+            }
+            
             List<String> listDashboardContent = new ArrayList<String>( listDashboardComponents.size(  ) );
 
             for ( IMyDashboardComponent dashboardComponent : listDashboardComponents )
@@ -133,4 +161,26 @@ public class MyDashboardPortlet extends PortletHtmlContent
     {
         MyDashboardPortletHome.getInstance(  ).remove( this );
     }
+    
+    /**
+     * Returns the IdPannel
+     * @return The IdPannel
+     */
+    public int getIdPanel(  )
+    {
+        return _nIdPanel;
+    }
+
+    /**
+     * Sets the IdPannel
+     * @param nIdPannel The IdPannel
+     */
+    public void setIdPanel( int nIdPannel )
+    {
+        _nIdPanel = nIdPannel;
+    }
+
+    
+
+
 }

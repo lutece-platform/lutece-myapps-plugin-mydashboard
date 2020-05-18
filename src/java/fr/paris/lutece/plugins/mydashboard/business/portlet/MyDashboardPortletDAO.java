@@ -33,8 +33,10 @@
  */
 package fr.paris.lutece.plugins.mydashboard.business.portlet;
 
+
 import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.Portlet;
+import fr.paris.lutece.util.sql.DAOUtil;
 
 
 /**
@@ -42,13 +44,31 @@ import fr.paris.lutece.portal.business.portlet.Portlet;
  */
 public class MyDashboardPortletDAO implements IPortletInterfaceDAO
 {
+	 // Constants
+    private static final String SQL_QUERY_SELECTALL = "SELECT  id_portlet, id_panel FROM mydashboard_portlet_panel";
+    private static final String SQL_QUERY_SELECT = SQL_QUERY_SELECTALL + " WHERE id_portlet = ?";
+
+    private static final String SQL_QUERY_INSERT = "INSERT INTO mydashboard_portlet_panel ( id_portlet, id_panel ) VALUES ( ?, ? ) ";
+    private static final String SQL_QUERY_DELETE = "DELETE FROM mydashboard_portlet_panel WHERE id_portlet = ? ";
+    private static final String SQL_QUERY_UPDATE = "UPDATE mydashboard_portlet_panel SET id_portlet = ?, id_panel = ? WHERE id_portlet = ?";
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void insert( Portlet portlet )
     {
-        // Do nothing
+    	MyDashboardPortlet myPortlet=(MyDashboardPortlet) portlet; 
+    	    		
+	    int nIndex = 1;
+	    try (DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT )){
+	         
+		   daoUtil.setInt( nIndex++, myPortlet.getId( ) );
+		   daoUtil.setInt( nIndex++, myPortlet.getIdPanel(  ) );
+		         
+           daoUtil.executeUpdate( );
+		  
+    	}
     }
 
     /**
@@ -57,7 +77,11 @@ public class MyDashboardPortletDAO implements IPortletInterfaceDAO
     @Override
     public void delete( int nPortletId )
     {
-        // Do nothing
+    	try(DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE )) {
+        
+    		daoUtil.setInt( 1, nPortletId );
+    		daoUtil.executeUpdate(  );
+    	}
     }
 
     /**
@@ -66,8 +90,20 @@ public class MyDashboardPortletDAO implements IPortletInterfaceDAO
     @Override
     public Portlet load( int nPortletId )
     {
-        MyDashboardPortlet myDashboardPortlet = new MyDashboardPortlet(  );
-        myDashboardPortlet.setId( nPortletId );
+    	
+    	MyDashboardPortlet myDashboardPortlet = new MyDashboardPortlet(  );
+        
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT )) {
+	        daoUtil.setInt( 1, nPortletId );
+	        daoUtil.executeQuery(  );
+	        if ( daoUtil.next(  ) )
+	        {
+	            int nIndex = 1;
+	            myDashboardPortlet.setId( daoUtil.getInt( nIndex++ )  );
+	            myDashboardPortlet.setIdPanel( daoUtil.getInt( nIndex++ ) );
+	        }
+
+        }
 
         return myDashboardPortlet;
     }
@@ -78,6 +114,19 @@ public class MyDashboardPortletDAO implements IPortletInterfaceDAO
     @Override
     public void store( Portlet portlet )
     {
-        // Do nothing
+    	MyDashboardPortlet myPortlet=(MyDashboardPortlet) portlet; 
+
+    	 try (DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE )){
+    		 
+    	   int nIndex = 1;
+  		   daoUtil.setInt( nIndex++, myPortlet.getId( ) );
+  		   daoUtil.setInt( nIndex++, myPortlet.getIdPanel(  ) );
+
+  		   daoUtil.setInt( nIndex++, myPortlet.getId(  ) );
+
+             daoUtil.executeUpdate( );
+  		  
+      	}
+    	
     }
 }
