@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.mydashboard.web.portlet;
 
+import fr.paris.lutece.plugins.mydashboard.business.Panel;
+import fr.paris.lutece.plugins.mydashboard.business.PanelHome;
 import fr.paris.lutece.plugins.mydashboard.business.portlet.MyDashboardPortlet;
 import fr.paris.lutece.plugins.mydashboard.business.portlet.MyDashboardPortletHome;
 import fr.paris.lutece.portal.business.portlet.Portlet;
@@ -41,6 +43,9 @@ import fr.paris.lutece.portal.web.portlet.PortletJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
 import org.apache.commons.lang.StringUtils;
+
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,7 +59,9 @@ public class MyDashboardPortletJspBean extends PortletJspBean
      * Generated serial version UID
      */
     private static final long serialVersionUID = -2930449563274775264L;
-
+    
+    public static final String MARK_LIST_PANEL = "panel_list";
+    public static final String PARAMETER_PANEL_ID = "panel_id";
     /**
      * {@inheritDoc}
      */
@@ -63,8 +70,12 @@ public class MyDashboardPortletJspBean extends PortletJspBean
     {
         String strIdPage = request.getParameter( PARAMETER_PAGE_ID );
         String strIdPortletType = request.getParameter( PARAMETER_PORTLET_TYPE_ID );
+        List<Panel> listPanels = PanelHome.getPanelsList( );
+        HashMap<String, Object> model = new HashMap<>( );
+        
+        model.put( MARK_LIST_PANEL, listPanels );
 
-        HtmlTemplate template = getCreateTemplate( strIdPage, strIdPortletType );
+        HtmlTemplate template = getCreateTemplate( strIdPage, strIdPortletType, model );
 
         return template.getHtml(  );
     }
@@ -77,8 +88,11 @@ public class MyDashboardPortletJspBean extends PortletJspBean
     {
         MyDashboardPortlet portlet = new MyDashboardPortlet(  );
         String strIdPage = request.getParameter( PARAMETER_PAGE_ID );
+        String strIdPanel = request.getParameter( PARAMETER_PANEL_ID );
         int nIdPage = ( StringUtils.isNotEmpty( strIdPage ) && StringUtils.isNumeric( strIdPage ) )
             ? Integer.parseInt( strIdPage ) : 1;
+        int nIdPanel =  ( StringUtils.isNotEmpty( strIdPanel ) && StringUtils.isNumeric( strIdPanel ) )
+                ? Integer.parseInt( strIdPanel ) : 1;
 
         // get portlet common attributes
         String strErrorUrl = setPortletCommonData( request, portlet );
@@ -89,6 +103,7 @@ public class MyDashboardPortletJspBean extends PortletJspBean
         }
 
         portlet.setPageId( nIdPage );
+        portlet.setIdPanel( nIdPanel );
 
         //Portlet creation
         MyDashboardPortletHome.getInstance(  ).create( portlet );
@@ -106,8 +121,12 @@ public class MyDashboardPortletJspBean extends PortletJspBean
         String strPortletId = request.getParameter( PARAMETER_PORTLET_ID );
         int nPortletId = Integer.parseInt( strPortletId );
         Portlet portlet = PortletHome.findByPrimaryKey( nPortletId );
+        List<Panel> listPanels = PanelHome.getPanelsList( );
+        HashMap<String, Object> model = new HashMap<>( );
+        
+        model.put( MARK_LIST_PANEL, listPanels );
 
-        HtmlTemplate template = getModifyTemplate( portlet );
+        HtmlTemplate template = getModifyTemplate( portlet, model );
 
         return template.getHtml(  );
     }
@@ -120,9 +139,12 @@ public class MyDashboardPortletJspBean extends PortletJspBean
     {
         // recovers portlet attributes
         String strPortletId = request.getParameter( PARAMETER_PORTLET_ID );
+        String strIdPanel = request.getParameter( PARAMETER_PANEL_ID );
 
         int nPortletId = ( StringUtils.isNotEmpty( strPortletId ) && StringUtils.isNumeric( strPortletId ) )
             ? Integer.parseInt( strPortletId ) : 1;
+        int nIdPanel =  ( StringUtils.isNotEmpty( strIdPanel ) && StringUtils.isNumeric( strIdPanel ) )
+                    ? Integer.parseInt( strIdPanel ) : 1;
 
         MyDashboardPortlet portlet = (MyDashboardPortlet) PortletHome.findByPrimaryKey( nPortletId );
 
@@ -134,6 +156,7 @@ public class MyDashboardPortletJspBean extends PortletJspBean
             return strErrorUrl;
         }
 
+        portlet.setIdPanel( nIdPanel );
         MyDashboardPortletHome.getInstance(  ).update( portlet );
 
         // displays the page withe the potlet updated

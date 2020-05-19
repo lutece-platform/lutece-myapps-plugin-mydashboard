@@ -10,5 +10,12 @@
 				${dashboardContent!}
 			</div>
 		</#list>
+		<select>
+			<#list panel_list as panel>
+				<option value="${panel.id}">
+					${panel.id}
+				</option>
+			</#list>
+		</select>
 	</fieldset>
 </div>

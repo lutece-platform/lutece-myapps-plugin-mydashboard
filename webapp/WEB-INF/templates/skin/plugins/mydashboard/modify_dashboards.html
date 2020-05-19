@@ -46,9 +46,19 @@
                     </#list>
                 </tbody>
             </table>
+            
             <div class="form-actions">
                 <input type="hidden" name="page" value="mydashboard">
                 <input type="hidden" name="action" value="doModifyDashboards" title="#i18n{portal.util.labelValidate}">
+                      <div class="form-group">
+        				<select class="form-control" name="panel_selected" id="panel_selected">
+          					<option value=""></option>
+          					<#list panel_list as panel>         
+             				 <option value="${panel.id}">${panel.code} - ${panel.id}</option>
+            				</#if>
+          					</#list>
+        				</select>
+      			</div>
                 <button class="btn btn-small btn-primary">
                     <i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{portal.util.labelValidate}
                 </button>
