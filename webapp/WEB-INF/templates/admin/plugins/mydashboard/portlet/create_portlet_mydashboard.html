@@ -1,0 +1,8 @@
+<div class="form-group">
+<label class="col-xs-12">Liste de panels</label>
+        				<select class="form-control" name="panel_id" id="panel_id">
+          					<#list panel_list as panel>         
+             				 <option value="${panel.id}">${panel.title}</option>
+          					</#list>
+        				</select>
+      			</div>
