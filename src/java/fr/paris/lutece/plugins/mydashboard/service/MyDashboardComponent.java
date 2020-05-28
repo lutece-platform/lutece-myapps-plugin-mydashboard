@@ -35,6 +35,8 @@ package fr.paris.lutece.plugins.mydashboard.service;
 
 import fr.paris.lutece.portal.service.security.LuteceUser;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.ObjectUtils;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -45,8 +47,12 @@ import org.springframework.util.Assert;
 /**
  * Dash board Component
  */
-public abstract class MyDashboardComponent implements IMyDashboardComponent, InitializingBean
+public abstract class MyDashboardComponent implements IMyDashboardComponent, InitializingBean, Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2702189175063697166L;
     private static final int MY_DASHBOARD_COMPONENT_ID_MAXIMUM_SIZE = 50;
 
     /**

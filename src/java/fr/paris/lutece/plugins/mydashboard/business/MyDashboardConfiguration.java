@@ -33,14 +33,20 @@
  */
 package fr.paris.lutece.plugins.mydashboard.business;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringUtils;
 
 
 /**
  * User configuration of dashboards
  */
-public class MyDashboardConfiguration implements Comparable<MyDashboardConfiguration>
+public class MyDashboardConfiguration implements Comparable<MyDashboardConfiguration>, Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 9094886288827434050L;
     private int _nOrder;
     private String _strIdConfig;
     private String _strMyDashboardComponentId;

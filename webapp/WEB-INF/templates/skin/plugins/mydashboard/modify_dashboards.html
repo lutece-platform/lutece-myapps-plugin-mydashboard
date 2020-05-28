@@ -6,13 +6,13 @@
                 <thead>
                     <tr>
                         <th>
-                            #i18n{mydashboard.modify_dashboards.labelDescription}
+                            #i18n{mydashboard.modifyDashboards.labelDescription}
                         </th>
                         <th>
-                            #i18n{mydashboard.modify_dashboards.labelDisplayDashboard}
+                            #i18n{mydashboard.modifyDashboards.labelDisplayDashboard}
                         </th>
                         <th>
-                            #i18n{mydashboard.modify_dashboards.labelOrder}
+                            #i18n{mydashboard.modifyDashboards.labelOrder}
                         </th>
                         <th>
                         </th>
@@ -32,12 +32,12 @@
                         </td>
                         <td>
                             <#if dashboardConfiguration.order &gt; 1>
-                            <a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveUp}" class="btn btn-small btn-primary">
+                            <a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modifyDashboards.moveUp}" class="btn btn-small btn-primary">
                                 <i class="fa fa-arrow-up">&nbsp;</i>
                             </a>
                             </#if>
                             <#if dashboardConfiguration_has_next>
-                            <a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modify_dashboards.moveDown}" class="btn btn-small btn-primary">
+                            <a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modifyDashboards.moveDown}" class="btn btn-small btn-primary">
                                 <i class="fa fa-arrow-down">&nbsp;</i>
                             </a>
                             </#if>

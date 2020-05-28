@@ -136,8 +136,8 @@ public class Panel implements Serializable
         return _bDefault;
     }
 
-    public void setDefault( boolean _bDefault )
+    public void setDefault( boolean bDefault )
     {
-        this._bDefault = _bDefault;
+        this._bDefault = bDefault;
     }
 }

@@ -49,6 +49,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MyDashboardComponentMyDashboard extends MyDashboardComponent
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 207438270601766912L;
     private static final String DASHBOARD_COMPONENT_ID = "mydashboard.myDashboardComponentMyDashboard";
     private static final String MESSAGE_COMPONENT_DESCRIPTION = "mydashboard.dashboardComponentMyDashboard.description";
     private static final String TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD = "skin/plugins/mydashboard/mydashboardcomponent/mydashboardcomponent_mydashboard.html";
