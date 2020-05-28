@@ -371,7 +371,7 @@ public final class MyDashboardService
        
         listComponents = getMyDashboardComponentsList( user, panel );
         
-        if(!MyDashboardService.getInstance().isPanelEnabled())
+        if( !MyDashboardService.getInstance( ).isPanelEnabled( ) )
         {
             List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
 

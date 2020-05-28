@@ -1,20 +1,20 @@
-<@rowBoxHeader i18nTitleKey="mydashboard.modify_panel.title">
+<@rowBoxHeader i18nTitleKey="mydashboard.modifyPanel.title">
     
      <@boxBody> 
         <form class="form-horizontal" method="post" name="modify_panel" action="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp">
             <@messages errors=errors />
             <input type="hidden" id="id" name="id" value="${panel.id}"/>
             
-            <@fieldInputText i18nLabelKey="mydashboard.modify_panel.labelCode" inputName="code" mandatory=true value="${panel.code}" i18nHelpBlockKey="mydashboard.modify_panel.labelCode.help" />
-            <@fieldInputText i18nLabelKey="mydashboard.modify_panel.labelTitle" inputName="title" mandatory=true value="${panel.title}" i18nHelpBlockKey="mydashboard.modify_panel.labelTitle.help" />
-            <@fieldInputText i18nLabelKey="mydashboard.modify_panel.labelDescription" inputName="description"  value="${panel.description}" i18nHelpBlockKey="mydashboard.modify_panel.labelDescription.help" />
-            <@fieldInputCheckBox i18nLabelKey="mydashboard.modify_panel.labelDefault" inputName="default"  value="true" checked=panel.default i18nHelpBlockKey="mydashboard.modify_panel.labelDefault.help" />
+            <@fieldInputText i18nLabelKey="mydashboard.modifyPanel.labelCode" inputName="code" mandatory=true value="${panel.code}" i18nHelpBlockKey="mydashboard.modifyPanel.labelCode.help" />
+            <@fieldInputText i18nLabelKey="mydashboard.modifyPanel.labelTitle" inputName="title" mandatory=true value="${panel.title}" i18nHelpBlockKey="mydashboard.modifyPanel.labelTitle.help" />
+            <@fieldInputText i18nLabelKey="mydashboard.modifyPanel.labelDescription" inputName="description"  value="${panel.description}" i18nHelpBlockKey="mydashboard.modifyPanel.labelDescription.help" />
+            <@fieldInputCheckBox i18nLabelKey="mydashboard.modifyPanel.labelDefault" inputName="default"  value="true" checked=panel.default i18nHelpBlockKey="mydashboard.modifyPanel.labelDefault.help" />
            
             <@actionButtons button1Name="action_modifyPanel" button2Name="view_managePanels"/>
         </form>
          <form class="form-horizontal" method="post" name="modify_panel" action="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp">
             <input type="hidden" id="id" name="id" value="${panel.id}"/>
-              <@fieldInputCombo i18nLabelKey="mydashboard.modify_panel.labelListDashboardComponent" inputName="id_component"  items=list_dashboard_component value="" i18nHelpBlockKey="mydashboard.modify_panel.labelListDashboardComponent.help" />
+              <@fieldInputCombo i18nLabelKey="mydashboard.modifyPanel.labelListDashboardComponent" inputName="id_component"  items=list_dashboard_component value="" i18nHelpBlockKey="mydashboard.modifyPanel.labelListDashboardComponent.help" />
           
              <@actionButtons button1Name="action_addComponent" />
         </form>
@@ -23,7 +23,7 @@
 </@rowBoxHeader>   
 
 
-<@rowBoxHeader i18nTitleKey="mydashboard.modify_panel.title">
+<@rowBoxHeader i18nTitleKey="mydashboard.modifyPanel.title">
      <@boxBody> 
         <@table>
                 <tr>
@@ -43,13 +43,13 @@
                                     
                                     <#if component_index!=0>
                                        <a href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=moveUpComponent&id=${component.id}"
-                                           class="btn btn-primary btn-sm" title="#i18n{mydashboard.modify_panel.components.labelUp}" >
+                                           class="btn btn-primary btn-sm" title="#i18n{mydashboard.modifyPanel.components.labelUp}" >
                                              <i class="glyphicon glyphicon-arrow-up"></i>
                                        </a>
                                     </#if>
                                     <#if component_has_next>
                                       <a href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=moveDownComponent&id=${component.id}"
-                                           class="btn btn-primary btn-sm" title="#i18n{mydashboard.modify_panel.components.labelDown}" >
+                                           class="btn btn-primary btn-sm" title="#i18n{mydashboard.modifyPanel.components.labelDown}" >
                                              <i class="glyphicon glyphicon-arrow-down"></i>
                                        </a>
                                     </#if>

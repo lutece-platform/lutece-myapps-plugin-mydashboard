@@ -55,6 +55,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MyDashboardComponentNickname extends MyDashboardComponent
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6070136013272015068L;
     private static final String DASHBOARD_COMPONENT_ID = "mydashboard.myDashboardComponentNickname";
     private static final String MESSAGE_DASHBOARD_COMPONENT_NICKNAME_DESCRIPTION = "module.mydashboard.nickname.dashboardComponent.nickname.description";
     private static final String MARK_USER_NICKNACME = "nickname";

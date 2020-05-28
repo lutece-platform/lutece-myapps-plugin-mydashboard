@@ -39,6 +39,7 @@ import fr.paris.lutece.util.sql.DAOUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -59,7 +60,7 @@ public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
     @Override
     public String getNewConfigId(  )
     {
-        return UniqueIDGenerator.getNewId(  ) + (int) ( Math.random(  ) * CONSTANT_SIZE_RANDOM_PART_ID );
+        return UniqueIDGenerator.getNewId(  ) +  new Random ( ).nextInt( CONSTANT_SIZE_RANDOM_PART_ID );
     }
 
     /**

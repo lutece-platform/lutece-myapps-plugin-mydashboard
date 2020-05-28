@@ -1,13 +1,13 @@
 
 
 <@rowBox>
-    <@boxHeader i18nTitleKey="mydashboard.manage_panels.title">
+    <@boxHeader i18nTitleKey="mydashboard.managePanels.title">
         <@headerButtons>
 
         
         <form class="form-inline pull-right" method="post" name="manage_panels" action="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp">
             <!-- Add pull-right to class1 -->
-            <@actionButtons button1Name="view_createPanel" icon1="icon-plus icon-white" i18nValue1Key="mydashboard.manage_panels.buttonAdd" />
+            <@actionButtons button1Name="view_createPanel" icon1="icon-plus icon-white" i18nValue1Key="mydashboard.managePanels.buttonAdd" />
         </form>
         
     </@headerButtons>
@@ -19,9 +19,9 @@
     <@table>
         <tr>
             <input type="hidden" id="id" name="id"/>
-            <th>#i18n{mydashboard.manage_panels.columnCode}</th>
-            <th>#i18n{mydashboard.manage_panels.columnTitle}</th>
-            <th>#i18n{mydashboard.manage_panels.columnComponentList}</th>   
+            <th>#i18n{mydashboard.managePanels.columnCode}</th>
+            <th>#i18n{mydashboard.managePanels.columnTitle}</th>
+            <th>#i18n{mydashboard.managePanels.columnComponentList}</th>   
             <th>#i18n{portal.util.labelActions}</th>
         </tr>
         <@tableHeadBodySeparator />
@@ -37,7 +37,7 @@
                 ${panel.title}&#160;&#160;
                  <#if panel.default>
                      <span class="label label-success">
-                        <i class="glyphicon glyphicon-ok-sign"></i> #i18n{mydashboard.manage_panels.defaultLabel}
+                        <i class="glyphicon glyphicon-ok-sign"></i> #i18n{mydashboard.managePanels.defaultLabel}
                       </span>                    
                  </#if>
             </td>

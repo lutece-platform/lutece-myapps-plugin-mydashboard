@@ -78,9 +78,9 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
     private static final String PARAMETER_PAGE_INDEX = "page_index";
 
     // Properties for page titles
-    private static final String PROPERTY_PAGE_TITLE_MANAGE_PANELS = "mydashboard.manage_panels.pageTitle";
-    private static final String PROPERTY_PAGE_TITLE_MODIFY_PANEL = "mydashboard.modify_panel.pageTitle";
-    private static final String PROPERTY_PAGE_TITLE_CREATE_PANEL = "mydashboard.create_panel.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_MANAGE_PANELS = "mydashboard.managePanels.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_MODIFY_PANEL = "mydashboard.modifyPanel.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_CREATE_PANEL = "mydashboard.createPanel.pageTitle";
     private static final String PROPERTY_DEFAULT_LIST_ITEM_PER_PAGE = "mydashboard.listItems.itemsPerPage";
 
     // Markers
