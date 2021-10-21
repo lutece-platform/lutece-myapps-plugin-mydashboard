@@ -33,11 +33,11 @@
  */
 package fr.paris.lutece.plugins.mydashboard.business;
 
-import org.hibernate.validator.constraints.*;
-
 import java.io.Serializable;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 /**
