@@ -37,7 +37,7 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 import org.springframework.beans.factory.InitializingBean;
 

@@ -35,7 +35,7 @@ package fr.paris.lutece.plugins.mydashboard.business;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
