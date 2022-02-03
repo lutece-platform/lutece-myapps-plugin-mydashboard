@@ -31,8 +31,8 @@ DROP TABLE IF EXISTS mydashboard_dashboard_association;
 CREATE TABLE mydashboard_dashboard_association (
 id_dashboard_association  int NOT NULL,
 id_dashboard varchar(50) default '0' NOT NULL ,
-id_panel int default '0' NOT NULL ,
-position int default '0' NOT NULL ,
+id_panel int default 0 NOT NULL ,
+position int default 0 NOT NULL ,
 PRIMARY KEY (id_dashboard_association)
 );
 
@@ -49,7 +49,7 @@ ALTER TABLE mydashboard_dashboard_association ADD CONSTRAINT fk_id_panel FOREIGN
 DROP TABLE IF EXISTS mydashboard_portlet_panel;
 CREATE TABLE mydashboard_portlet_panel (
 id_portlet int NOT NULL,
-id_panel int(11) default '0' NOT NULL ,
-PRIMARY KEY ( id_portlet )
+id_panel int default 0 NOT NULL ,
+PRIMARY KEY (id_portlet)
 );
 
