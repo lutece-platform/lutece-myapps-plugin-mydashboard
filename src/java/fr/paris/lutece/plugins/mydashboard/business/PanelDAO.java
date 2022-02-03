@@ -65,17 +65,16 @@ public final class PanelDAO implements IPanelDAO
      */
     public int newPrimaryKey( Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
-        daoUtil.executeQuery(  );
-
         int nKey = 1;
-
-        if ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin ) )
         {
-            nKey = daoUtil.getInt( 1 ) + 1;
+            daoUtil.executeQuery(  );
+    
+            if ( daoUtil.next(  ) )
+            {
+                nKey = daoUtil.getInt( 1 ) + 1;
+            }
         }
-
-        daoUtil.free(  );
 
         return nKey;
     }
@@ -86,19 +85,20 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public void insert( Panel panel, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
-        panel.setId( newPrimaryKey( plugin ) );
-
-        int nIndex = 1;
-
-        daoUtil.setInt( nIndex++, panel.getId(  ) );
-        daoUtil.setString( nIndex++, panel.getCode(  ) );
-        daoUtil.setString( nIndex++, panel.getTitle(  ) );
-        daoUtil.setString( nIndex++, panel.getDescription(  ) );
-        daoUtil.setBoolean( nIndex++, panel.isDefault(  ) );
-
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin ) )
+        {
+            panel.setId( newPrimaryKey( plugin ) );
+    
+            int nIndex = 1;
+    
+            daoUtil.setInt( nIndex++, panel.getId(  ) );
+            daoUtil.setString( nIndex++, panel.getCode(  ) );
+            daoUtil.setString( nIndex++, panel.getTitle(  ) );
+            daoUtil.setString( nIndex++, panel.getDescription(  ) );
+            daoUtil.setBoolean( nIndex++, panel.isDefault(  ) );
+    
+            daoUtil.executeUpdate(  );
+        }
     }
 
     /**
@@ -107,26 +107,25 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public Panel load( int nKey, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
-        daoUtil.setInt( 1, nKey );
-        daoUtil.executeQuery(  );
-
         Panel panel = null;
-
-        if ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
         {
-            panel = new Panel(  );
-
-            int nIndex = 1;
-
-            panel.setId( daoUtil.getInt( nIndex++ ) );
-            panel.setCode( daoUtil.getString( nIndex++ ) );
-            panel.setTitle( daoUtil.getString( nIndex++ ) );
-            panel.setDescription( daoUtil.getString( nIndex++ ) );
-            panel.setDefault( daoUtil.getBoolean( nIndex++ ) );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery(  );
+    
+            if ( daoUtil.next(  ) )
+            {
+                panel = new Panel(  );
+    
+                int nIndex = 1;
+    
+                panel.setId( daoUtil.getInt( nIndex++ ) );
+                panel.setCode( daoUtil.getString( nIndex++ ) );
+                panel.setTitle( daoUtil.getString( nIndex++ ) );
+                panel.setDescription( daoUtil.getString( nIndex++ ) );
+                panel.setDefault( daoUtil.getBoolean( nIndex++ ) );
+            }
         }
-
-        daoUtil.free(  );
 
         return panel;
     }
@@ -137,26 +136,25 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public Panel loadByCode( String strCode, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_CODE, plugin );
-        daoUtil.setString( 1, strCode );
-        daoUtil.executeQuery(  );
-
         Panel panel = null;
-
-        if ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_CODE, plugin ) )
         {
-            panel = new Panel(  );
-
-            int nIndex = 1;
-
-            panel.setId( daoUtil.getInt( nIndex++ ) );
-            panel.setCode( daoUtil.getString( nIndex++ ) );
-            panel.setTitle( daoUtil.getString( nIndex++ ) );
-            panel.setDescription( daoUtil.getString( nIndex++ ) );
-            panel.setDefault( daoUtil.getBoolean( nIndex++ ) );
+            daoUtil.setString( 1, strCode );
+            daoUtil.executeQuery(  );
+    
+            if ( daoUtil.next(  ) )
+            {
+                panel = new Panel(  );
+    
+                int nIndex = 1;
+    
+                panel.setId( daoUtil.getInt( nIndex++ ) );
+                panel.setCode( daoUtil.getString( nIndex++ ) );
+                panel.setTitle( daoUtil.getString( nIndex++ ) );
+                panel.setDescription( daoUtil.getString( nIndex++ ) );
+                panel.setDefault( daoUtil.getBoolean( nIndex++ ) );
+            }
         }
-
-        daoUtil.free(  );
 
         return panel;
     }
@@ -167,10 +165,11 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public void delete( int nKey, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
-        daoUtil.setInt( 1, nKey );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
+        {
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeUpdate(  );
+        }
     }
 
     /**
@@ -179,18 +178,19 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public void store( Panel panel, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
-        int nIndex = 1;
-
-        daoUtil.setInt( nIndex++, panel.getId(  ) );
-        daoUtil.setString( nIndex++, panel.getCode(  ) );
-        daoUtil.setString( nIndex++, panel.getTitle(  ) );
-        daoUtil.setString( nIndex++, panel.getDescription(  ) );
-        daoUtil.setBoolean( nIndex++, panel.isDefault(  ) );
-        daoUtil.setInt( nIndex, panel.getId(  ) );
-
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
+        {
+            int nIndex = 1;
+    
+            daoUtil.setInt( nIndex++, panel.getId(  ) );
+            daoUtil.setString( nIndex++, panel.getCode(  ) );
+            daoUtil.setString( nIndex++, panel.getTitle(  ) );
+            daoUtil.setString( nIndex++, panel.getDescription(  ) );
+            daoUtil.setBoolean( nIndex++, panel.isDefault(  ) );
+            daoUtil.setInt( nIndex, panel.getId(  ) );
+    
+            daoUtil.executeUpdate(  );
+        }
     }
 
     /**
@@ -199,24 +199,24 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public List<Panel> selectPanelsList( Plugin plugin )
     {
-        List<Panel> panelList = new ArrayList<Panel>(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL + SQL_QUERY_ORDER_BY_TITLE, plugin );
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        List<Panel> panelList = new ArrayList<>( );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL + SQL_QUERY_ORDER_BY_TITLE, plugin ) )
         {
-            Panel panel = new Panel(  );
-            int nIndex = 1;
-
-            panel.setId( daoUtil.getInt( nIndex++ ) );
-            panel.setCode( daoUtil.getString( nIndex++ ) );
-            panel.setTitle( daoUtil.getString( nIndex++ ) );
-            panel.setDescription( daoUtil.getString( nIndex++ ) );
-            panel.setDefault( daoUtil.getBoolean( nIndex ) );
-            panelList.add( panel );
+            daoUtil.executeQuery(  );
+    
+            while ( daoUtil.next(  ) )
+            {
+                Panel panel = new Panel(  );
+                int nIndex = 1;
+    
+                panel.setId( daoUtil.getInt( nIndex++ ) );
+                panel.setCode( daoUtil.getString( nIndex++ ) );
+                panel.setTitle( daoUtil.getString( nIndex++ ) );
+                panel.setDescription( daoUtil.getString( nIndex++ ) );
+                panel.setDefault( daoUtil.getBoolean( nIndex ) );
+                panelList.add( panel );
+            }
         }
-
-        daoUtil.free(  );
 
         return panelList;
     }
@@ -227,16 +227,16 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public List<Integer> selectIdPanelsList( Plugin plugin )
     {
-        List<Integer> panelList = new ArrayList<Integer>(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin );
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        List<Integer> panelList = new ArrayList<>(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
         {
-            panelList.add( daoUtil.getInt( 1 ) );
+            daoUtil.executeQuery(  );
+    
+            while ( daoUtil.next(  ) )
+            {
+                panelList.add( daoUtil.getInt( 1 ) );
+            }
         }
-
-        daoUtil.free(  );
 
         return panelList;
     }
@@ -248,15 +248,15 @@ public final class PanelDAO implements IPanelDAO
     public ReferenceList selectPanelsReferenceList( Plugin plugin )
     {
         ReferenceList panelList = new ReferenceList(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-            panelList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            daoUtil.executeQuery(  );
+    
+            while ( daoUtil.next(  ) )
+            {
+                panelList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            }
         }
-
-        daoUtil.free(  );
 
         return panelList;
     }
@@ -267,26 +267,24 @@ public final class PanelDAO implements IPanelDAO
     @Override
     public Panel loadDefaultPanel( Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_DEFAULT_PANEL, plugin );
-
-        daoUtil.executeQuery(  );
-
         Panel panel = null;
-
-        if ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_DEFAULT_PANEL, plugin ) )
         {
-            panel = new Panel(  );
-
-            int nIndex = 1;
-
-            panel.setId( daoUtil.getInt( nIndex++ ) );
-            panel.setCode( daoUtil.getString( nIndex++ ) );
-            panel.setTitle( daoUtil.getString( nIndex++ ) );
-            panel.setDescription( daoUtil.getString( nIndex++ ) );
-            panel.setDefault( daoUtil.getBoolean( nIndex++ ) );
+            daoUtil.executeQuery(  );
+    
+            if ( daoUtil.next(  ) )
+            {
+                panel = new Panel(  );
+    
+                int nIndex = 1;
+    
+                panel.setId( daoUtil.getInt( nIndex++ ) );
+                panel.setCode( daoUtil.getString( nIndex++ ) );
+                panel.setTitle( daoUtil.getString( nIndex++ ) );
+                panel.setDescription( daoUtil.getString( nIndex++ ) );
+                panel.setDefault( daoUtil.getBoolean( nIndex++ ) );
+            }
         }
-
-        daoUtil.free(  );
 
         return panel;
     }
