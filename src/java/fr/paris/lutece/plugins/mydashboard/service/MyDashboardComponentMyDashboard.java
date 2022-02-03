@@ -63,7 +63,7 @@ public class MyDashboardComponentMyDashboard extends MyDashboardComponent
     @Override
     public String getDashboardData( HttpServletRequest request )
     {
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<>(  );
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_DASHBOARD_COMPONENT_MY_DASHBOARD,
                 request.getLocale(  ), model );
 

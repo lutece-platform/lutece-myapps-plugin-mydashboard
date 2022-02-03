@@ -39,7 +39,6 @@ import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO
 import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
 import fr.paris.lutece.plugins.mydashboard.business.Panel;
 import fr.paris.lutece.plugins.mydashboard.business.PanelHome;
-import fr.paris.lutece.portal.service.dashboard.DashboardService;
 import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -219,7 +218,7 @@ public final class MyDashboardService
 
         List<IMyDashboardComponent> listDashboardComponents = getMyDashboardComponentsList( user );
 
-        if ( listDashboardConfigs.size(  ) == 0 )
+        if ( listDashboardConfigs.isEmpty( ) )
         {
             // If there is no dash board configured, we generate the configuration
             Collections.sort( listDashboardComponents );
@@ -240,7 +239,7 @@ public final class MyDashboardService
         else
         {
             // We first check that every configuration is associated with an available dashboard component
-            List<MyDashboardConfiguration> listConfigToRemove = new ArrayList<MyDashboardConfiguration>(  );
+            List<MyDashboardConfiguration> listConfigToRemove = new ArrayList<>(  );
 
             for ( MyDashboardConfiguration config : listDashboardConfigs )
             {
@@ -263,7 +262,7 @@ public final class MyDashboardService
                 }
             }
 
-            if ( listConfigToRemove.size(  ) > 0 )
+            if ( !listConfigToRemove.isEmpty( ) )
             {
                 for ( MyDashboardConfiguration config : listConfigToRemove )
                 {
@@ -289,7 +288,7 @@ public final class MyDashboardService
             }
 
             // We now check that every component has a configuration
-            List<MyDashboardConfiguration> listConfigCreated = new ArrayList<MyDashboardConfiguration>(  );
+            List<MyDashboardConfiguration> listConfigCreated = new ArrayList<>(  );
 
             for ( IMyDashboardComponent component : listDashboardComponents )
             {
@@ -318,7 +317,7 @@ public final class MyDashboardService
                 }
             }
 
-            if ( listConfigCreated.size(  ) > 0 )
+            if ( !listConfigCreated.isEmpty( ) )
             {
                 listDashboardConfigs.addAll( listConfigCreated );
             }
@@ -375,7 +374,7 @@ public final class MyDashboardService
         {
             List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
 
-            listComponentsSorted = new ArrayList<IMyDashboardComponent>( listComponents.size(  ) );
+            listComponentsSorted = new ArrayList<>( listComponents.size(  ) );
     
             for ( MyDashboardConfiguration config : listUserConfig )
             {
@@ -395,11 +394,11 @@ public final class MyDashboardService
                 }
             }
     
-            if ( listComponents.size(  ) > 0 )
+            if ( !listComponents.isEmpty( ) )
             {
                 AppLogService.error( 
                     "MyDashboard : dashboard(s) found without user configuration - will proceed to the creation of the configuration" );
-                int nLastUsedOrder = ( listUserConfig.size(  ) > 0 )
+                int nLastUsedOrder = ( !listUserConfig.isEmpty( ) )
                     ? ( listUserConfig.get( listUserConfig.size(  ) - 1 ).getOrder(  ) + 1 ) : 1;
                 String strConfigId = getUserConfigId( user );
     
