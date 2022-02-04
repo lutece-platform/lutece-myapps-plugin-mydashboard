@@ -67,6 +67,10 @@ import javax.servlet.http.HttpServletRequest;
 @Controller( controllerJsp = "ManageMyDashboardPanel.jsp", controllerPath = "jsp/admin/plugins/mydashboard/", right = "MYDASHBOARD_PANEL_MANAGEMENT" )
 public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8224755001223060220L;
     // Templates
     private static final String TEMPLATE_MANAGE_PANELS = "/admin/plugins/mydashboard/manage_panels.html";
     private static final String TEMPLATE_CREATE_PANEL = "/admin/plugins/mydashboard/create_panel.html";
@@ -145,7 +149,7 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
                                                                     .getMyDashboardComponentsRefList( getLocale(  ) );
         Map<String, String> mapDashboardComponents = refListDashBoardComponent.toMap(  );
 
-        Map<String, List<DashboardAssociation>> mapPanelDashboardAssociations = new HashMap<String, List<DashboardAssociation>>(  );
+        Map<String, List<DashboardAssociation>> mapPanelDashboardAssociations = new HashMap<>(  );
         List<DashboardAssociation> listDashBoardAssociations = DashboardAssociationHome.getDashboardAssociationsList(  );
 
         for ( DashboardAssociation dashboardAssociation : listDashBoardAssociations )
@@ -153,7 +157,7 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
             if ( !mapPanelDashboardAssociations.containsKey( Integer.toString( dashboardAssociation.getIdPanel(  ) ) ) )
             {
                 mapPanelDashboardAssociations.put( Integer.toString( dashboardAssociation.getIdPanel(  ) ),
-                    new ArrayList<DashboardAssociation>(  ) );
+                    new ArrayList<>(  ) );
             }
 
             mapPanelDashboardAssociations.get( Integer.toString( dashboardAssociation.getIdPanel(  ) ) )

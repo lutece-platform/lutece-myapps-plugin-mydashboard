@@ -65,17 +65,16 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
      */
     public int newPrimaryKey( Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
-        daoUtil.executeQuery(  );
-
         int nKey = 1;
-
-        if ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin ) )
         {
-            nKey = daoUtil.getInt( 1 ) + 1;
+            daoUtil.executeQuery(  );
+    
+            if ( daoUtil.next(  ) )
+            {
+                nKey = daoUtil.getInt( 1 ) + 1;
+            }
         }
-
-        daoUtil.free(  );
 
         return nKey;
     }
@@ -86,18 +85,19 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public void insert( DashboardAssociation dashboardAssociation, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
-        dashboardAssociation.setId( newPrimaryKey( plugin ) );
-
-        int nIndex = 1;
-
-        daoUtil.setInt( nIndex++, dashboardAssociation.getId(  ) );
-        daoUtil.setString( nIndex++, dashboardAssociation.getIdDashboard(  ) );
-        daoUtil.setInt( nIndex++, dashboardAssociation.getIdPanel(  ) );
-        daoUtil.setInt( nIndex++, dashboardAssociation.getPosition(  ) );
-
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin ) )
+        {
+            dashboardAssociation.setId( newPrimaryKey( plugin ) );
+    
+            int nIndex = 1;
+    
+            daoUtil.setInt( nIndex++, dashboardAssociation.getId(  ) );
+            daoUtil.setString( nIndex++, dashboardAssociation.getIdDashboard(  ) );
+            daoUtil.setInt( nIndex++, dashboardAssociation.getIdPanel(  ) );
+            daoUtil.setInt( nIndex++, dashboardAssociation.getPosition(  ) );
+    
+            daoUtil.executeUpdate(  );
+        }
     }
 
     /**
@@ -106,25 +106,25 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public DashboardAssociation load( int nKey, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
-        daoUtil.setInt( 1, nKey );
-        daoUtil.executeQuery(  );
-
         DashboardAssociation dashboardAssociation = null;
-
-        if ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
         {
-            dashboardAssociation = new DashboardAssociation(  );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery(  );
+    
+            if ( daoUtil.next(  ) )
+            {
+                dashboardAssociation = new DashboardAssociation(  );
+    
+                int nIndex = 1;
+    
+                dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
+                dashboardAssociation.setIdDashboard( daoUtil.getString( nIndex++ ) );
+                dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
+                dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
+            }
 
-            int nIndex = 1;
-
-            dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
-            dashboardAssociation.setIdDashboard( daoUtil.getString( nIndex++ ) );
-            dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
-            dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
         }
-
-        daoUtil.free(  );
 
         return dashboardAssociation;
     }
@@ -135,10 +135,11 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public void delete( int nKey, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
-        daoUtil.setInt( 1, nKey );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
+        {
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeUpdate(  );
+        }
     }
 
     /**
@@ -147,17 +148,18 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public void store( DashboardAssociation dashboardAssociation, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
-        int nIndex = 1;
-
-        daoUtil.setInt( nIndex++, dashboardAssociation.getId(  ) );
-        daoUtil.setString( nIndex++, dashboardAssociation.getIdDashboard(  ) );
-        daoUtil.setInt( nIndex++, dashboardAssociation.getIdPanel(  ) );
-        daoUtil.setInt( nIndex++, dashboardAssociation.getPosition(  ) );
-        daoUtil.setInt( nIndex, dashboardAssociation.getId(  ) );
-
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
+        {
+            int nIndex = 1;
+    
+            daoUtil.setInt( nIndex++, dashboardAssociation.getId(  ) );
+            daoUtil.setString( nIndex++, dashboardAssociation.getIdDashboard(  ) );
+            daoUtil.setInt( nIndex++, dashboardAssociation.getIdPanel(  ) );
+            daoUtil.setInt( nIndex++, dashboardAssociation.getPosition(  ) );
+            daoUtil.setInt( nIndex, dashboardAssociation.getId(  ) );
+    
+            daoUtil.executeUpdate(  );
+        }
     }
 
     /**
@@ -166,24 +168,25 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public List<DashboardAssociation> selectDashboardAssociationsList( Plugin plugin )
     {
-        List<DashboardAssociation> dashboardAssociationList = new ArrayList<DashboardAssociation>(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        List<DashboardAssociation> dashboardAssociationList = new ArrayList<>(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-            DashboardAssociation dashboardAssociation = new DashboardAssociation(  );
-            int nIndex = 1;
+            daoUtil.executeQuery(  );
+    
+            while ( daoUtil.next(  ) )
+            {
+                DashboardAssociation dashboardAssociation = new DashboardAssociation(  );
+                int nIndex = 1;
+    
+                dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
+                dashboardAssociation.setIdDashboard( daoUtil.getString( nIndex++ ) );
+                dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
+                dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
+    
+                dashboardAssociationList.add( dashboardAssociation );
+            }
 
-            dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
-            dashboardAssociation.setIdDashboard( daoUtil.getString( nIndex++ ) );
-            dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
-            dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
-
-            dashboardAssociationList.add( dashboardAssociation );
         }
-
-        daoUtil.free(  );
 
         return dashboardAssociationList;
     }
@@ -194,25 +197,25 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public List<DashboardAssociation> selectDashboardAssociationsListByIdPanel( int nIdPanel, Plugin plugin )
     {
-        List<DashboardAssociation> dashboardAssociationList = new ArrayList<DashboardAssociation>(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_PANEL, plugin );
-        daoUtil.setInt( 1, nIdPanel );
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        List<DashboardAssociation> dashboardAssociationList = new ArrayList<>(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_PANEL, plugin ) )
         {
-            DashboardAssociation dashboardAssociation = new DashboardAssociation(  );
-            int nIndex = 1;
-
-            dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
-            dashboardAssociation.setIdDashboard( daoUtil.getString( nIndex++ ) );
-            dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
-            dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
-
-            dashboardAssociationList.add( dashboardAssociation );
+            daoUtil.setInt( 1, nIdPanel );
+            daoUtil.executeQuery(  );
+    
+            while ( daoUtil.next(  ) )
+            {
+                DashboardAssociation dashboardAssociation = new DashboardAssociation(  );
+                int nIndex = 1;
+    
+                dashboardAssociation.setId( daoUtil.getInt( nIndex++ ) );
+                dashboardAssociation.setIdDashboard( daoUtil.getString( nIndex++ ) );
+                dashboardAssociation.setIdPanel( daoUtil.getInt( nIndex++ ) );
+                dashboardAssociation.setPosition( daoUtil.getInt( nIndex++ ) );
+    
+                dashboardAssociationList.add( dashboardAssociation );
+            }
         }
-
-        daoUtil.free(  );
 
         return dashboardAssociationList;
     }
@@ -223,17 +226,16 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public int selectCountDashboardAssociations( Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_COUNT_ALL, plugin );
-        daoUtil.executeQuery(  );
-
         int nCount = 0;
-
-        if ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_COUNT_ALL, plugin ) )
         {
-            nCount = daoUtil.getInt( 1 );
+            daoUtil.executeQuery(  );
+    
+            if ( daoUtil.next(  ) )
+            {
+                nCount = daoUtil.getInt( 1 );
+            }
         }
-
-        daoUtil.free(  );
 
         return nCount;
     }
@@ -244,16 +246,16 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     @Override
     public List<Integer> selectIdDashboardAssociationsList( Plugin plugin )
     {
-        List<Integer> dashboardAssociationList = new ArrayList<Integer>(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin );
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        List<Integer> dashboardAssociationList = new ArrayList<>(  );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
         {
-            dashboardAssociationList.add( daoUtil.getInt( 1 ) );
+            daoUtil.executeQuery(  );
+    
+            while ( daoUtil.next(  ) )
+            {
+                dashboardAssociationList.add( daoUtil.getInt( 1 ) );
+            }
         }
-
-        daoUtil.free(  );
 
         return dashboardAssociationList;
     }
@@ -265,15 +267,15 @@ public final class DashboardAssociationDAO implements IDashboardAssociationDAO
     public ReferenceList selectDashboardAssociationsReferenceList( Plugin plugin )
     {
         ReferenceList dashboardAssociationList = new ReferenceList(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin );
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-            dashboardAssociationList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            daoUtil.executeQuery(  );
+    
+            while ( daoUtil.next(  ) )
+            {
+                dashboardAssociationList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            }
         }
-
-        daoUtil.free(  );
 
         return dashboardAssociationList;
     }
