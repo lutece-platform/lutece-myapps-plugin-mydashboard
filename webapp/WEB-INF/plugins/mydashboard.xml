@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><plug-in>
     <name>mydashboard</name>
     <class>fr.paris.lutece.plugins.mydashboard.service.MyDashboardPlugin</class>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
     <description>mydashboard.plugin.description</description>
     <documentation/>
     <installation/>
