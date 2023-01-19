@@ -28,20 +28,20 @@
   </@columns>
   <@columns sm=9>
     <@box color='primary'>
-      <!-- <@boxHeader title='#i18n{mydashboard.managePanels.buttonAdd}' /> -->
       <@boxBody>
-      <@tform type='inline' method='post' name='modify_panel' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp'>
+      <@tform method='post' name='modify_panel' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp'>
           <@input type='hidden' id='id' name='id' value='${panel.id}' />
-          <@formGroup labelFor='id_component' labelKey='#i18n{mydashboard.modifyPanel.labelListDashboardComponent}' rows=1>
-            <@inputGroup>
-              <@select name='id_component' default_value='' items=list_dashboard_component />
-              <@button type='submit' buttonIcon='plus' name='action_addComponent' title='#i18n{portal.util.labelAdd}' />
-            </@inputGroup>
-          </@formGroup>
-          <#--
-            <@fieldInputCombo i18nLabelKey="mydashboard.modifyPanel.labelListDashboardComponent" inputName="id_component"  items=list_dashboard_component value="" i18nHelpBlockKey="mydashboard.modifyPanel.labelListDashboardComponent.help" />
-            <@actionButtons button1Name="action_addComponent" />
-          -->
+          <@row> 
+            <@columns>
+              <@formLabel labelFor='id_component' labelKey='#i18n{mydashboard.modifyPanel.labelListDashboardComponent}' class='pt-2' mandatory=false />
+            </@columns>
+            <@columns>
+              <@div class='d-flex is-flex justify-content-end is-justify-content-flex-end'>
+                <@select name='id_component' default_value='' items=list_dashboard_component />
+                <@button type='submit' buttonIcon='plus' name='action_addComponent' title='#i18n{portal.util.labelAdd}' />
+              </@div>
+            </@columns>
+          </@row>
         </@tform>
       </@boxBody>
     </@box>
