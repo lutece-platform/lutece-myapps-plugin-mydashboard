@@ -1,15 +1,28 @@
-<@rowBoxHeader i18nTitleKey="mydashboard.createPanel.title">
-    <form class="form-horizontal" method="post" name="create_panel" action="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp">
-        <@messages errors=errors />
-        <input type="hidden" id="id" name="id"/>
-        
-        <@fieldInputText i18nLabelKey="mydashboard.createPanel.labelCode" inputName="code" mandatory=true value="${panel.code!''}" i18nHelpBlockKey="mydashboard.createPanel.labelCode.help" />
-        <@fieldInputText i18nLabelKey="mydashboard.createPanel.labelTitle" inputName="title" mandatory=true value="${panel.title!''}" i18nHelpBlockKey="mydashboard.createPanel.labelTitle.help" />
-        <@fieldInputText i18nLabelKey="mydashboard.createPanel.labelDescription" inputName="description"  value="${panel.description!''}" i18nHelpBlockKey="mydashboard.createPanel.labelDescription.help" />
-        <@fieldInputCheckBox i18nLabelKey="mydashboard.createPanel.labelDefault" inputName="default"  value="true" checked=panel.default i18nHelpBlockKey="mydashboard.createPanel.labelDefault.help" />
-        
-        <@actionButtons button1Name="action_createPanel" button2Name="action_createPanelAndManageAssociations"i18nValue2Key="mydashboard.createPanel.actionCreateAndManageAssociations" />
-        
-    </form>
-</@rowBoxHeader>
-
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{mydashboard.createPanel.title}' boxTools=true skipHeader=true />
+			<@boxBody>
+                <@tform method='post' name='create_panel' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp'>
+                <@messages errors=errors />
+                <@formGroup labelFor='code' labelKey='#i18n{mydashboard.createPanel.labelCode}' helpKey='#i18n{mydashboard.createPanel.labelCode.help}' mandatory=true> 
+                    <@input type='text' id='code' name='code' value='${panel.code!}' />
+                </@formGroup>
+                <@formGroup labelFor='title' labelKey='#i18n{mydashboard.createPanel.labelTitle}' helpKey='#i18n{mydashboard.createPanel.labelTitle.help}' mandatory=true> 
+                    <@input type='text' id='title' name='title' value='${panel.title!}' />
+                </@formGroup>
+                <@formGroup labelFor='description' labelKey='#i18n{mydashboard.createPanel.labelDescription}' helpKey='#i18n{mydashboard.createPanel.labelDescription.help}'> 
+                    <@input type='text' id='description' name='description' value='${panel.description!}' />
+                </@formGroup>
+                <@formGroup labelFor='default' labelKey='#i18n{mydashboard.createPanel.labelDefault}' helpKey='#i18n{mydashboard.createPanel.labelDefault.help}'> 
+                    <@checkBox name='default' id='default' labelKey='#i18n{mydashboard.createPanel.labelDefault}' checked=panel.default value='true' />
+                </@formGroup>
+                <@formGroup>
+                    <@button type='submit' buttonIcon='check' name='action_createPanel' title='#i18n{portal.util.labelValidate}' />
+                    <@button type='submit' name='action_createPanelAndManageAssociations' buttonIcon='cog' title='#i18n{mydashboard.createPanel.actionCreateAndManageAssociations}' />
+                </@formGroup>
+            </@tform>
+            </@boxBody>
+        </@box>
+    </@columns>
+</@row>
