@@ -59,18 +59,18 @@
               <@td>${(map_dashboard_component[component.idDashboard!])!}</@td>
               <@td>
                 <#if component_index!=0>
-                  <a href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=moveUpComponent&id=${component.id}" class="btn btn-primary btn-sm" title="#i18n{mydashboard.modifyPanel.components.labelUp}" >
-                    <i class="fa fa-arrow-up"></i>
-                  </a>
+                  <@link href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=moveUpComponent&id=${component.id}" class="btn btn-primary btn-sm" title="#i18n{mydashboard.modifyPanel.components.labelUp}">
+                      <@cIcon class='arrow-up' label='' />
+                  </@link>
                 </#if>
                 <#if component_has_next>
-                  <a href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=moveDownComponent&id=${component.id}" class="btn btn-primary btn-sm" title="#i18n{mydashboard.modifyPanel.components.labelDown}" >
-                    <i class="fa fa-arrow-down"></i>
-                  </a>
+                  <@link href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=moveDownComponent&id=${component.id}" class="btn btn-primary btn-sm" title="#i18n{mydashboard.modifyPanel.components.labelDown}">
+                    <@cIcon class='arrow-down' label='' />
+                  </@link>
                 </#if>
-                <a href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=removeComponent&id=${component.id}" class="btn btn-danger btn-sm" title="#i18n{portal.util.labelDelete}" >
-                  <i class="fa fa-trash"></i>
-                </a>
+                <@link href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=removeComponent&id=${component.id}" class="btn btn-danger btn-sm" title="#i18n{portal.util.labelDelete}">
+                  <@cIcon class='trash' label='' />
+                </@link>
               </@td>
             </@tr>
           </#list>
