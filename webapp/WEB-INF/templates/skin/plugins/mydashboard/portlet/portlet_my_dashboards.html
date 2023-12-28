@@ -1,14 +1,6 @@
-<div class="row-fluid">
-	<fieldset>
-		<#if portlet.displayPortletTitle == 0>
-			<legend>
-				${portlet.name!}
-			</legend>
-		</#if>
-		<#list listDashboardsContent as dashboardContent>
-			<div class="well">
-				${dashboardContent!}
-			</div>
-		</#list>
-	</fieldset>
+<div class="row">
+	<div class="col">
+	<#if portlet.displayPortletTitle == 0><h2>${portlet.name!}</h2></#if>
+	<#list listDashboardsContent as dashboardContent>${dashboardContent!}</#list>
+	</div>
 </div>

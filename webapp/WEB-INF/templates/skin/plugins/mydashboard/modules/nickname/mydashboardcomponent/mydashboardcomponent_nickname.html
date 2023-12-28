@@ -1,9 +1,17 @@
-<form class="form-inline" method="post" action="jsp/site/plugins/mydashboard/modules/nickname/DoChangeNickname.jsp">
-    <fieldset>  
-        <legend>#i18n{module.mydashboard.nickname.dashboardComponent.nickname.labelNickname}</legend>
-	<div class="control-group">
-		<input type="text" id="nickname" name="nickname" value="${nickname!}">
-		<button type="submit" class="btn btn-small btn-primary"><i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{portal.util.labelValidate}</button>	
+<div class="col d-flex align-items-start">
+    <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h3" /><path d="M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" /><path d="M19 21v1m0 -8v1" /></svg>
+    </div>
+    <div>
+    	<h3 class="fs-2 text-body-emphasis">#i18n{module.mydashboard.nickname.dashboardComponent.nickname.labelNickname}</h3>
+    	<p>Changer mon pseudo. il suffit de d'ajouter ou de modifier votre pseudo dans le champs ci-dessous</p>
+		<form class="form-inline" method="post" action="jsp/site/plugins/mydashboard/modules/nickname/DoChangeNickname.jsp">
+		<div class="input-group">
+			<input class="form-control" type="text" id="nickname" name="nickname" value="${nickname!}">
+			<button type="submit" class="btn btn-small btn-primary">
+				<i class="ti ti-check"></i> #i18n{portal.util.labelValidate}
+			</button>	
+		</div>
+		</form>
 	</div>
-    </fieldset>
-</form>
+</div>
