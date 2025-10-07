@@ -1,3 +1,6 @@
+-- liquibase formatted sql
+-- changeset mydashboard:update_db_mydashboard-1.1.0-1.1.1.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 --
 -- Structure for table mydashboard_panel
 --
