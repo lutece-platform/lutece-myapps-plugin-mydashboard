@@ -1,3 +1,6 @@
+-- liquibase formatted sql
+-- changeset mydashboard:update_db_mydashboard-1.1.1-1.2.0.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 CREATE TABLE mydashboard_portlet_panel (
 id_portlet int NOT NULL,
 id_panel int(11) NOT NULL default '0',
