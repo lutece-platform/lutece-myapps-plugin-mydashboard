@@ -35,10 +35,9 @@ package fr.paris.lutece.plugins.mydashboard.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
 
-import org.apache.commons.collections.CollectionUtils;
+import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ import java.util.List;
 public final class DashboardAssociationHome
 {
     // Static variable pointed at the DAO instance
-    private static IDashboardAssociationDAO _dao = SpringContextService.getBean( "mydashboard.dashboardAssociationDAO" );
+    private static IDashboardAssociationDAO _dao = CDI.current().select( IDashboardAssociationDAO.class ).get();
     private static Plugin _plugin = PluginService.getPlugin( "mydashboard" );
 
     /**
@@ -69,7 +68,7 @@ public final class DashboardAssociationHome
         int nOrder = 1;
         List<DashboardAssociation> listDashboardAssociations = getDashboardAssociationsListByIdPanel( dashboardAssociation.getIdPanel(  ) );
 
-        if ( !CollectionUtils.isEmpty( listDashboardAssociations ) )
+        if ( ( listDashboardAssociations != null ) && !listDashboardAssociations.isEmpty(  ) )
         {
             nOrder = listDashboardAssociations.get( 0 ).getPosition(  ) + 1;
         }

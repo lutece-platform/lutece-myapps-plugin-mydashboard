@@ -35,10 +35,9 @@ package fr.paris.lutece.plugins.mydashboard.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
 
-import org.springframework.util.CollectionUtils;
+import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ import java.util.List;
 public final class PanelHome
 {
     // Static variable pointed at the DAO instance
-    private static IPanelDAO _dao = SpringContextService.getBean( "mydashboard.panelDAO" );
+    private static IPanelDAO _dao = CDI.current().select( IPanelDAO.class ).get();
     private static Plugin _plugin = PluginService.getPlugin( "mydashboard" );
 
     /**
@@ -181,7 +180,7 @@ public final class PanelHome
         if ( defaultPanel == null )
         {
             List<Panel> listPanel = getPanelsList(  );
-            defaultPanel = ( !CollectionUtils.isEmpty( listPanel ) ) ? listPanel.get( 0 ) : null;
+            defaultPanel = ( ( listPanel != null ) && !listPanel.isEmpty(  ) ) ? listPanel.get( 0 ) : null;
         }
 
         return defaultPanel;

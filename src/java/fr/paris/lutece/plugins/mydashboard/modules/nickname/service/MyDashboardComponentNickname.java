@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 2002-2014, Mairie de Paris
- * All rights reserved.import fr.paris.lutece.plugins.mydashboard.service.MyDashboardComponent;
-import fr.paris.lutece.portal.service.i18n.I18nService;
-import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.util.html.HtmlTemplate;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-ior written permission.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice
+ *     and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice
+ *     and the following disclaimer in the documentation and/or other materials
+ *     provided with the distribution.
+ *
+ *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -35,11 +35,15 @@ package fr.paris.lutece.plugins.mydashboard.modules.nickname.service;
 
 import fr.paris.lutece.plugins.mydashboard.service.MyDashboardComponent;
 import fr.paris.lutece.portal.service.i18n.I18nService;
-import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
+import fr.paris.lutece.portal.service.prefs.IPortalUserPreferencesService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,18 +51,20 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
  * Dashboard component to manage nicknames
  */
+@ApplicationScoped
+@Named( "mydashboard.myDashboardComponentNickname" )
 public class MyDashboardComponentNickname extends MyDashboardComponent
 {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 6070136013272015068L;
+
+    @Inject
+    private IPortalUserPreferencesService _userPreferencesService;
     private static final String DASHBOARD_COMPONENT_ID = "mydashboard.myDashboardComponentNickname";
     private static final String MESSAGE_DASHBOARD_COMPONENT_NICKNAME_DESCRIPTION = "module.mydashboard.nickname.dashboardComponent.nickname.description";
     private static final String MARK_USER_NICKNACME = "nickname";
@@ -76,7 +82,7 @@ public class MyDashboardComponentNickname extends MyDashboardComponent
 
             if ( user != null )
             {
-                String strUserNickName = UserPreferencesService.instance(  ).getNickname( user );
+                String strUserNickName = _userPreferencesService.getNickname( user );
                 Map<String, Object> model = new HashMap<String, Object>(  );
                 model.put( MARK_USER_NICKNACME, strUserNickName );
 

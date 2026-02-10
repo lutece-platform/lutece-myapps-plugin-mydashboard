@@ -43,6 +43,7 @@ import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
+import jakarta.enterprise.inject.spi.CDI;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
@@ -87,7 +88,7 @@ public class MyDashboardPortlet extends PortletHtmlContent
                 return StringUtils.EMPTY;
             }
             
-            MyDashboardService dashboardService = MyDashboardService.getInstance(  );
+            MyDashboardService dashboardService = CDI.current().select( MyDashboardService.class ).get();
             Map<String, Object> model = new HashMap<String, Object>(  );
             List<IMyDashboardComponent> listDashboardComponents;
             

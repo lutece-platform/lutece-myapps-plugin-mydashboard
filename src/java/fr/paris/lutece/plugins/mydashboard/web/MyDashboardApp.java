@@ -51,22 +51,32 @@ import fr.paris.lutece.util.url.UrlItem;
 
 import org.apache.commons.lang3.StringUtils;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
  * My Dashboard application
  */
 @Controller( xpageName = "mydashboard", pageTitleI18nKey = "mydashboard.getDashboard.pageTitle", pagePathI18nKey = "mydashboard.getDashboard.pagePath" )
+@RequestScoped
+@Named( "mydashboard.xpage.mydashboard" )
 public class MyDashboardApp extends MVCApplication
 {
     private static final long serialVersionUID = 5462159859477351128L;
+
+    @Inject
+    private MyDashboardService _myDashboardService;
     private static final String VIEW_GET_DASHBOARDS = "getDashboards";
     private static final String VIEW_GET_MODIFY_DASHBOARDS = "getModifyDashboards";
     private static final String ACTION_DO_MODIFY_DASHBOARDS = "doModifyDashboards";
@@ -105,7 +115,7 @@ public class MyDashboardApp extends MVCApplication
             throw new UserNotSignedException(  );
         }
 
-        MyDashboardService dashboardService = MyDashboardService.getInstance(  );
+        MyDashboardService dashboardService = _myDashboardService;
 
         Map<String, Object> model = new HashMap<String, Object>(  );
         List<IMyDashboardComponent> listDashboardComponents;
@@ -167,7 +177,7 @@ public class MyDashboardApp extends MVCApplication
             throw new UserNotSignedException(  );
         }
 
-        MyDashboardService dashboardService = MyDashboardService.getInstance(  );
+        MyDashboardService dashboardService = _myDashboardService;
 
         Map<String, Object> model = new HashMap<String, Object>(  );
         List<MyDashboardConfiguration> listDashboardConfig = dashboardService.getUserConfig( luteceUser );
@@ -212,7 +222,7 @@ public class MyDashboardApp extends MVCApplication
             return redirectView( request, VIEW_GET_DASHBOARDS );
         }
 
-        MyDashboardService dashboardService = MyDashboardService.getInstance(  );
+        MyDashboardService dashboardService = _myDashboardService;
 
         List<MyDashboardConfiguration> listDashboardConfig = dashboardService.getUserConfig( luteceUser );
 
@@ -249,7 +259,7 @@ public class MyDashboardApp extends MVCApplication
 
         if ( StringUtils.isNotEmpty( strDashboardComponentId ) )
         {
-            MyDashboardService dashboardService = MyDashboardService.getInstance(  );
+            MyDashboardService dashboardService = _myDashboardService;
             boolean bMoveUp = Boolean.parseBoolean( request.getParameter( PARAMETER_MOVE_UP ) );
             List<MyDashboardConfiguration> listConfig = dashboardService.getUserConfig( luteceUser );
             int nOldOrder = 0;
@@ -258,7 +268,7 @@ public class MyDashboardApp extends MVCApplication
 
             for ( MyDashboardConfiguration config : listConfig )
             {
-                if ( StringUtils.equals( config.getMyDashboardComponentId(  ), strDashboardComponentId ) )
+                if ( Objects.equals( config.getMyDashboardComponentId(  ), strDashboardComponentId ) )
                 {
                     nOldOrder = config.getOrder(  );
 
@@ -283,7 +293,7 @@ public class MyDashboardApp extends MVCApplication
             for ( MyDashboardConfiguration config : listConfig )
             {
                 if ( ( config.getOrder(  ) == nNewOrder ) &&
-                        !StringUtils.equals( config.getMyDashboardComponentId(  ), strDashboardComponentId ) )
+                        !Objects.equals( config.getMyDashboardComponentId(  ), strDashboardComponentId ) )
                 {
                     config.setOrder( nOldOrder );
                     dashboardService.updateConfig( config, false );

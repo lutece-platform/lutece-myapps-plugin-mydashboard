@@ -35,23 +35,17 @@ package fr.paris.lutece.plugins.mydashboard.service;
 
 import fr.paris.lutece.portal.service.security.LuteceUser;
 
+import jakarta.annotation.PostConstruct;
+
 import java.io.Serializable;
-
-import org.apache.commons.lang3.ObjectUtils;
-
-import org.springframework.beans.factory.InitializingBean;
-
-import org.springframework.util.Assert;
+import java.util.Objects;
 
 
 /**
  * Dash board Component
  */
-public abstract class MyDashboardComponent implements IMyDashboardComponent, InitializingBean, Serializable
+public abstract class MyDashboardComponent implements IMyDashboardComponent, Serializable
 {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 2702189175063697166L;
     private static final int MY_DASHBOARD_COMPONENT_ID_MAXIMUM_SIZE = 50;
 
@@ -84,7 +78,7 @@ public abstract class MyDashboardComponent implements IMyDashboardComponent, Ini
         {
             IMyDashboardComponent other = (IMyDashboardComponent) obj;
 
-            return ObjectUtils.equals( this.getComponentId(  ), other.getComponentId(  ) );
+            return Objects.equals( this.getComponentId(  ), other.getComponentId(  ) );
         }
 
         return false;
@@ -97,16 +91,16 @@ public abstract class MyDashboardComponent implements IMyDashboardComponent, Ini
     @Override
     public int hashCode(  )
     {
-        return ObjectUtils.hashCode( this.getComponentId(  ) );
+        return Objects.hashCode( this.getComponentId(  ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void afterPropertiesSet(  ) throws Exception
+    @PostConstruct
+    public void init(  )
     {
-        Assert.hasLength( getComponentId(  ), "Dashboard components must have a non null id" );
+        if ( ( getComponentId(  ) == null ) || getComponentId(  ).isEmpty(  ) )
+        {
+            throw new IllegalStateException( "Dashboard components must have a non null id" );
+        }
 
         if ( getComponentId(  ).length(  ) > MY_DASHBOARD_COMPONENT_ID_MAXIMUM_SIZE )
         {

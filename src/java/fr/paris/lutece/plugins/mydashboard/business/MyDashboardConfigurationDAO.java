@@ -37,6 +37,8 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.UniqueIDGenerator;
 import fr.paris.lutece.util.sql.DAOUtil;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,6 +47,7 @@ import java.util.Random;
 /**
  * Implementation of IMyDashboardConfigurationDAO
  */
+@ApplicationScoped
 public class MyDashboardConfigurationDAO implements IMyDashboardConfigurationDAO
 {
     private static final String SQL_QUERY_FIND_BY_CONFIG_ID = " SELECT my_dashboard_component_id, id_config, dashboard_order, hide_dashboard FROM mydashboard_configuration WHERE id_config = ? ";

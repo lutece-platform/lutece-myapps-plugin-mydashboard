@@ -39,50 +39,43 @@ import fr.paris.lutece.plugins.mydashboard.business.IMyDashboardConfigurationDAO
 import fr.paris.lutece.plugins.mydashboard.business.MyDashboardConfiguration;
 import fr.paris.lutece.plugins.mydashboard.business.Panel;
 import fr.paris.lutece.plugins.mydashboard.business.PanelHome;
-import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
+import fr.paris.lutece.portal.service.prefs.IPortalUserPreferencesService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.web.LocalVariables;
 import fr.paris.lutece.util.ReferenceList;
 
-import org.apache.commons.lang3.StringUtils;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
  * Dashboard Service
  */
-public final class MyDashboardService
+@ApplicationScoped
+public class MyDashboardService
 {
     private static final String SESSION_LIST_DASHBOARD = "mydashboard.sessionListMyDashboard";
     private static final String SESSION_LIST_DASHBOARD_CONFIG = "mydashboard.sessionListMyDashboardConfig";
     private static final String PARAMETER_CONFIG_ID = "mydashboard.dashboardConfigId";
-    private static MyDashboardService _singleton = new MyDashboardService(  );
-    private IMyDashboardConfigurationDAO _myDashboardComponentDAO = SpringContextService.getBean( 
-            "mydashboard.myDashboardConfigurationDAO" );
 
-    /**
-     * Private Constructor
-     */
-    private MyDashboardService(  )
-    {
-    }
+    @Inject
+    private IMyDashboardConfigurationDAO _myDashboardComponentDAO;
 
-    /**
-     * Return the unique instance
-     * @return The instance
-     */
-    public static MyDashboardService getInstance(  )
-    {
-        return _singleton;
-    }
+    @Inject
+    private IPortalUserPreferencesService _userPreferencesService;
+
+    @Inject
+    private Instance<IMyDashboardComponent> _dashboardComponents;
 
     /**
      * Get the list of MyDashboardComponent that are available for a given user
@@ -102,7 +95,7 @@ public final class MyDashboardService
     {
         ReferenceList referenceList = new ReferenceList(  );
 
-        List<IMyDashboardComponent> listDashboardComponents = SpringContextService.getBeansOfType( IMyDashboardComponent.class );
+        List<IMyDashboardComponent> listDashboardComponents = _dashboardComponents.stream().collect( java.util.stream.Collectors.toList() );
 
         if ( listDashboardComponents != null )
         {
@@ -124,7 +117,7 @@ public final class MyDashboardService
      */
     public List<IMyDashboardComponent> getMyDashboardComponentsList( LuteceUser user, Panel panel )
     {
-        List<IMyDashboardComponent> listDashboardComponents = SpringContextService.getBeansOfType( IMyDashboardComponent.class );
+        List<IMyDashboardComponent> listDashboardComponents = _dashboardComponents.stream().collect( java.util.stream.Collectors.toList() );
 
         List<IMyDashboardComponent> listDashboardComponentsFiltered = new ArrayList<IMyDashboardComponent>( listDashboardComponents.size(  ) );
 
@@ -182,12 +175,12 @@ public final class MyDashboardService
             }
         }
 
-        strConfigId = UserPreferencesService.instance(  ).get( user.getName(  ), PARAMETER_CONFIG_ID, null );
+        strConfigId = _userPreferencesService.get( user.getName(  ), PARAMETER_CONFIG_ID, null );
 
         if ( strConfigId == null )
         {
             strConfigId = _myDashboardComponentDAO.getNewConfigId(  );
-            UserPreferencesService.instance(  ).put( user.getName(  ), PARAMETER_CONFIG_ID, strConfigId );
+            _userPreferencesService.put( user.getName(  ), PARAMETER_CONFIG_ID, strConfigId );
         }
 
         if ( LocalVariables.getRequest(  ) != null )
@@ -367,41 +360,41 @@ public final class MyDashboardService
         }
 
         List<IMyDashboardComponent> listComponentsSorted;
-       
+
         listComponents = getMyDashboardComponentsList( user, panel );
-        
-        if( !MyDashboardService.getInstance( ).isPanelEnabled( ) )
+
+        if( !isPanelEnabled( ) )
         {
             List<MyDashboardConfiguration> listUserConfig = getUserConfig( user );
 
             listComponentsSorted = new ArrayList<>( listComponents.size(  ) );
-    
+
             for ( MyDashboardConfiguration config : listUserConfig )
             {
                 for ( IMyDashboardComponent component : listComponents )
                 {
-                    if ( StringUtils.equals( config.getMyDashboardComponentId(  ), component.getComponentId(  ) ) )
+                    if ( Objects.equals( config.getMyDashboardComponentId(  ), component.getComponentId(  ) ) )
                     {
                         if ( !config.getHideDashboard(  ) )
                         {
                             listComponentsSorted.add( component );
                         }
-    
+
                         listComponents.remove( component );
-    
+
                         break;
                     }
                 }
             }
-    
+
             if ( !listComponents.isEmpty( ) )
             {
-                AppLogService.error( 
+                AppLogService.error(
                     "MyDashboard : dashboard(s) found without user configuration - will proceed to the creation of the configuration" );
                 int nLastUsedOrder = ( !listUserConfig.isEmpty( ) )
                     ? ( listUserConfig.get( listUserConfig.size(  ) - 1 ).getOrder(  ) + 1 ) : 1;
                 String strConfigId = getUserConfigId( user );
-    
+
                 for ( IMyDashboardComponent component : listComponents )
                 {
                     MyDashboardConfiguration config = new MyDashboardConfiguration(  );
@@ -412,7 +405,7 @@ public final class MyDashboardService
                     _myDashboardComponentDAO.insertConfiguration( config, MyDashboardPlugin.getPlugin(  ) );
                     listUserConfig.add( config );
                 }
-    
+
                 saveMyDashboardConfigListInSession( listUserConfig );
                 listComponentsSorted.addAll( listComponents );
             }

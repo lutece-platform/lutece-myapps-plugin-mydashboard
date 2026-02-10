@@ -1,15 +1,16 @@
 /*
  * Copyright (c) 2002-2014, Mairie de Paris
- * All rights reservimport fr.paris.lutece.plugins.mydashboard.web.MyDashboardApp;
-import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.portal.service.util.AppPathService;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-cumentation and/or other materials
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice
+ *     and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice
+ *     and the following disclaimer in the documentation and/or other materials
  *     provided with the distribution.
  *
  *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
@@ -33,14 +34,16 @@ cumentation and/or other materials
 package fr.paris.lutece.plugins.mydashboard.modules.nickname.web;
 
 import fr.paris.lutece.plugins.mydashboard.web.MyDashboardApp;
-import fr.paris.lutece.portal.service.prefs.UserPreferencesService;
+import fr.paris.lutece.portal.service.prefs.IPortalUserPreferencesService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 
+import jakarta.enterprise.inject.spi.CDI;
+
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
@@ -64,7 +67,7 @@ public class MyDashboardNicknameApp
         if ( user != null )
         {
             String strNickname = request.getParameter( PARAMETER_NICKNAME );
-            UserPreferencesService.instance(  ).setNickname( user.getName(  ), strNickname );
+            CDI.current( ).select( IPortalUserPreferencesService.class ).get( ).setNickname( user.getName( ), strNickname );
         }
 
         String strReferer = request.getHeader( HTML_PARAMETER_REFERER );
