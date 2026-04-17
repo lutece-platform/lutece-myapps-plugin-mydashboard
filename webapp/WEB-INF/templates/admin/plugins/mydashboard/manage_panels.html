@@ -1,52 +1,41 @@
-<@row>
-	<@columns>
-		<@box>
-			<@boxHeader title='#i18n{mydashboard.managePanels.title}' boxTools=true skipHeader=true >
-				<@tform type='inline' method='post' name='manage_panels' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp'>
-					<@button type='submit' name='view_createPanel' title='#i18n{mydashboard.managePanels.buttonAdd}' buttonIcon='plus' size='' />
-				</@tform>
-			</@boxHeader>
-			<@boxBody>
-                <@messages infos=infos />
-                <@table>
-                    <@tr>
-                        <@th></@th>
-                        <@th>#i18n{mydashboard.managePanels.columnCode}</@th>
-                        <@th>#i18n{mydashboard.managePanels.columnTitle}</@th>
-                        <@th>#i18n{mydashboard.managePanels.columnComponentList}</@th>   
-                        <@th>#i18n{portal.util.labelActions}</@th>
-                    </@tr>
-                    <@tableHeadBodySeparator />
-                    <#list panel_list as panel >
-                    <@tr>
-                        <@td class='w-5'><#if panel.default><@tag color='success' tagIcon='check'>#i18n{mydashboard.managePanels.defaultLabel}</@tag></#if></@td>
-                        <@td>${panel.code}</@td>
-                        <@td>${panel.title}</@td>
-                        <@td>
-                        <#if (map_panel_list_dashboard_component["${panel.id}"])??>
-                            <#assign listDashboard = map_panel_list_dashboard_component["${panel.id}"] />
-                            <#if listDashboard??>
-                                <@ul class="list-unstyled">
-                                <#list listDashboard as component>
-                                    <@li>${(map_dashboard_component[component.idDashboard!])!}</@li>
-                                </#list>
-                                </@ul> 
-                            </#if>
-                        </#if> 
-                        </@td>
-                        <@td>
-                            <@link href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&id=${panel.id}" class="btn btn-primary" title="#i18n{portal.util.labelModify}">
-                                <@cIcon class='edit' label='' />
-                            </@link>
-                            <@link href="jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=confirmRemovePanel&id=${panel.id}" class="btn btn-danger" title="#i18n{portal.util.labelDelete}" >
-                                <@cIcon class='trash' label='' />
-                            </@link>
-                        </@td>
-                    </@tr>
-                    </#list>
-                </@table>
-                <@paginationAdmin paginator=paginator combo=1 />
-            </@boxBody>
-        </@box>
-    </@columns>
-</@row>
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{mydashboard.managePanels.title}'>
+            <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=createPanel' buttonIcon='plus' title='#i18n{mydashboard.managePanels.buttonAdd}' color='primary' />
+        </@pageHeader>
+        <@messages infos=infos! />
+        <@table>
+            <tr>
+                <th></th>
+                <th>#i18n{mydashboard.managePanels.columnCode}</th>
+                <th>#i18n{mydashboard.managePanels.columnTitle}</th>
+                <th>#i18n{mydashboard.managePanels.columnComponentList}</th>
+                <th>#i18n{portal.util.labelActions}</th>
+            </tr>
+            <#list panel_list as panel>
+            <tr>
+                <td class='w-5'><#if panel.default><@tag color='success' tagIcon='check'>#i18n{mydashboard.managePanels.defaultLabel}</@tag></#if></td>
+                <td>${panel.code!}</td>
+                <td>${panel.title!}</td>
+                <td>
+                    <#if (map_panel_list_dashboard_component["${panel.id}"])??>
+                        <#assign listDashboard = map_panel_list_dashboard_component["${panel.id}"] />
+                        <#if listDashboard??>
+                            <ul class="list-unstyled">
+                            <#list listDashboard as component>
+                                <li>${(map_dashboard_component[component.idDashboard!])!}</li>
+                            </#list>
+                            </ul>
+                        </#if>
+                    </#if>
+                </td>
+                <td>
+                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&id=${panel.id}' buttonIcon='edit' title='#i18n{portal.util.labelModify}' color='primary' size='sm' />
+                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=confirmRemovePanel&id=${panel.id}' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' color='danger' size='sm' />
+                </td>
+            </tr>
+            </#list>
+        </@table>
+        <@paginationAdmin paginator=paginator combo=1 />
+    </@pageColumn>
+</@pageContainer>

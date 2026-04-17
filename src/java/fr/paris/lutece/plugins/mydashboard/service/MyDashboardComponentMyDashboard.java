@@ -37,16 +37,21 @@ import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
  * Dashboard component to modify dashboard components
  */
+@ApplicationScoped
+@Named( "mydashboard.myDashboardComponentMyDashboard" )
 public class MyDashboardComponentMyDashboard extends MyDashboardComponent
 {
     /**

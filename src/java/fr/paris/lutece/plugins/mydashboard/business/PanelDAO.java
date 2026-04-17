@@ -37,6 +37,8 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.sql.DAOUtil;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,8 @@ import java.util.List;
 /**
  * This class provides Data Access methods for Panel objects
  */
-public final class PanelDAO implements IPanelDAO
+@ApplicationScoped
+public class PanelDAO implements IPanelDAO
 {
     // Constants
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_panel ) FROM mydashboard_panel";

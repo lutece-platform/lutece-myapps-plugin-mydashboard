@@ -38,10 +38,13 @@ import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.util.sql.DAOUtil;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
 
 /**
  * DAO for MyDashboard portlets
  */
+@ApplicationScoped
 public class MyDashboardPortletDAO implements IPortletInterfaceDAO
 {
 	 // Constants

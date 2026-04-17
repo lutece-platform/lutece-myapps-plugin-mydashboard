@@ -36,7 +36,8 @@ package fr.paris.lutece.plugins.mydashboard.business.portlet;
 import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.business.portlet.PortletTypeHome;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
+
+import jakarta.enterprise.inject.spi.CDI;
 
 
 /**
@@ -45,7 +46,7 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 public class MyDashboardPortletHome extends PortletHome
 {
     private static volatile MyDashboardPortletHome _instance;
-    private IPortletInterfaceDAO _dao = SpringContextService.getBean( "mydashboard.myDashboardPortletDAO" );
+    private IPortletInterfaceDAO _dao = CDI.current().select( IPortletInterfaceDAO.class ).get();
 
     /**
      * Get the instance of the home

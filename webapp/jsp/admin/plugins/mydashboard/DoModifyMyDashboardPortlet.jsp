@@ -1,8 +1,6 @@
 <%@ page errorPage="../../ErrorPage.jsp" %>
 
-<jsp:useBean id="mydashboardPortlet" scope="session" class="fr.paris.lutece.plugins.mydashboard.web.portlet.MyDashboardPortletJspBean" />
+<%@page import="fr.paris.lutece.plugins.mydashboard.web.portlet.MyDashboardPortletJspBean"%>
 
-<%
-	mydashboardPortlet.init( request, mydashboardPortlet.RIGHT_MANAGE_ADMIN_SITE );
-    response.sendRedirect( mydashboardPortlet.doModify( request )   );
-%>
+${ myDashboardPortletJspBean.init( pageContext.request, MyDashboardPortletJspBean.RIGHT_MANAGE_ADMIN_SITE ) }
+${ pageContext.response.sendRedirect( myDashboardPortletJspBean.doModify( pageContext.request ) ) }
