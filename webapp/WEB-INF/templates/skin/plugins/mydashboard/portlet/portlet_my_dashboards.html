@@ -1,6 +1,8 @@
-<div class="row">
-    <div class="col">
-        <#if portlet.displayPortletTitle == 0><h2>${portlet.name!}</h2></#if>
-        <#list listDashboardsContent as dashboardContent>${dashboardContent!}</#list>
-    </div>
-</div>
+<@cRow>
+	<@cCol>
+		<#if portlet.displayPortletTitle == 0><@cTitle level=3>${portlet.name!}</@cTitle></#if>
+		<#list listDashboardsContent as dashboardContent>
+			${dashboardContent!}
+		</#list>
+	</@cCol>
+</@cRow>

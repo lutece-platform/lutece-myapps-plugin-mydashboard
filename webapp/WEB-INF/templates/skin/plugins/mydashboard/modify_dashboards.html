@@ -1,50 +1,44 @@
-<form action="jsp/site/Portal.jsp">
-    <input type="hidden" name="page" value="mydashboard">
-    <input type="hidden" name="action" value="doModifyDashboards" title="#i18n{portal.util.labelValidate}">
-    <div class="row">
-        <div class="col">
-            <h2>#i18n{mydashboard.modifyDashboards.pageTitle}</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#i18n{mydashboard.modifyDashboards.labelDescription}</th>
-                        <th>#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}</th>
-                        <th>#i18n{mydashboard.modifyDashboards.labelOrder}</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+<@cContainer>
+	<@cRow class='border-bottom pb-m align-items-center'>
+		<@cCol>
+			<@cTitle level=2>#i18n{mydashboard.modifyDashboards.pageTitle}</@cTitle>
+		</@cCol>
+    </@cRow>
+    <@cRow>
+        <@cCol>
+            <@cForm action='jsp/site/Portal.jsp'>
+            <@cInput type='hidden' name='page' value='mydashboard' />
+            <@cInput type='hidden' name='action' value='doModifyDashboards' />
+            <@chList class='list-group mt-m'>
                 <#list listDashboardsConfig as dashboardConfiguration>
-                <tr>
-                    <td>${listComponentsDescription[dashboardConfiguration.myDashboardComponentId]!}</td>
-                    <td>
-                        <input type="checkbox" name="${dashboardConfiguration.myDashboardComponentId}_display" <#if !dashboardConfiguration.hideDashboard>checked="checked"</#if> />
-                    </td>
-                    <td>${dashboardConfiguration.order!}</td>
-                    <td>
-                        <#if dashboardConfiguration.order &gt; 1>
-                            <a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modifyDashboards.moveUp}" class="btn btn-sm btn-primary">
-                                <i class="ti ti-arrow-up"></i>
-                            </a>
-                        </#if>
-                        <#if dashboardConfiguration_has_next>
-                            <a href="jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}" title="#i18n{mydashboard.modifyDashboards.moveDown}" class="btn btn-sm btn-primary">
-                                <i class="ti ti-arrow-down"></i>
-                            </a>
-                        </#if>
-                    </td>
-                </tr>
+                    <@chItem class='list-group-item d-flex justify-content-between align-items-center'>
+                        <#assign isChecked><#if dashboardConfiguration.hideDashboard>false<#else>true</#if></#assign> 
+                        <@cInline>
+                            <@cBadge class='main-info-bg-color me-sm'>${dashboardConfiguration.order}</@cBadge> ${listComponentsDescription[dashboardConfiguration.myDashboardComponentId]!}
+                        </@cInline>
+                        <@cBlock class='d-flex align-items-center'>
+                            <#if dashboardConfiguration.order gt 1>
+                                <@cLink label='' href='jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}' class='btn btn-primary'>
+                                    <@parisIcon name='arrow-up' /> #i18n{mydashboard.modifyDashboards.moveUp}
+                                </@cLink>
+                            </#if>
+                            <#if dashboardConfiguration_has_next>
+                                <@cLink label='' href='jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}' class='btn btn-small btn-primary'>
+                                    <@parisIcon name='arrow-down' /> #i18n{mydashboard.modifyDashboards.moveDown}
+                                </@cLink>
+                            </#if>
+                            <@cCheckbox class='ms-m' name='${dashboardConfiguration.myDashboardComponentId}_display' checked=isChecked?boolean label='#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}' />
+                        </@cBlock>
+                    </@chItem>
                 </#list>
-                </tbody>
-            </table>
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="ti ti-check"></i> #i18n{portal.util.labelValidate}
-                </button>
-                <button type="submit" class="btn btn-secondary" name="back" id="back" value="back" title="#i18n{portal.util.labelBack}">
-                    <i class="ti ti-circle-x"></i> #i18n{portal.util.labelBack}
-                </button>
-            </div>
-        </div>
-    </div>
-</form>
+            </@chList>
+            <@cRow class='mt-m'>    
+                <@cCol class='d-flex justify-content-end'>
+                    <@cBtn label='#i18n{portal.util.labelValidate}' /> 
+                    <@cBtn label='#i18n{portal.util.labelBack}' class='secondary' params='name="back"' /> 
+                </@cCol>
+            </@cRow>
+        </@cForm>
+	    </@cCol>
+	</@cRow>
+</@cContainer>

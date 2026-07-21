@@ -1,13 +1,15 @@
-<div class="row">
-    <div class="col">
-        <h2>#i18n{mydashboard.getDashboard.pageTitle}</h2>
-    </div>
-    <div class="col text-end">
-        <a href="jsp/site/Portal.jsp?page=mydashboard&view=getModifyDashboards" class="btn btn-sm btn-primary">
-            <i class="ti ti-edit"></i> #i18n{mydashboard.dashboardComponentMyDashboard.description}
-        </a>
-    </div>
-</div>
-<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-    <#list listDashboardsContent as dashboardContent>${dashboardContent!}</#list>
-</div>
+<@cContainer>
+	<@cRow class='border-bottom pb-m align-items-center'>
+		<@cCol>
+			<@cTitle level=2>#i18n{mydashboard.getDashboard.pageTitle}</@cTitle>
+		</@cCol>
+		<@cCol class='d-flex justify-content-end'>
+			<@cLink label='' href='jsp/site/Portal.jsp?page=mydashboard&view=getModifyDashboards' class='btn btn-secondary mt-m'>
+				<@parisIcon name='edit' /> #i18n{mydashboard.dashboardComponentMyDashboard.description}
+			</@cLink>
+		</@cCol>
+	</@cRow>
+	<@cCardLayout class='mydashboard mt-0' type='deck' rowCols='md-2 row-cols-lg-3'>
+	<#list listDashboardsContent as dashboardContent><@cCol>${dashboardContent!}</@cCol></#list>
+	</@cCardLayout>
+</@cContainer>
