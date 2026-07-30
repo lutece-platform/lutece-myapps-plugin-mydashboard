@@ -19,12 +19,12 @@
                         <@cBlock class='d-flex align-items-center'>
                             <#if dashboardConfiguration.order gt 1>
                                 <@cLink label='' href='jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}' class='btn btn-primary'>
-                                    <@parisIcon name='arrow-up' /> #i18n{mydashboard.modifyDashboards.moveUp}
+                                    <@cIcon name='arrow-up' /> #i18n{mydashboard.modifyDashboards.moveUp}
                                 </@cLink>
                             </#if>
                             <#if dashboardConfiguration_has_next>
                                 <@cLink label='' href='jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}' class='btn btn-small btn-primary'>
-                                    <@parisIcon name='arrow-down' /> #i18n{mydashboard.modifyDashboards.moveDown}
+                                    <@cIcon name='arrow-down' /> #i18n{mydashboard.modifyDashboards.moveDown}
                                 </@cLink>
                             </#if>
                             <@cCheckbox class='ms-m' name='${dashboardConfiguration.myDashboardComponentId}_display' checked=isChecked?boolean label='#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}' />
