@@ -47,12 +47,16 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 import java.util.List;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
  * Jsp Bean for MyDashboard portlet management
  */
+@RequestScoped
+@Named
 public class MyDashboardPortletJspBean extends PortletJspBean
 {
     /**

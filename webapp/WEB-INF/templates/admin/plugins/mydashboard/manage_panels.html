@@ -18,8 +18,8 @@
                 <td>${panel.code!}</td>
                 <td>${panel.title!}</td>
                 <td>
-                    <#if (map_panel_list_dashboard_component["${panel.id}"])??>
-                        <#assign listDashboard = map_panel_list_dashboard_component["${panel.id}"] />
+                    <#if (map_panel_list_dashboard_component["${panel.id?c}"])??>
+                        <#assign listDashboard = map_panel_list_dashboard_component["${panel.id?c}"] />
                         <#if listDashboard??>
                             <ul class="list-unstyled">
                             <#list listDashboard as component>
@@ -30,8 +30,8 @@
                     </#if>
                 </td>
                 <td>
-                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&id=${panel.id}' buttonIcon='edit' title='#i18n{portal.util.labelModify}' color='primary' size='sm' />
-                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?action=confirmRemovePanel&id=${panel.id}' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' color='danger' size='sm' />
+                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&id=${panel.id?c}' buttonIcon='edit' title='#i18n{portal.util.labelModify}' color='primary' size='sm' />
+                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=confirmRemovePanel&id=${panel.id?c}' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' color='danger' size='sm' />
                 </td>
             </tr>
             </#list>

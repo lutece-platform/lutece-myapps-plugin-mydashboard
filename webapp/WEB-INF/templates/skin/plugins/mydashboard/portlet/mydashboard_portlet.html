@@ -1,0 +1,12 @@
+<@cTpl>
+<@cSection class='portlet portlet-mydashboard ${device_class!}' id='portlet_${portlet_id?c}'>
+<#if portlet_name??>
+	<@cTitle level=3 class='portlet-header'>${portlet_name}</@cTitle>
+</#if>
+	<@cBlock class='portlet-content'>
+	<#list listDashboardsContent as dashboardContent>
+		${dashboardContent!}
+	</#list>
+	</@cBlock>
+</@cSection>
+</@cTpl>
