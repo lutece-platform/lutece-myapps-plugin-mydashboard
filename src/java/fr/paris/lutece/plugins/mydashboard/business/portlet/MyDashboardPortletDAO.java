@@ -34,7 +34,6 @@
 package fr.paris.lutece.plugins.mydashboard.business.portlet;
 
 
-import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.util.sql.DAOUtil;
 
@@ -45,7 +44,7 @@ import jakarta.enterprise.context.ApplicationScoped;
  * DAO for MyDashboard portlets
  */
 @ApplicationScoped
-public class MyDashboardPortletDAO implements IPortletInterfaceDAO
+public class MyDashboardPortletDAO implements IMyDashboardPortletDAO
 {
 	 // Constants
     private static final String SQL_QUERY_SELECTALL = "SELECT  id_portlet, id_panel FROM mydashboard_portlet_panel";

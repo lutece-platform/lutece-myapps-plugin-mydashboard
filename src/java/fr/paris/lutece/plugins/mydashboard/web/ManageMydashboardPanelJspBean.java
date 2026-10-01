@@ -119,20 +119,15 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
     private static final String VIEW_MODIFY_PANEL = "modifyPanel";
     private static final String VIEW_CONFIRM_REMOVE_PANEL = "confirmRemovePanel";
 
-    // Actions : the token of a view is only valid for one action, so every form of a view posts that action
-    // and the value of the submit button selects the operation
+    // Actions : the actions of a form share the token of the view that renders it
     private static final String ACTION_CREATE_PANEL = VIEW_CREATE_PANEL;
+    private static final String ACTION_CREATE_PANEL_MANAGE_ASSOCIATIONS = "createPanelAndManageAssociations";
     private static final String ACTION_MODIFY_PANEL = VIEW_MODIFY_PANEL;
     private static final String ACTION_REMOVE_PANEL = "removePanel";
-
-    // Operations
-    private static final String PARAMETER_OPERATION_CREATE_PANEL = "action_" + ACTION_CREATE_PANEL;
-    private static final String PARAMETER_OPERATION_MODIFY_PANEL = "action_" + ACTION_MODIFY_PANEL;
-    private static final String OPERATION_MANAGE_ASSOCIATIONS = "manageAssociations";
-    private static final String OPERATION_ADD_COMPONENT = "addComponent";
-    private static final String OPERATION_MOVE_UP_COMPONENT = "moveUpComponent";
-    private static final String OPERATION_MOVE_DOWN_COMPONENT = "moveDownComponent";
-    private static final String OPERATION_REMOVE_COMPONENT = "removeComponent";
+    private static final String ACTION_REMOVE_COMPONENT = "removeComponent";
+    private static final String ACTION_ADD_COMPONENT = "addComponent";
+    private static final String ACTION_MOVE_UP_COMPONENT = "moveUpComponent";
+    private static final String ACTION_MOVE_DOWN_COMPONENT = "moveDownComponent";
 
     // Infos
     private static final String INFO_PANEL_CREATED = "mydashboard.info.panel.created";
@@ -194,7 +189,7 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
     }
 
     /**
-     * Process the data capture form of a new panel, then displays the panel list or the modify view of the panel
+     * Process the data capture form of a new panel
      *
      * @param request The Http Request
      * @param model The model
@@ -223,12 +218,40 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
         PanelHome.create( panel );
         addInfo( INFO_PANEL_CREATED, getLocale( ) );
 
-        if ( OPERATION_MANAGE_ASSOCIATIONS.equals( request.getParameter( PARAMETER_OPERATION_CREATE_PANEL ) ) )
+        return redirectView( request, VIEW_MANAGE_PANELS );
+    }
+
+    /**
+     * Process the data capture form of a new panel and redirect to modify view
+     *
+     * @param request The Http Request
+     * @param model The model
+     * @param strCode The code
+     * @param strTitle The title
+     * @param strDescription The description
+     * @param strDefault The default flag
+     * @return The Jsp URL of the process result
+     */
+    @Action( value = ACTION_CREATE_PANEL_MANAGE_ASSOCIATIONS, securityTokenAction = ACTION_CREATE_PANEL )
+    public String doCreatePanelManageAssociations( HttpServletRequest request, Models model,
+            @RequestParam( value = PARAMETER_CODE, defaultValue = "" ) String strCode,
+            @RequestParam( value = PARAMETER_TITLE, defaultValue = "" ) String strTitle,
+            @RequestParam( value = PARAMETER_DESCRIPTION, defaultValue = "" ) String strDescription,
+            @RequestParam( value = PARAMETER_DEFAULT, defaultValue = "false" ) String strDefault )
+    {
+        Panel panel = buildPanel( new Panel( ), strCode, strTitle, strDescription, strDefault );
+
+        if ( !validateBean( panel, VALIDATION_ATTRIBUTES_PREFIX ) )
         {
-            return redirect( request, VIEW_MODIFY_PANEL, PARAMETER_ID, panel.getId( ) );
+            model.put( MARK_PANEL, panel );
+
+            return getCreatePanel( request, model );
         }
 
-        return redirectView( request, VIEW_MANAGE_PANELS );
+        PanelHome.create( panel );
+        addInfo( INFO_PANEL_CREATED, getLocale( ) );
+
+        return redirect( request, VIEW_MODIFY_PANEL, PARAMETER_ID, panel.getId( ) );
     }
 
     /**
@@ -317,7 +340,7 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
     }
 
     /**
-     * Process the forms of the modify view : the panel form, or the operations on its components
+     * Process the change form of a panel
      *
      * @param request The Http request
      * @param model The model
@@ -334,22 +357,6 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
             @RequestParam( value = PARAMETER_DESCRIPTION, defaultValue = "" ) String strDescription,
             @RequestParam( value = PARAMETER_DEFAULT, defaultValue = "false" ) String strDefault )
     {
-        String strOperation = StringUtils.defaultString( request.getParameter( PARAMETER_OPERATION_MODIFY_PANEL ) );
-
-        switch( strOperation )
-        {
-            case OPERATION_ADD_COMPONENT:
-                return doAddComponent( request );
-            case OPERATION_MOVE_UP_COMPONENT:
-                return moveComponent( request, -1 );
-            case OPERATION_MOVE_DOWN_COMPONENT:
-                return moveComponent( request, 1 );
-            case OPERATION_REMOVE_COMPONENT:
-                return doRemoveComponent( request );
-            default:
-                break;
-        }
-
         Panel panel = PanelHome.findByPrimaryKey( getIntParameter( request, PARAMETER_ID ) );
 
         if ( panel == null )
@@ -378,7 +385,8 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
      * @param request The Http request
      * @return the jsp URL to display modify panel
      */
-    private String doAddComponent( HttpServletRequest request )
+    @Action( value = ACTION_ADD_COMPONENT, securityTokenAction = ACTION_MODIFY_PANEL )
+    public String doAddComponent( HttpServletRequest request )
     {
         String strIdComponent = request.getParameter( PARAMETER_ID_COMPONENT );
         int nIdPanel = getIntParameter( request, PARAMETER_ID );
@@ -398,12 +406,37 @@ public class ManageMydashboardPanelJspBean extends MVCAdminJspBean
     }
 
     /**
+     * Move up component
+     *
+     * @param request The Http request
+     * @return the jsp URL to display modify panel
+     */
+    @Action( value = ACTION_MOVE_UP_COMPONENT, securityTokenAction = ACTION_MODIFY_PANEL )
+    public String doMoveUpComponent( HttpServletRequest request )
+    {
+        return moveComponent( request, -1 );
+    }
+
+    /**
+     * Move down component
+     *
+     * @param request The Http request
+     * @return The jsp URL to display modify panel
+     */
+    @Action( value = ACTION_MOVE_DOWN_COMPONENT, securityTokenAction = ACTION_MODIFY_PANEL )
+    public String doMoveDownComponent( HttpServletRequest request )
+    {
+        return moveComponent( request, 1 );
+    }
+
+    /**
      * remove component
      *
      * @param request The Http request
      * @return The jsp URL to display modify panel
      */
-    private String doRemoveComponent( HttpServletRequest request )
+    @Action( value = ACTION_REMOVE_COMPONENT, securityTokenAction = ACTION_MODIFY_PANEL )
+    public String doRemoveComponent( HttpServletRequest request )
     {
         DashboardAssociation dashboardAssociation = DashboardAssociationHome.findByPrimaryKey( getIntParameter( request, PARAMETER_ID ) );
 

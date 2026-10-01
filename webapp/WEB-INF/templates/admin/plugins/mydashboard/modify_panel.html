@@ -3,10 +3,11 @@
         <@pageHeader title='#i18n{mydashboard.modifyPanel.title} : ${panel.code!}'>
             <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=managePanels' buttonIcon='arrow-left' title='#i18n{portal.util.labelBack}' />
         </@pageHeader>
+        <@messages infos=infos! />
         <@row>
             <@columns sm=3>
                 <@tform method='post' name='modify_panel' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp' boxed=true>
-                    <@input type='hidden' id='id' name='id' value='${panel.id!}' />
+                    <@input type='hidden' id='id' name='id' value='${panel.id?c}' />
                     <@messages errors=errors! />
                     <@formGroup labelFor='code' labelKey='#i18n{mydashboard.modifyPanel.labelCode}' helpKey='#i18n{mydashboard.modifyPanel.labelCode.help}' mandatory=true rows=2>
                         <@input type='text' id='code' name='code' value='${panel.code!}' />
@@ -27,7 +28,7 @@
             </@columns>
             <@columns sm=9>
                 <@tform method='post' name='add_component' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp' boxed=true>
-                    <@input type='hidden' id='id' name='id' value='${panel.id!}' />
+                    <@input type='hidden' id='id' name='id' value='${panel.id?c}' />
                     <@row>
                         <@columns>
                             <@formLabel labelFor='id_component' labelKey='#i18n{mydashboard.modifyPanel.labelListDashboardComponent}' class='pt-2' mandatory=false />
@@ -52,12 +53,12 @@
                             <@tform type='inline' method='post' name='manage_component_${component.id?c}' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp'>
                                 <@input type='hidden' name='id' value='${component.id?c}' />
                                 <#if component_index != 0>
-                                    <@button type='submit' name='action_modifyPanel' value='moveUpComponent' buttonIcon='arrow-up' title='#i18n{mydashboard.modifyPanel.components.labelUp}' hideTitle=['all'] color='primary' size='sm' />
+                                    <@button type='submit' name='action_moveUpComponent' buttonIcon='arrow-up' title='#i18n{mydashboard.modifyPanel.components.labelUp}' hideTitle=['all'] color='primary' size='sm' />
                                 </#if>
                                 <#if component_has_next>
-                                    <@button type='submit' name='action_modifyPanel' value='moveDownComponent' buttonIcon='arrow-down' title='#i18n{mydashboard.modifyPanel.components.labelDown}' hideTitle=['all'] color='primary' size='sm' />
+                                    <@button type='submit' name='action_moveDownComponent' buttonIcon='arrow-down' title='#i18n{mydashboard.modifyPanel.components.labelDown}' hideTitle=['all'] color='primary' size='sm' />
                                 </#if>
-                                <@button type='submit' name='action_modifyPanel' value='removeComponent' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' hideTitle=['all'] color='danger' size='sm' />
+                                <@button type='submit' name='action_removeComponent' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' hideTitle=['all'] color='danger' size='sm' />
                             </@tform>
                         </td>
                     </tr>

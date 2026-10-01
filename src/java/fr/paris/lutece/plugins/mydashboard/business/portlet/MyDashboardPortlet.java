@@ -40,14 +40,11 @@ import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
 import fr.paris.lutece.portal.business.portlet.PortletHtmlContent;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.util.html.HtmlTemplate;
 
 import jakarta.enterprise.inject.spi.CDI;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,24 +52,25 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
- * Portlet to display dashboards of front office users
- */
-
-/**
- * @author vbroussard
- *
+ * Portlet to display dashboards of front office users. The content is rendered with the FreeMarker template chosen for the portlet
+ * among the templates registered for the portlet type in the core (Section Template Management feature).
  */
 public class MyDashboardPortlet extends PortletHtmlContent
 {
     private static final String MARK_LIST_DASHBOARDS_CONTENT = "listDashboardsContent";
-    private static final String MARK_PORTLET = "portlet";
-    private static final String TEMPLATE_PORTLET_MY_DASHBOARDS = "skin/plugins/mydashboard/portlet/portlet_my_dashboards.html";
+    private static final String TEMPLATE_PORTLET_DEFAULT = "skin/plugins/mydashboard/portlet/mydashboard_portlet.html";
 
- // Variables declarations 
+    // Variables declarations
     private int _nIdPanel;
-   
 
-    
+    /**
+     * Constructor
+     */
+    public MyDashboardPortlet( )
+    {
+        setPortletTypeId( MyDashboardPortletHome.getInstance( ).getPortletTypeId( ) );
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -89,7 +87,6 @@ public class MyDashboardPortlet extends PortletHtmlContent
             }
             
             MyDashboardService dashboardService = CDI.current().select( MyDashboardService.class ).get();
-            Map<String, Object> model = new HashMap<String, Object>(  );
             List<IMyDashboardComponent> listDashboardComponents;
             
             if ( dashboardService.isPanelEnabled(  ) )
@@ -114,7 +111,7 @@ public class MyDashboardPortlet extends PortletHtmlContent
             	listDashboardComponents = dashboardService.getDashboardComponentListFromUser( user );
             }
             
-            List<String> listDashboardContent = new ArrayList<String>( listDashboardComponents.size(  ) );
+            List<String> listDashboardContent = new ArrayList<>( listDashboardComponents.size(  ) );
 
             for ( IMyDashboardComponent dashboardComponent : listDashboardComponents )
             {
@@ -124,16 +121,25 @@ public class MyDashboardPortlet extends PortletHtmlContent
                 }
             }
 
-            model.put( MARK_LIST_DASHBOARDS_CONTENT, listDashboardContent );
-            model.put( MARK_PORTLET, this );
-
-            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_PORTLET_MY_DASHBOARDS,
-                    request.getLocale(  ), model );
-
-            return template.getHtml(  );
+            return renderDashboards( request, listDashboardContent );
         }
 
         return StringUtils.EMPTY;
+    }
+
+    /**
+     * Renders the dashboards content with the template chosen for the portlet, or the default one
+     * @param request The HTTP request
+     * @param listDashboardContent The HTML content of each dashboard to display
+     * @return The HTML content of the portlet
+     */
+    protected String renderDashboards( HttpServletRequest request, List<String> listDashboardContent )
+    {
+        // portlet, portlet_id, device_class, portlet_name (only if the title is displayed)
+        Map<String, Object> model = createPortletModel( );
+        model.put( MARK_LIST_DASHBOARDS_CONTENT, listDashboardContent );
+
+        return renderTemplate( request, TEMPLATE_PORTLET_DEFAULT, model );
     }
 
     /**
