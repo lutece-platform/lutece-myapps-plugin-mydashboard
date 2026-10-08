@@ -1,25 +1,25 @@
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{mydashboard.createPanel.title}'>
-            <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=managePanels' buttonIcon='arrow-left' title='#i18n{portal.util.labelBack}' />
+            <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=managePanels' buttonIcon='arrow-left' title='#i18n{portal.util.labelBack}' color='light' />
         </@pageHeader>
         <@tform method='post' name='create_panel' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp' boxed=true>
-            <@messages errors=errors! />
+            <@messages errors=errors![] />
             <@formGroup labelFor='code' labelKey='#i18n{mydashboard.createPanel.labelCode}' helpKey='#i18n{mydashboard.createPanel.labelCode.help}' mandatory=true rows=2>
-                <@input type='text' id='code' name='code' value='${panel.code!}' />
+                <@input type='text' id='code' name='code' value='${panel.code!}' mandatory=true />
             </@formGroup>
             <@formGroup labelFor='title' labelKey='#i18n{mydashboard.createPanel.labelTitle}' helpKey='#i18n{mydashboard.createPanel.labelTitle.help}' mandatory=true rows=2>
-                <@input type='text' id='title' name='title' value='${panel.title!}' />
+                <@input type='text' id='title' name='title' value='${panel.title!}' mandatory=true />
             </@formGroup>
             <@formGroup labelFor='description' labelKey='#i18n{mydashboard.createPanel.labelDescription}' helpKey='#i18n{mydashboard.createPanel.labelDescription.help}' rows=2>
                 <@input type='text' id='description' name='description' value='${panel.description!}' />
             </@formGroup>
             <@formGroup labelFor='default' labelKey='#i18n{mydashboard.createPanel.labelDefault}' helpKey='#i18n{mydashboard.createPanel.labelDefault.help}' rows=2>
-                <@checkBox name='default' id='default' labelKey='#i18n{mydashboard.createPanel.labelDefault}' checked=panel.default!false value='true' />
+                <@checkBox orientation='switch' name='default' id='default' labelKey='#i18n{mydashboard.createPanel.labelDefault}' checked=panel.default!false value='true' />
             </@formGroup>
             <@formGroup rows=2>
                 <@button type='submit' buttonIcon='check' name='action_createPanel' title='#i18n{portal.util.labelValidate}' color='primary' />
-                <@button type='submit' name='action_createPanel' value='manageAssociations' buttonIcon='cog' title='#i18n{mydashboard.createPanel.actionCreateAndManageAssociations}' />
+                <@button type='submit' name='action_createPanelAndManageAssociations' buttonIcon='cog' title='#i18n{mydashboard.createPanel.actionCreateAndManageAssociations}' color='light' />
             </@formGroup>
         </@tform>
     </@pageColumn>

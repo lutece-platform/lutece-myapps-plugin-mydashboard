@@ -1,7 +1,11 @@
-<@formGroup labelFor='panel_id' labelKey='Liste de panels' rows=2>
-    <select class="form-select" name="panel_id" id="panel_id">
-        <#list panel_list as panel>
-            <option value="${panel.id}">${panel.title!}</option>
-        </#list>
-    </select>
-</@formGroup>
+<#if panel_list?has_content>
+    <@formGroup labelFor='panel_id' labelKey='#i18n{mydashboard.portlet.myDashboardPortlet.labelPanel}' mandatory=true rows=2>
+        <@select id='panel_id' name='panel_id'>
+            <#list panel_list as panel>
+                <@option value='${panel.id?c}' label='${panel.title!}' selected=(panel.id == (portlet.idPanel)!0) />
+            </#list>
+        </@select>
+    </@formGroup>
+<#else>
+    <@empty title='#i18n{mydashboard.managePanels.noData}' iconName='layout-dashboard' subtitle='#i18n{mydashboard.portlet.myDashboardPortlet.noPanel.help}' actionTitle='#i18n{mydashboard.managePanels.buttonAdd}' actionUrl='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=createPanel' />
+</#if>

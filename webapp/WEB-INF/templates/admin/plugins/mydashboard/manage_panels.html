@@ -1,41 +1,45 @@
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{mydashboard.managePanels.title}'>
-            <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=createPanel' buttonIcon='plus' title='#i18n{mydashboard.managePanels.buttonAdd}' color='primary' />
+            <@offcanvas id='offcanvasCreatePanel' targetUrl='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=createPanel' useIframe=true reloadOnClose=true title='#i18n{mydashboard.createPanel.title}' btnTitle='#i18n{mydashboard.managePanels.buttonAdd}' btnIcon='plus' btnColor='primary' hideTitle=['xs','sm'] position='end' size='half' />
         </@pageHeader>
-        <@messages infos=infos! />
-        <@table>
-            <tr>
-                <th></th>
-                <th>#i18n{mydashboard.managePanels.columnCode}</th>
-                <th>#i18n{mydashboard.managePanels.columnTitle}</th>
-                <th>#i18n{mydashboard.managePanels.columnComponentList}</th>
-                <th>#i18n{portal.util.labelActions}</th>
-            </tr>
-            <#list panel_list as panel>
-            <tr>
-                <td class='w-5'><#if panel.default><@tag color='success' tagIcon='check'>#i18n{mydashboard.managePanels.defaultLabel}</@tag></#if></td>
-                <td>${panel.code!}</td>
-                <td>${panel.title!}</td>
-                <td>
-                    <#if (map_panel_list_dashboard_component["${panel.id?c}"])??>
-                        <#assign listDashboard = map_panel_list_dashboard_component["${panel.id?c}"] />
-                        <#if listDashboard??>
-                            <ul class="list-unstyled">
-                            <#list listDashboard as component>
-                                <li>${(map_dashboard_component[component.idDashboard!])!}</li>
-                            </#list>
-                            </ul>
+        <@messages infos=infos![] />
+        <#if panel_list?has_content>
+            <@manageFeature id='panels-list'>
+                <#list panel_list as panel>
+                <@manageFeatureItem>
+                    <@manageFeatureItemColumn auto=true flex=false>
+                        <strong>${panel.title!}</strong>
+                        <@p class='my-1'><small>#i18n{mydashboard.managePanels.columnCode} : <strong>${panel.code!}</strong></small></@p>
+                        <#if panel.default>
+                            <@tag color='success' tagIcon='check'>#i18n{mydashboard.managePanels.defaultLabel}</@tag>
                         </#if>
-                    </#if>
-                </td>
-                <td>
-                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&id=${panel.id?c}' buttonIcon='edit' title='#i18n{portal.util.labelModify}' color='primary' size='sm' />
-                    <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=confirmRemovePanel&id=${panel.id?c}' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' color='danger' size='sm' />
-                </td>
-            </tr>
-            </#list>
-        </@table>
-        <@paginationAdmin paginator=paginator combo=1 />
+                    </@manageFeatureItemColumn>
+                    <@manageFeatureItemColumn auto=true flex=false valign='top'>
+                        <@p class='fw-bold fs-3'>#i18n{mydashboard.managePanels.columnComponentList}</@p>
+                        <#assign listDashboard = (map_panel_list_dashboard_component["${panel.id?c}"])![] />
+                        <#if listDashboard?has_content>
+                            <#list listDashboard as component>
+                                <@tag color='info'>${(map_dashboard_component[component.idDashboard!])!}</@tag>
+                            </#list>
+                        <#else>
+                            <@p class='text-secondary'>#i18n{mydashboard.managePanels.noComponent}</@p>
+                        </#if>
+                    </@manageFeatureItemColumn>
+                    <@manageFeatureItemColumn align='end'>
+                        <@offcanvas id='offcanvasModifyPanel-${panel.id?c}' targetUrl='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&amp;id=${panel.id?c}' useIframe=true reloadOnClose=true title='#i18n{mydashboard.modifyPanel.title}' btnTitle='#i18n{portal.util.labelModify}' btnIcon='edit' btnColor='' btnClass='me-1' hideTitle=['all'] position='end' size='full' />
+                        <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=confirmRemovePanel&amp;id=${panel.id?c}' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' color='danger' hideTitle=['all'] />
+                    </@manageFeatureItemColumn>
+                </@manageFeatureItem>
+                </#list>
+            </@manageFeature>
+            <#if paginator.itemsCount gte 10>
+                <@paginationAdmin paginator=paginator combo=1 />
+            </#if>
+        <#else>
+            <@card>
+                <@empty title='#i18n{mydashboard.managePanels.noData}' iconName='layout-dashboard' subtitle='#i18n{mydashboard.managePanels.noData.help}' actionTitle='#i18n{mydashboard.managePanels.buttonAdd}' actionUrl='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=createPanel' />
+            </@card>
+        </#if>
     </@pageColumn>
 </@pageContainer>
