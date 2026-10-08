@@ -1,69 +1,70 @@
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{mydashboard.modifyPanel.title} : ${panel.code!}'>
-            <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=managePanels' buttonIcon='arrow-left' title='#i18n{portal.util.labelBack}' />
+            <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=managePanels' buttonIcon='arrow-left' title='#i18n{portal.util.labelBack}' color='light' />
         </@pageHeader>
-        <@messages infos=infos! />
+        <@messages infos=infos![] />
         <@row>
-            <@columns sm=3>
+            <@columns md=4>
                 <@tform method='post' name='modify_panel' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp' boxed=true>
                     <@input type='hidden' id='id' name='id' value='${panel.id?c}' />
-                    <@messages errors=errors! />
+                    <@messages errors=errors![] />
                     <@formGroup labelFor='code' labelKey='#i18n{mydashboard.modifyPanel.labelCode}' helpKey='#i18n{mydashboard.modifyPanel.labelCode.help}' mandatory=true rows=2>
-                        <@input type='text' id='code' name='code' value='${panel.code!}' />
+                        <@input type='text' id='code' name='code' value='${panel.code!}' mandatory=true />
                     </@formGroup>
                     <@formGroup labelFor='title' labelKey='#i18n{mydashboard.modifyPanel.labelTitle}' helpKey='#i18n{mydashboard.modifyPanel.labelTitle.help}' mandatory=true rows=2>
-                        <@input type='text' id='title' name='title' value='${panel.title!}' />
+                        <@input type='text' id='title' name='title' value='${panel.title!}' mandatory=true />
                     </@formGroup>
                     <@formGroup labelFor='description' labelKey='#i18n{mydashboard.modifyPanel.labelDescription}' helpKey='#i18n{mydashboard.modifyPanel.labelDescription.help}' rows=2>
                         <@input type='text' id='description' name='description' value='${panel.description!}' />
                     </@formGroup>
                     <@formGroup labelFor='default' labelKey='#i18n{mydashboard.modifyPanel.labelDefault}' helpKey='#i18n{mydashboard.modifyPanel.labelDefault.help}' rows=2>
-                        <@checkBox name='default' id='default' labelKey='#i18n{mydashboard.modifyPanel.labelDefault}' checked=panel.default!false value='true' />
+                        <@checkBox orientation='switch' name='default' id='default' labelKey='#i18n{mydashboard.modifyPanel.labelDefault}' checked=panel.default!false value='true' />
                     </@formGroup>
                     <@formGroup rows=2>
                         <@button type='submit' buttonIcon='check' name='action_modifyPanel' title='#i18n{portal.util.labelValidate}' color='primary' />
                     </@formGroup>
                 </@tform>
             </@columns>
-            <@columns sm=9>
-                <@tform method='post' name='add_component' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp' boxed=true>
-                    <@input type='hidden' id='id' name='id' value='${panel.id?c}' />
-                    <@row>
-                        <@columns>
-                            <@formLabel labelFor='id_component' labelKey='#i18n{mydashboard.modifyPanel.labelListDashboardComponent}' class='pt-2' mandatory=false />
-                        </@columns>
-                        <@columns>
-                            <div class='d-flex justify-content-end'>
-                                <@select name='id_component' default_value='' items=list_dashboard_component />
-                                <@button type='submit' buttonIcon='plus' name='action_modifyPanel' value='addComponent' title='#i18n{mydashboard.modifyPanel.components.labelAdd}' />
-                            </div>
-                        </@columns>
-                    </@row>
-                </@tform>
-                <@table>
-                    <tr>
-                        <th>#i18n{mydashboard.managePanels.title}</th>
-                        <th>#i18n{portal.util.labelActions}</th>
-                    </tr>
-                    <#list list_dashboard_component_associated as component>
-                    <tr>
-                        <td>${(map_dashboard_component[component.idDashboard!])!}</td>
-                        <td>
-                            <@tform type='inline' method='post' name='manage_component_${component.id?c}' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp'>
-                                <@input type='hidden' name='id' value='${component.id?c}' />
-                                <#if component_index != 0>
-                                    <@button type='submit' name='action_moveUpComponent' buttonIcon='arrow-up' title='#i18n{mydashboard.modifyPanel.components.labelUp}' hideTitle=['all'] color='primary' size='sm' />
-                                </#if>
-                                <#if component_has_next>
-                                    <@button type='submit' name='action_moveDownComponent' buttonIcon='arrow-down' title='#i18n{mydashboard.modifyPanel.components.labelDown}' hideTitle=['all'] color='primary' size='sm' />
-                                </#if>
-                                <@button type='submit' name='action_removeComponent' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' hideTitle=['all'] color='danger' size='sm' />
-                            </@tform>
-                        </td>
-                    </tr>
-                    </#list>
-                </@table>
+            <@columns md=8>
+                <#if list_dashboard_component?has_content>
+                    <@tform method='post' name='add_component' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp' boxed=true>
+                        <@input type='hidden' id='id_panel' name='id' value='${panel.id?c}' />
+                        <@formGroup labelFor='id_component' labelKey='#i18n{mydashboard.modifyPanel.labelListDashboardComponent}' rows=2>
+                            <@inputGroup>
+                                <@select id='id_component' name='id_component' default_value='' items=list_dashboard_component />
+                                <@button type='submit' buttonIcon='plus' name='action_addComponent' title='#i18n{mydashboard.modifyPanel.components.labelAdd}' />
+                            </@inputGroup>
+                        </@formGroup>
+                    </@tform>
+                </#if>
+                <#if list_dashboard_component_associated?has_content>
+                    <@manageFeature id='components-list'>
+                        <#list list_dashboard_component_associated as component>
+                        <@manageFeatureItem>
+                            <@manageFeatureItemColumn auto=true flex=false>
+                                <strong>${(map_dashboard_component[component.idDashboard!])!}</strong>
+                            </@manageFeatureItemColumn>
+                            <@manageFeatureItemColumn align='end'>
+                                <@tform type='inline' method='post' name='manage_component_${component.id?c}' action='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp'>
+                                    <@input type='hidden' name='id' value='${component.id?c}' />
+                                    <#if component_index != 0>
+                                        <@button type='submit' name='action_moveUpComponent' buttonIcon='arrow-up' title='#i18n{mydashboard.modifyPanel.components.labelUp}' hideTitle=['all'] color='' class='me-1' />
+                                    </#if>
+                                    <#if component_has_next>
+                                        <@button type='submit' name='action_moveDownComponent' buttonIcon='arrow-down' title='#i18n{mydashboard.modifyPanel.components.labelDown}' hideTitle=['all'] color='' class='me-1' />
+                                    </#if>
+                                    <@button type='submit' name='action_removeComponent' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' hideTitle=['all'] color='danger' />
+                                </@tform>
+                            </@manageFeatureItemColumn>
+                        </@manageFeatureItem>
+                        </#list>
+                    </@manageFeature>
+                <#else>
+                    <@card>
+                        <@empty title='#i18n{mydashboard.managePanels.noComponent}' iconName='layout-off' subtitle='#i18n{mydashboard.modifyPanel.noComponent.help}' />
+                    </@card>
+                </#if>
             </@columns>
         </@row>
     </@pageColumn>
