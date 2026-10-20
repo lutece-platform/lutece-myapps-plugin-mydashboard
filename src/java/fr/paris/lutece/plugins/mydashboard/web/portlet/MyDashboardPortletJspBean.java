@@ -39,10 +39,13 @@ import fr.paris.lutece.plugins.mydashboard.business.portlet.MyDashboardPortlet;
 import fr.paris.lutece.plugins.mydashboard.business.portlet.MyDashboardPortletHome;
 import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
+import fr.paris.lutece.portal.service.admin.AdminUserService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.web.portlet.PortletJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +69,7 @@ public class MyDashboardPortletJspBean extends PortletJspBean
     
     public static final String MARK_LIST_PANEL = "panel_list";
     public static final String PARAMETER_PANEL_ID = "panel_id";
+    private static final String TEMPLATE_PORTLET_NOT_FOUND = "admin/plugins/mydashboard/portlet/portlet_not_found.html";
     /**
      * {@inheritDoc}
      */
@@ -122,9 +126,12 @@ public class MyDashboardPortletJspBean extends PortletJspBean
     @Override
     public String getModify( HttpServletRequest request )
     {
-        String strPortletId = request.getParameter( PARAMETER_PORTLET_ID );
-        int nPortletId = Integer.parseInt( strPortletId );
-        Portlet portlet = PortletHome.findByPrimaryKey( nPortletId );
+        int nPortletId = NumberUtils.toInt( request.getParameter( PARAMETER_PORTLET_ID ), NumberUtils.INTEGER_MINUS_ONE );
+        Portlet portlet = ( nPortletId > 0 ) ? PortletHome.findByPrimaryKey( nPortletId ) : null;
+        if ( portlet == null )
+        {
+            return AppTemplateService.getTemplate( TEMPLATE_PORTLET_NOT_FOUND, AdminUserService.getLocale( request ) ).getHtml( );
+        }
         List<Panel> listPanels = PanelHome.getPanelsList( );
         HashMap<String, Object> model = new HashMap<>( );
         
