@@ -40,6 +40,7 @@ import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
 import fr.paris.lutece.portal.business.portlet.PortletHtmlContent;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.template.HtmlMarkup;
 
 import jakarta.enterprise.inject.spi.CDI;
 import org.apache.commons.lang3.StringUtils;
@@ -130,14 +131,15 @@ public class MyDashboardPortlet extends PortletHtmlContent
     /**
      * Renders the dashboards content with the template chosen for the portlet, or the default one
      * @param request The HTTP request
-     * @param listDashboardContent The HTML content of each dashboard to display
+     * @param listDashboardContent The HTML content of each dashboard to display, rendered by the dashboard components
+     *            (IMyDashboardComponent contract): put in the model as markup, written as HTML by the template
      * @return The HTML content of the portlet
      */
     protected String renderDashboards( HttpServletRequest request, List<String> listDashboardContent )
     {
         // portlet, portlet_id, device_class, portlet_name (only if the title is displayed)
         Map<String, Object> model = createPortletModel( );
-        model.put( MARK_LIST_DASHBOARDS_CONTENT, listDashboardContent );
+        model.put( MARK_LIST_DASHBOARDS_CONTENT, HtmlMarkup.ofAll( listDashboardContent ) );
 
         return renderTemplate( request, TEMPLATE_PORTLET_DEFAULT, model );
     }

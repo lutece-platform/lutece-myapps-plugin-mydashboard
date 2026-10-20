@@ -41,6 +41,7 @@ import fr.paris.lutece.plugins.mydashboard.service.MyDashboardService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.UserNotSignedException;
+import fr.paris.lutece.portal.service.template.HtmlMarkup;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
 import fr.paris.lutece.portal.util.mvc.utils.MVCUtils;
@@ -144,6 +145,22 @@ public class MyDashboardApp extends MVCApplication
             listDashboardComponents = dashboardService.getDashboardComponentListFromUser( luteceUser );
         }
 
+        model.put( MARK_LIST_DASHBOARDS_CONTENT, getDashboardsContent( listDashboardComponents, luteceUser, request ) );
+
+        return getXPage( TEMPLATE_GET_DASHBOARDS, request.getLocale(  ), model );
+    }
+
+    /**
+     * Gets the HTML of the dashboard components available for the user, marked as markup: it is HTML the components
+     * rendered from their templates (IMyDashboardComponent contract), written as HTML by the template of the page
+     * @param listDashboardComponents The dashboard components of the user
+     * @param luteceUser The user
+     * @param request The request
+     * @return The HTML of each available component, as markup values (HtmlMarkup.ofAll)
+     */
+    static List<?> getDashboardsContent( List<IMyDashboardComponent> listDashboardComponents,
+        LuteceUser luteceUser, HttpServletRequest request )
+    {
         List<String> listDashboardContent = new ArrayList<String>( listDashboardComponents.size(  ) );
 
         for ( IMyDashboardComponent dashboardComponent : listDashboardComponents )
@@ -154,9 +171,7 @@ public class MyDashboardApp extends MVCApplication
             }
         }
 
-        model.put( MARK_LIST_DASHBOARDS_CONTENT, listDashboardContent );
-
-        return getXPage( TEMPLATE_GET_DASHBOARDS, request.getLocale(  ), model );
+        return HtmlMarkup.ofAll( listDashboardContent );
     }
 
     /**
