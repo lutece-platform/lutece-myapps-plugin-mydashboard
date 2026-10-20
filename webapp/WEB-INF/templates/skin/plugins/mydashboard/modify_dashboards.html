@@ -12,22 +12,21 @@
             <@chList class='list-group mt-m'>
                 <#list listDashboardsConfig as dashboardConfiguration>
                     <@chItem class='list-group-item d-flex justify-content-between align-items-center'>
-                        <#assign isChecked><#if dashboardConfiguration.hideDashboard>false<#else>true</#if></#assign> 
                         <@cInline>
                             <@cBadge class='main-info-bg-color me-sm'>${dashboardConfiguration.order}</@cBadge> ${listComponentsDescription[dashboardConfiguration.myDashboardComponentId]!}
                         </@cInline>
                         <@cBlock class='d-flex align-items-center'>
                             <#if dashboardConfiguration.order gt 1>
-                                <@cBtn label='#i18n{mydashboard.modifyDashboards.moveUp}' class='primary' params='form="move-up-${dashboardConfiguration.myDashboardComponentId}"'>
+                                <@cBtn label='#i18n{mydashboard.modifyDashboards.moveUp}' class='primary' params={"form": "move-up-${dashboardConfiguration.myDashboardComponentId}"}>
                                     <@cIcon name='arrow-up' />
                                 </@cBtn>
                             </#if>
                             <#if dashboardConfiguration_has_next>
-                                <@cBtn label='#i18n{mydashboard.modifyDashboards.moveDown}' class='small btn-primary' params='form="move-down-${dashboardConfiguration.myDashboardComponentId}"'>
+                                <@cBtn label='#i18n{mydashboard.modifyDashboards.moveDown}' class='small btn-primary' params={"form": "move-down-${dashboardConfiguration.myDashboardComponentId}"}>
                                     <@cIcon name='arrow-down' />
                                 </@cBtn>
                             </#if>
-                            <@cCheckbox class='ms-m' name='${dashboardConfiguration.myDashboardComponentId}_display' checked=isChecked?boolean label='#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}' />
+                            <@cCheckbox class='ms-m' name='${dashboardConfiguration.myDashboardComponentId}_display' checked=!dashboardConfiguration.hideDashboard label='#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}' />
                         </@cBlock>
                     </@chItem>
                 </#list>
@@ -35,7 +34,7 @@
             <@cRow class='mt-m'>    
                 <@cCol class='d-flex justify-content-end'>
                     <@cBtn label='#i18n{portal.util.labelValidate}' /> 
-                    <@cBtn label='#i18n{portal.util.labelBack}' class='secondary' params='name="back"' /> 
+                    <@cBtn label='#i18n{portal.util.labelBack}' class='secondary' params={"name": "back"} /> 
                 </@cCol>
             </@cRow>
         </@cForm>
