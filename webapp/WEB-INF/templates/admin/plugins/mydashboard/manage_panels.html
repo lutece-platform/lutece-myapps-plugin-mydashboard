@@ -28,7 +28,7 @@
                     </@manageFeatureItemColumn>
                     <@manageFeatureItemColumn align='end'>
                         <@offcanvas id='offcanvasModifyPanel-${panel.id?c}' targetUrl='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=modifyPanel&id=${panel.id?c}' useIframe=true reloadOnClose=true title='#i18n{mydashboard.modifyPanel.title}' btnTitle='#i18n{portal.util.labelModify}' btnIcon='edit' btnColor='' btnClass='me-1' hideTitle=['all'] position='end' size='full' />
-                        <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=confirmRemovePanel&amp;id=${panel.id?c}' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' color='danger' hideTitle=['all'] />
+                        <@aButton href='jsp/admin/plugins/mydashboard/ManageMyDashboardPanel.jsp?view=confirmRemovePanel&id=${panel.id?c}' buttonIcon='trash' title='#i18n{portal.util.labelDelete}' color='danger' hideTitle=['all'] />
                     </@manageFeatureItemColumn>
                 </@manageFeatureItem>
                 </#list>
