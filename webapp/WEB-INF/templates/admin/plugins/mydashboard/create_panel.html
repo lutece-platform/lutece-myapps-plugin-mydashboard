@@ -14,7 +14,7 @@
             <@formGroup labelFor='description' labelKey='#i18n{mydashboard.createPanel.labelDescription}' helpKey='#i18n{mydashboard.createPanel.labelDescription.help}' rows=2>
                 <@input type='text' id='description' name='description' value='${panel.description!}' />
             </@formGroup>
-            <@formGroup labelFor='default' labelKey='#i18n{mydashboard.createPanel.labelDefault}' helpKey='#i18n{mydashboard.createPanel.labelDefault.help}' rows=2>
+            <@formGroup helpKey='#i18n{mydashboard.createPanel.labelDefault.help}' rows=2>
                 <@checkBox orientation='switch' name='default' id='default' labelKey='#i18n{mydashboard.createPanel.labelDefault}' checked=panel.default!false value='true' />
             </@formGroup>
             <@formGroup rows=2>

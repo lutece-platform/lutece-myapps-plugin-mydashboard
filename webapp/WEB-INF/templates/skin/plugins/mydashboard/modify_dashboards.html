@@ -11,22 +11,23 @@
             <@cInput type='hidden' name='action' value='doModifyDashboards' />
             <@chList class='list-group mt-m'>
                 <#list listDashboardsConfig as dashboardConfiguration>
+                    <#assign componentDescription = listComponentsDescription[dashboardConfiguration.myDashboardComponentId]! />
                     <@chItem class='list-group-item d-flex justify-content-between align-items-center'>
                         <@cInline>
-                            <@cBadge class='main-info-bg-color me-sm'>${dashboardConfiguration.order}</@cBadge> ${listComponentsDescription[dashboardConfiguration.myDashboardComponentId]!}
+                            <@cBadge class='main-info-bg-color me-sm'>${dashboardConfiguration.order}</@cBadge> ${componentDescription}
                         </@cInline>
                         <@cBlock class='d-flex align-items-center'>
                             <#if dashboardConfiguration.order gt 1>
                                 <@cBtn label='#i18n{mydashboard.modifyDashboards.moveUp}' class='primary' params={"form": "move-up-${dashboardConfiguration.myDashboardComponentId}"}>
-                                    <@cIcon name='arrow-up' />
+                                    <@cIcon name='arrow-up' /><span class="visually-hidden"> ${componentDescription}</span>
                                 </@cBtn>
                             </#if>
                             <#if dashboardConfiguration_has_next>
                                 <@cBtn label='#i18n{mydashboard.modifyDashboards.moveDown}' class='small btn-primary' params={"form": "move-down-${dashboardConfiguration.myDashboardComponentId}"}>
-                                    <@cIcon name='arrow-down' />
+                                    <@cIcon name='arrow-down' /><span class="visually-hidden"> ${componentDescription}</span>
                                 </@cBtn>
                             </#if>
-                            <@cCheckbox class='ms-m' name='${dashboardConfiguration.myDashboardComponentId}_display' checked=!dashboardConfiguration.hideDashboard label='#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}' />
+                            <@cFormCheck type='checkbox' class='ms-m' name='${dashboardConfiguration.myDashboardComponentId}_display' checked=!dashboardConfiguration.hideDashboard label='#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}'><span class="visually-hidden">${componentDescription}</span></@cFormCheck>
                         </@cBlock>
                     </@chItem>
                 </#list>

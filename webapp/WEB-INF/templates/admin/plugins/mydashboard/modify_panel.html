@@ -18,7 +18,7 @@
                     <@formGroup labelFor='description' labelKey='#i18n{mydashboard.modifyPanel.labelDescription}' helpKey='#i18n{mydashboard.modifyPanel.labelDescription.help}' rows=2>
                         <@input type='text' id='description' name='description' value='${panel.description!}' />
                     </@formGroup>
-                    <@formGroup labelFor='default' labelKey='#i18n{mydashboard.modifyPanel.labelDefault}' helpKey='#i18n{mydashboard.modifyPanel.labelDefault.help}' rows=2>
+                    <@formGroup helpKey='#i18n{mydashboard.modifyPanel.labelDefault.help}' rows=2>
                         <@checkBox orientation='switch' name='default' id='default' labelKey='#i18n{mydashboard.modifyPanel.labelDefault}' checked=panel.default!false value='true' />
                     </@formGroup>
                     <@formGroup rows=2>

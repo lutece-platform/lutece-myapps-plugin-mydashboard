@@ -85,6 +85,7 @@ public class MyDashboardTemplatesRenderTest
             + "<#macro cInline rest...><span><#nested></span></#macro><#macro cBadge rest...><b class=\"badge\"><#nested></b></#macro>"
             + "<#macro cBlock rest...><div><#nested></div></#macro>"
             + "<#macro cCheckbox name='' checked=false label='' rest...><input type=\"checkbox\" name=\"${name}\"<#if checked> checked</#if>></#macro>"
+            + "<#macro cFormCheck name='' checked=false label='' rest...><input type=\"checkbox\" name=\"${name}\"<#if checked> checked</#if>><label>${label} <#nested></label></#macro>"
             + "<#macro cBtn label='' params={} rest...><button<#list params as key, param> ${key}=\"${param}\"</#list>>${label}<#nested></button></#macro>"
             + "<#macro cTpl rest...><#nested></#macro>"
             + "<#macro cSection id='' class='' rest...><section id=\"${id}\" class=\"${class}\"><#nested></section></#macro>";
