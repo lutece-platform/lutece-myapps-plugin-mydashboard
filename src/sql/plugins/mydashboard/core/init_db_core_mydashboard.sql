@@ -21,3 +21,9 @@ INSERT INTO core_admin_right (id_right,name,level_right,admin_url,description,is
 -- preconditions onFail:MARK_RAN onError:WARN
 -- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM core_portlet_template WHERE id_portlet_type = 'MYDASHBOARD_PORTLET'
 INSERT INTO core_portlet_template (id_portlet_type, description, template_path) VALUES ('MYDASHBOARD_PORTLET', 'Défaut', 'skin/plugins/mydashboard/portlet/mydashboard_portlet.html');
+
+-- changeset mydashboard:init_db_core_mydashboard.sql-rev2.sql
+-- preconditions onFail:MARK_RAN onError:WARN
+-- The admin user of the core (id 1) gets the feature of the plugin on a fresh install (rights are never granted by an upgrade script)
+DELETE FROM core_user_right WHERE id_right = 'MYDASHBOARD_PANEL_MANAGEMENT' AND id_user = 1;
+INSERT INTO core_user_right (id_right,id_user) VALUES ('MYDASHBOARD_PANEL_MANAGEMENT',1);
