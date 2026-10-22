@@ -18,14 +18,14 @@
                         </@cInline>
                         <@cBlock class='d-flex align-items-center'>
                             <#if dashboardConfiguration.order gt 1>
-                                <@cLink label='' href='jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=true&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}' class='btn btn-primary'>
-                                    <@cIcon name='arrow-up' /> #i18n{mydashboard.modifyDashboards.moveUp}
-                                </@cLink>
+                                <@cBtn label='#i18n{mydashboard.modifyDashboards.moveUp}' class='primary' params='form="move-up-${dashboardConfiguration.myDashboardComponentId}"'>
+                                    <@cIcon name='arrow-up' />
+                                </@cBtn>
                             </#if>
                             <#if dashboardConfiguration_has_next>
-                                <@cLink label='' href='jsp/site/Portal.jsp?page=mydashboard&action=doMoveDashboard&moveUp=false&myDashboardComponentId=${dashboardConfiguration.myDashboardComponentId}' class='btn btn-small btn-primary'>
-                                    <@cIcon name='arrow-down' /> #i18n{mydashboard.modifyDashboards.moveDown}
-                                </@cLink>
+                                <@cBtn label='#i18n{mydashboard.modifyDashboards.moveDown}' class='small btn-primary' params='form="move-down-${dashboardConfiguration.myDashboardComponentId}"'>
+                                    <@cIcon name='arrow-down' />
+                                </@cBtn>
                             </#if>
                             <@cCheckbox class='ms-m' name='${dashboardConfiguration.myDashboardComponentId}_display' checked=isChecked?boolean label='#i18n{mydashboard.modifyDashboards.labelDisplayDashboard}' />
                         </@cBlock>
@@ -39,6 +39,16 @@
                 </@cCol>
             </@cRow>
         </@cForm>
+        <#list listDashboardsConfig as dashboardConfiguration>
+            <#list ['up', 'down'] as direction>
+            <@cForm action='jsp/site/Portal.jsp' id='move-${direction}-${dashboardConfiguration.myDashboardComponentId}' class='d-none'>
+                <@cInput type='hidden' name='page' value='mydashboard' />
+                <@cInput type='hidden' name='action' value='doMoveDashboard' />
+                <@cInput type='hidden' name='moveUp' value='${(direction == "up")?c}' />
+                <@cInput type='hidden' name='myDashboardComponentId' value='${dashboardConfiguration.myDashboardComponentId}' />
+            </@cForm>
+            </#list>
+        </#list>
 	    </@cCol>
 	</@cRow>
 </@cContainer>
