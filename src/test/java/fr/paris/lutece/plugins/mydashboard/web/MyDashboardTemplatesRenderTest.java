@@ -226,7 +226,7 @@ public class MyDashboardTemplatesRenderTest
 
         assertTrue( strHtml.contains( "name=\"mydashboard.shown_display\" checked>" ), strHtml );
         assertTrue( strHtml.contains( "name=\"mydashboard.odd&amp;x=&quot;&lt;y&gt;_display\">" ), strHtml );
-        assertTrue( strHtml.contains( "myDashboardComponentId=mydashboard.odd%26x%3D%22%3Cy%3E\"" ), strHtml );
+        assertTrue( strHtml.contains( "form=\"move-up-mydashboard.odd&amp;x=&quot;&lt;y&gt;\"" ), strHtml );
         assertTrue( strHtml.contains( HOSTILE_ESCAPED ), strHtml );
         assertFalse( strHtml.contains( "<script>" ), strHtml );
         assertTrue( strHtml.contains( "<button name=\"back\">" ), strHtml );
